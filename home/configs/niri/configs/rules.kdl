@@ -38,6 +38,19 @@ window-rule {
 }
 
 window-rule {
+    match title=r#"^(Error|File Conflict)$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"thunar"#
+    exclude title="^.* - Thunar$"
+    
+    open-floating true
+}
+
+
+window-rule {
     match app-id=r#"^(pavucontrol|gnome-calculator|org\.gnome\.Calculator)$"#
     open-floating true
 }

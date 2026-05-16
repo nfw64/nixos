@@ -37,15 +37,17 @@
 
         # fzf
         # called from ~/scripts/
-        nlof = "fzf_listoldfiles.sh";
+        fvi = "fzf_listoldfiles.sh";
         # opens documentation through fzf (eg: git,zsh etc.)
-        fman = "bash -c 'compgen -c' | fzf | xargs man";
+        fma = "bash -c 'compgen -c' | fzf | xargs man";
 
         # git aliases
-        gita = "git add .";
-        gits = "git status -s";
-        gitc = "git commit -m";
+        ga = "git add .";
+        gs = "git status -s";
+        gc = "git commit -m";
         glog = "git log --oneline --graph --all";
+
+        y = "yazi";
 
       };
 
@@ -58,33 +60,42 @@
       };
 
       initContent = ''
-                [[ $- != *i* ]] && return
+        [[ $- != *i* ]] && return
 
-                source ${pkgs.zinit}/share/zinit/zinit.zsh
-                fastfetch -l none
+        source ${pkgs.zinit}/share/zinit/zinit.zsh
+        fastfetch -l none
 
-                zinit wait lucid for \
-                    atinit"ZINIT[COMPINIT_OPTS]=-C" \
-                    zdharma-continuum/fast-syntax-highlighting
+        zinit wait lucid for \
+            atinit"ZINIT[COMPINIT_OPTS]=-C" \
+            zdharma-continuum/fast-syntax-highlighting
 
-                zinit wait lucid blockf for \
-                    zsh-users/zsh-completions
+        zinit wait lucid blockf for \
+            zsh-users/zsh-completions
 
-                zinit wait lucid atload"!_zsh_autosuggest_start" for \
-                    zsh-users/zsh-autosuggestions
+        zinit wait lucid atload"!_zsh_autosuggest_start" for \
+            zsh-users/zsh-autosuggestions
 
-                zinit ice lucid wait"5"
-                zinit light hlissner/zsh-autopair
+        zinit ice lucid wait"5"
+        zinit light hlissner/zsh-autopair
 
-                bindkey '^[[H' beginning-of-line
-                bindkey '^[[F' end-of-line
-                bindkey -r "^G"
+        function yz() {
+            local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+            yazi "$@" --cwd-file="$tmp"
+            if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+                builtin cd -- "$cwd"
+            fi
+            rm -f -- "$tmp"
+        }
 
-                eval "$(fzf --zsh)" # fzf
-                source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
+        bindkey '^[[H' beginning-of-line
+        bindkey '^[[F' end-of-line
+        bindkey -r "^G"
+
+        eval "$(fzf --zsh)" # fzf
+        source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
         if [[ $- == *i* ]] && [ -t 0 ]; then
             eval "$(pay-respects zsh)"
-          fi
+        fi
       '';
 
       completionInit = ''

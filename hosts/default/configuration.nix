@@ -45,6 +45,7 @@
   };
 
   boot = {
+    supportedFilesystems = [ "ntfs" ];
     loader = {
       systemd-boot.enable = false;
       grub = {
