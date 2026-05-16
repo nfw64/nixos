@@ -36,15 +36,15 @@
         nfu = "nix flake update";
 
         # fzf
-        # called from ~/scripts/
         fvi = "fzf_listoldfiles.sh";
-        # opens documentation through fzf (eg: git,zsh etc.)
         fma = "bash -c 'compgen -c' | fzf | xargs man";
 
         # git aliases
         ga = "git add .";
         gs = "git status -s";
         gc = "git commit -m";
+        gpo = "git push origin";
+        gcm = "git commit --amend";
         glog = "git log --oneline --graph --all";
 
         y = "yazi";

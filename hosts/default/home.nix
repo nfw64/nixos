@@ -33,7 +33,7 @@ let
   };
 
   homeFiles = {
-    "local/themes" = ".local/share/themes";
+    ".local/share/themes" = "local/themes";
   };
 in
 
@@ -84,7 +84,6 @@ in
 
   home.file = builtins.mapAttrs (name: subpath: {
     source = create-symlink "${dotfiles}/assets/${subpath}";
-    recursive = true;
   }) homeFiles;
 
   programs = {
