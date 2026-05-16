@@ -21,16 +21,17 @@
         FZF_DEFAULT_OPTS = "--height 50% --layout=default --border --color=hl:#2dd4bf";
         FZF_CTRL_T_OPTS = "--preview 'bat --color=always -n --line-range :500 {}'";
         FZF_ALT_C_OPTS = "--preview 'eza --icons=always --tree --color=always {} | head -200'";
-        FZF_TMUX_OPTS = " -p90%,70% ";
       };
 
       shellAliases = {
         vim = "nvim";
+        svim = "sudoedit";
+
         ls = "eza --no-filesize --long --color=always --icons=always --no-user";
         lst = "ls -aTL 2";
         zrel = "source ~/.config/zsh/.zshrc";
         psx = "ps aux | grep";
-        svim = "sudoedit";
+
         cd = "z";
         nhs = "nh os switch";
         nfu = "nix flake update";
@@ -40,15 +41,18 @@
         fma = "bash -c 'compgen -c' | fzf | xargs man";
 
         # git aliases
-        ga = "git add .";
-        gs = "git status -s";
+        gco = "git checkout";
+        gsw = "git switch";
+        gbr = "git branch";
         gc = "git commit -m";
+        gca = "git commit --amend";
+        gdc = "git diff --cached";
+        gps = "git push";
+        gpl = "git pull";
+        ga = "git add .";
+        gs = "git status -sb";
         gpo = "git push origin";
-        gcm = "git commit --amend";
         glog = "git log --oneline --graph --all";
-
-        y = "yazi";
-
       };
 
       dotDir = "${config.xdg.configHome}/zsh";
@@ -78,7 +82,7 @@
         zinit ice lucid wait"5"
         zinit light hlissner/zsh-autopair
 
-        function yz() {
+        function y() {
             local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
             yazi "$@" --cwd-file="$tmp"
             if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then

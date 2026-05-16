@@ -1,7 +1,5 @@
 {
   pkgs,
-  isNiri ? false,
-  config,
   ...
 }:
 {
@@ -22,7 +20,6 @@
     xwayland-satellite
     awww
 
-    (papirus-icon-theme.override { color = "bluegrey"; })
     eza
     qt6Packages.qt6ct
     fastfetch
@@ -56,8 +53,6 @@
     #cli tools
     fzf
     fzf-git-sh
-    yazi
-    tmux
     bat
     jq
     fd

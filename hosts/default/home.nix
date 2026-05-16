@@ -2,7 +2,6 @@
   config,
   pkgs,
   inputs,
-  lib,
   ...
 }:
 
@@ -26,8 +25,8 @@ let
     qt5ct = "qt5ct";
     Thunar = "Thunar";
     nvim = "nvim";
-    "gtk-3.0" = "gtk-3.0";
-    "gtk-4.0" = "gtk-4.0";
+   # "gtk-3.0" = "gtk-3.0";
+   # "gtk-4.0" = "gtk-4.0";
     "starship.toml" = "starship.toml";
     "nbfc.json" = "nbfc.json";
   };
@@ -42,14 +41,19 @@ in
   imports = [
     ../../system/shell/zsh.nix
     ../../home/sharedVars.nix
-    ../../home/wm/niri.nix
-    ./packages.nix
+    #../../home/wm/niri.nix
+    ../../home/programs/yazi.nix
 
+    ./packages.nix
   ];
-  gtk.iconTheme = {
-    name = "Papirus-Dark";
-    package = pkgs.papirus-icon-theme.override {
-      color = "bluegrey";
+
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme.override {
+        color = "bluegrey";
+      };
     };
   };
 
@@ -74,8 +78,6 @@ in
       NH_FLAKE = "/home/myriad/nixos/";
     };
   };
-
-  services.easyeffects.enable = true;
 
   xdg.configFile = builtins.mapAttrs (name: subpath: {
     source = create-symlink "${dotfiles}/home/configs/${subpath}";

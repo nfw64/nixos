@@ -8,3 +8,6 @@ home/configs/qt5ct/colors/matugen-qt5ct.conf
 home/configs/quickshell/Theme.qml
 home/configs/quickshell/wallpaper.conf
 home/configs/wlogout/colors.css
+home/configs/gtk-4.0/gtk-colors.css
+assets/local/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css
+assets/local/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css
