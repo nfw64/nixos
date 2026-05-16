@@ -1,0 +1,51 @@
+// layouts
+layout {
+    gaps 6
+
+    center-focused-column "on-overflow"
+    always-center-single-column
+
+    background-color "transparent"
+
+    default-column-width { proportion 0.5; }
+
+    default-column-display "normal"
+    preset-column-widths {
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    preset-window-heights {
+        proportion 0.5
+        proportion 1.0
+    }
+
+    focus-ring {
+        off
+    }
+
+    insert-hint {
+        off
+    }
+
+    border {
+        on
+        width 1
+    }
+
+    shadow {
+    on
+    softness 20
+    spread 5
+    offset x=0 y=5
+  }
+
+
+    tab-indicator {
+        hide-when-single-tab
+        length total-proportion=1.002
+        gap 0
+        width 3
+        position "top"
+    }
+}

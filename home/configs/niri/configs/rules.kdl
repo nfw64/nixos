@@ -1,0 +1,100 @@
+// WINDOW RULES
+
+window-rule {
+    match is-active=true
+    draw-border-with-background false
+    clip-to-geometry true
+    opacity 1.0
+}
+
+window-rule {
+    geometry-corner-radius 10
+    clip-to-geometry true
+}
+
+window-rule {
+    open-floating false
+    open-maximized false
+}
+
+window-rule {
+    match app-id="floorp"
+    open-on-workspace "3"
+    open-maximized true
+}
+
+window-rule {
+    match app-id="com.github.th_ch.youtube_music"
+    open-on-workspace "4"
+    open-maximized true
+}
+
+// FLOATING WINDOW RULES
+window-rule {
+    match app-id="polkit-gnome"
+    match title=r#"^(Polkit)"#
+
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^(pavucontrol|gnome-calculator|org\.gnome\.Calculator)$"#
+    open-floating true
+}
+
+// OPACITY RULES
+
+window-rule {
+    match app-id="^kitty$"
+    opacity 0.8
+}
+
+// TERMINAL WIDTH PRESETS
+
+window-rule {
+    match app-id=r#"foot|ghostty|kitty|wezterm"#
+    default-column-width { proportion 0.5; }
+}
+
+
+// APP-SPECIFIC WIDTH RULES
+
+window-rule {
+    match app-id=r#"spotify"#
+    default-column-width { proportion 0.66667; }
+}
+
+window-rule {
+    match app-id=r#"nautilus|org\.gnome\.Nautilus"#
+    default-column-width { proportion 0.66667; }
+}
+
+layer-rule {
+  match namespace="^wallpaper$"
+  place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^awww*"
+    place-within-backdrop true
+}
+
+window-rule {
+  // This app-id regular expression will work for both:
+  // - host Firefox ("firefox")
+  // - Flatpak Firefox ("org.mozilla.firefox")
+  match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+  open-floating true
+}
+
+// Fix the Steam notifications position
+window-rule {
+  match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+  default-floating-position x=10 y=10 relative-to="bottom-right"
+}
+
+window-rule {
+  geometry-corner-radius 8
+  clip-to-geometry true // Clip the window to its visual geometry
+}
+

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [[ -f "$1" ]]; then
+    rWall=$(readlink -f "$1")
+else
+    rWall=$(find ~/nixos/assets/wallpapers -maxdepth 1 -type f | shuf -n 1)
+    asyncmat $rWall &
+fi
+
+printf -v rPos "0.%04d,0.%04d" $((RANDOM % 10000)) $((RANDOM % 10000))
+
+if ! pgrep -f "awww-daemon" >/dev/null; then
+    awww-daemon --no-cache &
+    sleep 0.2 # Lowered delay
+fi
+
+awww img "$rWall" \
+    --transition-fps 60 \
+    --transition-type grow \
+    --transition-duration 0.8 \
+    --transition-pos "$rPos" &
+
+echo "$rWall" >~/.config/quickshell/wallpaper.conf

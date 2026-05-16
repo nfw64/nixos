@@ -1,0 +1,46 @@
+window {
+  background-color: alpha(#181616, 0.9); /* Background blur */
+}
+
+button {
+  color: #c5c9c5;
+  background-color: transparent;
+  border-style: none;
+  outline-style: none;
+  box-shadow: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10%;
+  border-radius: 10px;
+}
+
+button:hover,
+button:focus {
+  color: #c5c9c5;
+  background-color: #e6c384; /* Color of icon background when selected */
+  background-size: 15%; /* Icon size when selected */
+}
+
+#suspend {
+  background-image: image(url("suspend.png"));
+}
+
+#lock {
+    background-image: image(url("lock.png"));
+}
+
+#hibernate {
+    background-image: image(url("hibernate.png"));
+}
+
+#shutdown {
+  background-image: image(url("shutdown.png"));
+}
+
+#logout {
+  background-image: image(url("logout.png"));
+}
+
+#reboot {
+  background-image: image(url("restart.png"));
+}

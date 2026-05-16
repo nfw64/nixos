@@ -1,0 +1,19 @@
+input {
+    focus-follows-mouse max-scroll-amount="0%"
+    keyboard {
+        xkb {
+            layout "us"
+        }
+        repeat-delay 300
+        repeat-rate 50
+    }
+
+    mouse {
+    }
+
+    touchpad {
+        tap
+        dwt
+        accel-speed 0.2
+    }
+}

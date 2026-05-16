@@ -1,0 +1,75 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "source": "arch_small",
+        "padding": {
+            "top": 3,
+            "left": 2
+        },
+        // TRUQUE: Define as duas cores do logo como a cor primária vibrante
+        "color": {
+            "1": "#ffb1c6",
+            "2": "#ffb1c6" 
+        }
+    },
+    "display": {
+        "separator": " "
+    },
+    "modules": [
+        "break",
+        {
+            "type": "title",
+            "keyWidth": 10,
+            // Título na cor secundária para diferenciar do logo
+            "color": {
+                "user": "#e3bdc6",
+                "at": "#d6c2c5",
+                "host": "#e3bdc6"
+            }
+        },
+        "break",
+        {
+            "type": "os",
+            "key": " ",
+            "keyColor": "#ffb1c6" 
+        },
+        {
+            "type": "kernel",
+            "key": " ",
+            "keyColor": "#ffb1c6"
+        },
+        {
+            "type": "packages",
+            "format": "{} (pacman)",
+            "key": " ",
+            "keyColor": "#ffb1c6"
+        },
+        {
+            "type": "shell",
+            "key": " ",
+            "keyColor": "#ffb1c6" 
+        },
+        {
+            "type": "terminal",
+            "key": " ",
+            "keyColor": "#ffb1c6" 
+        },
+        {
+            "type": "wm",
+            "key": " ",
+            "keyColor": "#ffb1c6" 
+        },
+        {
+            "type": "uptime",
+            "key": " ",
+            "keyColor": "#ffb1c6" 
+        },
+        "break",
+        {
+            "type": "colors",
+            "symbol": "circle",
+            "paddingLeft": 0
+        },
+        "break"
+    ]
+}

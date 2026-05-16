@@ -1,0 +1,59 @@
+#!/bin/bash
+
+CONFIG_FILE="$HOME/.config/dotfiles/config"
+
+red() {
+    printf '\033[31m%s\033[0m\n' "$*"
+}
+
+yellow() {
+    printf '\033[33m%s\033[0m\n' "$*"
+}
+
+green() {
+    printf '\033[32m%s\033[0m\n' "$*"
+}
+
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+else
+    red "Warning: Config file not found at $CONFIG_FILE. Using defaults."
+    REPO_ROOT="${DOTFILES_REPO:-$HOME/wsp/Dotfiles/mine/home}"
+fi
+
+if [ -z "$1" ]; then
+    echo "Usage: adopt <folder_or_file>"
+    exit 1
+fi
+
+TARGET_ITEM="$1"
+
+if [ ! -e "$TARGET_ITEM" ]; then
+    red "Error: '$TARGET_ITEM' not found in current directory."
+    exit 1
+fi
+
+# rel_path will be something like '.config' or '.local/share'
+REL_PATH=$(realpath --relative-to="$HOME" "$(pwd)")
+
+if [[ "$REL_PATH" == /* ]] || [[ "$REL_PATH" == ".."* ]]; then
+    red "Error: You are outside your HOME directory. This script only handles files inside HOME directory."
+    exit 1
+fi
+
+# pkg_name is the name of the folder/file being adopted
+PKG_NAME=$(basename "$TARGET_ITEM")
+REPO_PKG_DIR="$REPO_ROOT/home/$PKG_NAME/$REL_PATH"
+
+mkdir -p "$REPO_PKG_DIR"
+green "$REPO_ROOT"
+red "--- ADOPTING TO: $REPO_PKG_DIR ---"
+stow -n -v -d "$REPO_ROOT/home" -t "$HOME" -v "$PKG_NAME"
+red "--------------------------"
+yellow "(Enter to confirm, Ctrl+C to abort):"
+read -r confirmation
+
+mv "$TARGET_ITEM" "$REPO_PKG_DIR"
+stow -v -d "$REPO_ROOT/home" -t "$HOME" "$PKG_NAME"
+
+green "Successfully adopted $PKG_NAME!"

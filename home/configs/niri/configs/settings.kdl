@@ -1,0 +1,55 @@
+// Blur
+
+blur {
+  passes 2
+  offset 1.0
+  saturation 1
+}
+
+// WORKSPACES
+
+workspace "1"
+workspace "2"
+workspace "3"
+workspace "4"
+
+// VISUAL PREFERENCES
+
+prefer-no-csd
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+cursor {
+  xcursor-theme "Bibata-Modern-Ice"
+  xcursor-size 24
+  hide-when-typing
+  hide-after-inactive-ms 2000
+}
+
+
+// OVERVIEW
+
+overview {
+    zoom 1.0
+    backdrop-color "#00000000"
+
+    workspace-shadow {
+        off
+    }
+}
+
+// screenshot path
+screenshot-path "~/Media/pictures/screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// window switcher
+recent-windows {
+    debounce-ms 750
+    open-delay-ms 150
+
+  highlight {
+    padding 20
+    corner-radius 8
+  }
+}

@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+WALLPAPER="$1"
+CACHE_DIR="$HOME/.cache/matugen/colors"
+mkdir -p "$CACHE_DIR"
+
+if [ -z "$WALLPAPER" ] || [ ! -f "$WALLPAPER" ]; then
+    echo "Error: Wallpaper file not found or not specified!" >&2
+    exit 1
+fi
+
+MD5=$(md5sum "$WALLPAPER" | awk '{print $1}')
+CACHE_FILE="$CACHE_DIR/$MD5"
+
+if [ -f "$CACHE_FILE" ]; then
+    # ==========================================
+    # CACHE HIT (~100ms) - Instant execution
+    # ==========================================
+    HEX_COLOR=$(cat "$CACHE_FILE")
+
+    if ! matugen color hex "$HEX_COLOR" >/dev/null 2>&1; then
+        echo "Error: Matugen failed to set hex color." >&2
+        exit 1
+    fi
+else
+    # ==========================================
+    # CACHE MISS - High Fidelity Extraction
+    # ==========================================
+    for cmd in matugen jq; do
+        if ! command -v "$cmd" &>/dev/null; then
+            echo "Error: Required dependency '$cmd' is missing from PATH." >&2
+            exit 1
+        fi
+    done
+
+    # Run matugen on the original file to guarantee flawless color fidelity
+    JSON_OUTPUT=$(matugen image "$WALLPAPER" --source-color-index 0 -j hex 2>/dev/null)
+
+    if [ -z "$JSON_OUTPUT" ]; then
+        echo "Error: Matugen failed to parse the wallpaper." >&2
+        exit 1
+    fi
+
+    HEX_COLOR=$(echo "$JSON_OUTPUT" | jq -r '.colors.source_color.default.color' 2>/dev/null)
+
+    if [[ "$HEX_COLOR" =~ ^#[0-9a-fA-F]{6}$ ]]; then
+        notify-send -a Quickshell "Colors cached!"
+        echo "$HEX_COLOR" >"$CACHE_FILE"
+    else
+        echo "Error: Extracted hex '$HEX_COLOR' is invalid." >&2
+        exit 1
+    fi
+fi
+
+~/.config/matugen/apply.sh &
