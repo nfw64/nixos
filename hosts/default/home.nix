@@ -37,7 +37,7 @@ in
 {
 
   imports = [
-    ../../system/shell/zsh.nix
+    ../../home/shell/zsh.nix
     ../../home/sharedVars.nix
     ../../home/wm/niri/niri.nix
     ../../home/programs/yazi.nix
@@ -78,6 +78,7 @@ in
       TERMINAL = "kitty";
       BROWSER = "firefox";
       NH_FLAKE = "/home/myriad/nixos/";
+      QT_QPA_PLATFORMTHEME = "qt6ct";
     };
   };
 
