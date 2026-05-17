@@ -1,59 +1,43 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
----- define common options
 local opts = {
   noremap = true, -- non-recursive
   silent = true, -- do not show message
 }
-local map = vim.keymap.set
-
-vim.g.mapleader = " "
------------------
----- Custom -----
------------------
 
 -----------------
 -- Normal mode --
 -----------------
 
--- Hint: see `:h vim.map.set()`
--- Better window navigation
+-- ^ and $ is too awkward lol
+vim.keymap.set({'n', 'v'}, 'gh', '^', { desc = 'Go to start of line' })
+vim.keymap.set({'n', 'v'}, 'gl', '$', { desc = 'Go to end of line' })
 
--- map('n', '<C-Left>',  '<C-w>h',  opts)
--- map('n', '<C-Right>', '<C-w>l',  opts)
-map("n", "<C-s>", ":w<CR>", opts)
-map("v", "<C-S>", "<esc>:w<cr>")
-map("i", "<C-S>", "<esc>:w<cr>")
+vim.keymap.set("n", "<C-s>", ":w<CR>", opts)
+vim.keymap.set("v", "<C-S>", "<esc>:w<cr>")
+vim.keymap.set("i", "<C-S>", "<esc>:w<cr>")
 
 -- ==============================================================================
 -- nvim ctrl+(ad and hl) move windows
 -- ==============================================================================
-vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-a>', '<C-w>k', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-d>', '<C-w>j', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-h>', '<C-w>h',  opts)
+vim.keymap.set('n', '<C-l>', '<C-w>l',  opts)
+vim.keymap.set('n', '<C-a>', '<C-w>k',  opts)
+vim.keymap.set('n', '<C-d>', '<C-w>j',  opts)
 
 -- ==============================================================================
 -- nvim shift+(ad and hl) move buffers
 -- ==============================================================================
-vim.keymap.set('n', '<S-h>', ':bprevious<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<S-l>', ':bnext<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<S-h>', ':bprevious<CR>',  opts)
+vim.keymap.set('n', '<S-l>', ':bnext<CR>', opts)
 
 -----------------
 -- Visual mode --
 -----------------
 
 -- Hint: start visual mode with the same area as the previous area and the same mode
-map("v", "<", "<gv", opts)
-map("v", ">", ">gv", opts)
+vim.keymap.set("v", "<", "<gv", opts)
+vim.keymap.set("v", ">", ">gv", opts)
 
------------------
--- Insert mode --
------------------
-
-map("i", "<C-BS>", "<C-w>", opts)
-
+-- Telescope
 local status, builtin = pcall(require, "telescope.builtin")
 if status then
   vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })

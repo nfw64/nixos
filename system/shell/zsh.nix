@@ -31,14 +31,15 @@
         lst = "ls -aTL 2";
         zrel = "source ~/.config/zsh/.zshrc";
         psx = "ps aux | grep";
-
         cd = "z";
-        nhs = "nh os switch";
-        nfu = "nix flake update";
-
-        # fzf
         fvi = "fzf_listoldfiles.sh";
         fma = "bash -c 'compgen -c' | fzf | xargs man";
+        fzo = "zoxide_openfiles_nvim.sh";
+
+        # nix
+        nos = "nh os switch";
+        nhs = "nh home switch";
+        nfu = "nix flake update";
 
         # git aliases
         gco = "git checkout";

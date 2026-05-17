@@ -1,10 +1,4 @@
-{
-  config,
-  inputs,
-  lib,
-  ...
-}:
-{
+_: {
   nix = {
     gc = {
       automatic = true;

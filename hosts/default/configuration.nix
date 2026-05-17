@@ -153,6 +153,8 @@
     nh = {
       flake = "/home/myriad/nixos/";
     };
+    nix-index-database.comma.enable = true;
+
     dconf.enable = true;
   };
 

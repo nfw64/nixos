@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -9,8 +8,6 @@ let
   dotfiles = "${config.home.homeDirectory}/nixos";
   create-symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
-    #hypr = "hypr";
-    niri = "niri";
     swaylock = "swaylock";
     swayidle = "swayidle";
     wlogout = "wlogout";
@@ -23,10 +20,11 @@ let
     matugen = "matugen";
     nwg-look = "nwg-look";
     qt5ct = "qt5ct";
+    qt6ct = "qt6ct";
     Thunar = "Thunar";
     nvim = "nvim";
-   # "gtk-3.0" = "gtk-3.0";
-   # "gtk-4.0" = "gtk-4.0";
+    # "gtk-3.0" = "gtk-3.0";
+    # "gtk-4.0" = "gtk-4.0";
     "starship.toml" = "starship.toml";
     "nbfc.json" = "nbfc.json";
   };
@@ -41,11 +39,15 @@ in
   imports = [
     ../../system/shell/zsh.nix
     ../../home/sharedVars.nix
-    #../../home/wm/niri.nix
+    ../../home/wm/niri/niri.nix
     ../../home/programs/yazi.nix
 
     ./packages.nix
   ];
+
+  programs = {
+    zoxide.enable = true;
+  };
 
   gtk = {
     enable = true;
@@ -83,12 +85,7 @@ in
     source = create-symlink "${dotfiles}/home/configs/${subpath}";
     recursive = true;
   }) configs;
-
   home.file = builtins.mapAttrs (name: subpath: {
     source = create-symlink "${dotfiles}/assets/${subpath}";
   }) homeFiles;
-
-  programs = {
-    zoxide.enable = true;
-  };
 }

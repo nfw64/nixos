@@ -1,13 +1,18 @@
+# Ignore matugen outputs
 home/configs/Kvantum/matugen/matugen.kvconfig
 home/configs/cava/config
 home/configs/kitty/themes/Matugen.conf
 home/configs/kitty/current-theme.conf
 home/configs/matugen/colors.json
-home/configs/niri/colors.kdl
+home/wm/niri/niri/colors.kdl
 home/configs/qt5ct/colors/matugen-qt5ct.conf
+home/configs/qt6ct/colors/matugen-qt6ct.conf
 home/configs/quickshell/Theme.qml
 home/configs/quickshell/wallpaper.conf
 home/configs/wlogout/colors.css
 home/configs/gtk-4.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css
+
+home/configs/gtk-3.0/settings.ini
+home/configs/gtk-4.0/settings.ini

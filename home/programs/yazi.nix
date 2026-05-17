@@ -9,7 +9,7 @@ let
     owner = "yazi-rs";
     repo = "plugins";
     rev = "main";
-    hash = "sha256-cZlnrlgv8+SFeNgIW69q//i/apcpvAv41q5W8bJwVaI="; # Current working hash
+    hash = "sha256-cZlnrlgv8+SFeNgIW69q//i/apcpvAv41q5W8bJwVaI=";
   };
 in
 {
@@ -33,12 +33,6 @@ in
     package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     plugins = {
-      "gvfs" = pkgs.fetchFromGitHub {
-        owner = "boydaihungst";
-        repo = "gvfs.yazi";
-        rev = "master";
-        hash = "sha256-UHneVJ+YXyDuPrZS+PZbs9n9h+VN5M2QG36FdprBkJc=";
-      };
       jump-to-char = "${yazi-rs-plugins}/jump-to-char.yazi";
       git = "${yazi-rs-plugins}/git.yazi";
       smart-filter = "${yazi-rs-plugins}/smart-filter.yazi";
@@ -69,15 +63,15 @@ in
       plugin = {
         prepend_fetchers = [
           {
-            group = "preview"; # Yazi needs this field!
+            group = "preview";
             id = "git";
-            name = "*";
+            url = "*";
             run = "git";
           }
           {
-            group = "preview"; # Same here
+            group = "preview";
             id = "git";
-            name = "*/";
+            url = "*/";
             run = "git";
           }
         ];
@@ -85,14 +79,7 @@ in
     };
 
     keymap = {
-      manager = {
-        keymap = [
-          {
-            on = [ "N" ];
-            run = "plugin gvfs";
-            desc = "Open GVfs mount manager";
-          }
-        ];
+      mgr = {
         prepend_keymap = [
           {
             on = [ "f" ];
@@ -119,6 +106,14 @@ in
             ];
             run = "plugin diff";
             desc = "Diff selected item with hovered item";
+          }
+          {
+            on = [
+              "d"
+              "d"
+            ];
+            run = "remove";
+            desc = "remove";
           }
         ];
       };

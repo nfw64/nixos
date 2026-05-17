@@ -1,0 +1,22 @@
+layout {
+    border {
+        active-color "#cabeff"
+        inactive-color "#141318"
+    }
+        shadow {
+        color "#000000"
+    }
+
+    tab-indicator {
+        inactive-color "#31285f"
+        active-color "#cabeff"
+    }
+
+}
+
+recent-windows {
+    highlight {
+        active-color "#cabeff"
+        urgent-color "#31285f"
+    }
+}

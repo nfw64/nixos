@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+_:
 
 {
   environment.sessionVariables = {
@@ -19,8 +14,6 @@
   };
 
   environment.variables = {
-    EDITOR = "nvim";
-    TERMINAL = "kitty";
     QT_QPA_PLATFORM = "wayland";
   };
 }
