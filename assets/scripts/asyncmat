@@ -44,7 +44,6 @@ else
     HEX_COLOR=$(echo "$JSON_OUTPUT" | jq -r '.colors.source_color.default.color' 2>/dev/null)
 
     if [[ "$HEX_COLOR" =~ ^#[0-9a-fA-F]{6}$ ]]; then
-        notify-send -a Quickshell "Colors cached!"
         echo "$HEX_COLOR" >"$CACHE_FILE"
     else
         echo "Error: Extracted hex '$HEX_COLOR' is invalid." >&2

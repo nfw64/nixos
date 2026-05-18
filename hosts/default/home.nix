@@ -8,9 +8,8 @@ let
   dotfiles = "${config.home.homeDirectory}/nixos";
   create-symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
-    swaylock = "swaylock";
-    swayidle = "swayidle";
     wlogout = "wlogout";
+    tmux = "tmux";
     quickshell = "quickshell";
     kitty = "kitty";
     cava = "cava";

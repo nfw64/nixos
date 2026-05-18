@@ -16,11 +16,13 @@
 
       localVariables = {
         FZF_DEFAULT_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
-        FZF_CTRL_T_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
+        FZF_ALT_N_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
         FZF_ALT_C_COMMAND = "fd --type=d --hidden --strip-cwd-prefix --exclude .git";
-        FZF_DEFAULT_OPTS = "--height 50% --layout=default --border --color=hl:#2dd4bf";
+        FZF_DEFAULT_OPTS = "--height 50% --layout=default --border --color=hl:#2dd4bf --bind='ctrl-j:down,ctrl-k:up,alt-j:preview-down,alt-k:preview-up,ctrl-d:preview-page-down,ctrl-u:preview-page-up'";
         FZF_CTRL_T_OPTS = "--preview 'bat --color=always -n --line-range :500 {}'";
         FZF_ALT_C_OPTS = "--preview 'eza --icons=always --tree --color=always {} | head -200'";
+        FZF_TMUX_OPTS = " -p90%,70% ";
+        TMUX_CONF = "$HOME/.config/tmux/tmux.conf"; # tmux
       };
 
       shellAliases = {
@@ -32,6 +34,11 @@
         zrel = "source ~/.config/zsh/.zshrc";
         psx = "ps aux | grep";
         cd = "z";
+        # Tmux
+        tmux = "tmux -f $TMUX_CONF";
+        a = "attach";
+
+        #fzf
         fvi = "fzf_listoldfiles.sh";
         fma = "bash -c 'compgen -c' | fzf | xargs man";
         fzo = "zoxide_openfiles_nvim.sh";
@@ -68,7 +75,7 @@
         [[ $- != *i* ]] && return
 
         source ${pkgs.zinit}/share/zinit/zinit.zsh
-        fastfetch -l none
+        fastfetch
 
         zinit wait lucid for \
             atinit"ZINIT[COMPINIT_OPTS]=-C" \
@@ -83,6 +90,9 @@
         zinit ice lucid wait"5"
         zinit light hlissner/zsh-autopair
 
+        zinit ice depth=1
+        zinit light jeffreytse/zsh-vi-mode
+
         function y() {
             local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
             yazi "$@" --cwd-file="$tmp"
@@ -92,6 +102,28 @@
             rm -f -- "$tmp"
         }
 
+        function sesh-sessions() {
+            {
+                exec </dev/tty
+                exec <&1
+                local session
+                session=$(
+                    sesh list -t -c | fzf --height 50% --border-label ' sesh ' --border --prompt '🛸  '
+                )
+                zle reset-prompt > /dev/null 2>&1 || true
+                [[ -z "$session" ]] && return
+                sesh connect $session
+            }
+        }
+
+        zle     -N             sesh-sessions
+        bindkey -M emacs '\es' sesh-sessions
+        bindkey -M vicmd '\es' sesh-sessions
+        bindkey -M viins '\es' sesh-sessions
+        ## some hacky fixes
+        # Fix backspace for Zsh vi mode
+        bindkey -M viins '^?' backward-delete-char
+        bindkey -M viins '^H' backward-delete-char
         bindkey '^[[H' beginning-of-line
         bindkey '^[[F' end-of-line
         bindkey -r "^G"
@@ -102,13 +134,15 @@
             eval "$(pay-respects zsh)"
         fi
       '';
-
       completionInit = ''
         zstyle ':completion:*' menu select
         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
         zstyle ':completion:*' group-name '''
         zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
         zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
+      '';
+      interactiveShellInit = ''
+        zle -D zle-keymap-select
       '';
     };
   };

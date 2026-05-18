@@ -137,16 +137,11 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
-        stdenv.cc.cc
-        zlib
-        glib
-        libX11
-        libXext
-        libXrender
-        libXi
-        libXtst
+        stdenv.cc.cc.lib
+        libGL
         libglvnd
-        alsa-lib
+        qt6.qtbase
+        glib
       ];
     };
 

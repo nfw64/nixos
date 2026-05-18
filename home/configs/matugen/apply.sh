@@ -2,7 +2,8 @@
 
 pywalfox update >/dev/null 2>&1 &
 kitty +kitten themes --reload-in=all Matugen &
-~/.config/matugen/post-hook-scripts/gtk-themes-reload.sh &
+
+# hyprctl reload &
 
 # GTK
 current=$(dconf read /org/gnome/desktop/interface/color-scheme | tr -d "'")
@@ -15,4 +16,3 @@ else
     dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3'" &
 
 fi
-#

@@ -3,13 +3,23 @@
   config,
   ...
 }:
-
 {
   Niri.useNiri = true;
 
-  xdg.configFile.niri = {
-    source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/niri";
-    recursive = true;
+  xdg.configFile = {
+    swayidle = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/configs/swayidle";
+      recursive = true;
+    };
+    swaylock = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/configs/swaylock";
+      recursive = true;
+    };
+
+    niri = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/niri";
+      recursive = true;
+    };
   };
 
   home.packages = with pkgs; [
