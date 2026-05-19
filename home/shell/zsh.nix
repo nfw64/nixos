@@ -122,8 +122,8 @@
         bindkey -M viins '\es' sesh-sessions
         ## some hacky fixes
         # Fix backspace for Zsh vi mode
-        bindkey -M viins '^?' backward-delete-char
-        bindkey -M viins '^H' backward-delete-char
+        bindkey "^H" backward-delete-char
+        bindkey "^?" backward-delete-char
         bindkey '^[[H' beginning-of-line
         bindkey '^[[F' end-of-line
         bindkey -r "^G"
@@ -140,9 +140,6 @@
         zstyle ':completion:*' group-name '''
         zstyle ':completion:*:descriptions' format '%F{yellow}-- %d --%f'
         zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
-      '';
-      interactiveShellInit = ''
-        zle -D zle-keymap-select
       '';
     };
   };

@@ -23,7 +23,12 @@ border_symbol = "│"
 border_style  = { fg = "{{colors.surface_tint.default.hex}}" }
 
 # : ]]]
-
+[git]
+unknown_sign = ""
+modified_sign = "M"
+deleted_sign = "D"
+untracked_sign = "U"
+ignored_sign = "I"
 
 # : Indicator [[[
 
