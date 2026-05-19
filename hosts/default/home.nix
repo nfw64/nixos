@@ -22,8 +22,6 @@ let
     qt6ct = "qt6ct";
     Thunar = "Thunar";
     nvim = "nvim";
-    # "gtk-3.0" = "gtk-3.0";
-    # "gtk-4.0" = "gtk-4.0";
     "starship.toml" = "starship.toml";
     "nbfc.json" = "nbfc.json";
   };
@@ -48,19 +46,9 @@ in
     zoxide.enable = true;
   };
 
-  gtk = {
-    enable = true;
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme.override {
-        color = "bluegrey";
-      };
-    };
-  };
-
   home = {
     pointerCursor = {
-      gtk.enable = true;
+      gtk.enable = false;
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
       size = 24;
@@ -81,10 +69,44 @@ in
     };
   };
 
-  xdg.configFile = builtins.mapAttrs (name: subpath: {
-    source = create-symlink "${dotfiles}/home/configs/${subpath}";
-    recursive = true;
-  }) configs;
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Papirus-Dark";
+      cursor-theme = "Bibata-Modern-Ice";
+      cursor-size = 24;
+      color-scheme = "prefer-dark";
+      font-name = "JetBrainsMonoNL Nerd Font SemiBold 11";
+    };
+  };
+
+  xdg.configFile =
+    (builtins.mapAttrs (name: subpath: {
+      source = create-symlink "${dotfiles}/home/configs/${subpath}";
+      recursive = true;
+    }) configs)
+    // {
+      "gtk-3.0/settings.ini".text = ''
+        [Settings]
+        gtk-theme-name=adw-gtk3-dark
+        gtk-font-name=JetBrainsMonoNL Nerd Font SemiBold 11
+        gtk-application-prefer-dark-theme=1
+        gtk-cursor-theme-name=Bibata-Modern-Ice
+        gtk-cursor-theme-size=24
+        gtk-icon-theme-name=Papirus-Dark
+      '';
+
+      "gtk-4.0/settings.ini".text = ''
+        [Settings]
+        gtk-theme-name=adw-gtk3-dark 
+        gtk-font-name=JetBrainsMonoNL Nerd Font SemiBold 11
+        gtk-application-prefer-dark-theme=1
+        gtk-cursor-theme-name=Bibata-Modern-Ice
+        gtk-cursor-theme-size=24
+        gtk-icon-theme-name=Papirus-Dark
+      '';
+    };
+
   home.file = builtins.mapAttrs (name: subpath: {
     source = create-symlink "${dotfiles}/assets/${subpath}";
   }) homeFiles;

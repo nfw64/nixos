@@ -59,14 +59,14 @@ window-rule {
 
 window-rule {
     match app-id="^kitty$"
-    opacity 0.8
+    opacity 0.9
 }
 
 // TERMINAL WIDTH PRESETS
 
 window-rule {
     match app-id=r#"foot|ghostty|kitty|wezterm"#
-    default-column-width { proportion 0.5; }
+    default-column-width { proportion 0.75; }
 }
 
 

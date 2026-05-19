@@ -1,3 +1,4 @@
+include "configs/environment.kdl"
 include "configs/exec.kdl"
 include "configs/layout.kdl"
 include "configs/settings.kdl"

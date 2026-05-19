@@ -15,11 +15,14 @@
     # rice
     gtk3
     glib
-    gsettings-desktop-schemas
     matugen
     quickshell
     xwayland-satellite
     awww
+    bibata-cursors
+    (papirus-icon-theme.override {
+      color = "bluegrey";
+    })
 
     eza
     qt6Packages.qt6ct
@@ -60,11 +63,13 @@
     tmux
     sesh
 
-    floorp-bin
-    ruby
-    easyeffects
+    #anime stuff
     inputs.jerry.packages.${stdenv.hostPlatform.system}.default
-    inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
+    openssl # jerry needs this for allanime
+    chafa # image preview
+
+    floorp-bin
+    easyeffects
     pear-desktop
     lutris
     bitwarden-desktop

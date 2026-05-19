@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   ...
 }:
 
@@ -32,6 +33,7 @@
     gsettings-desktop-schemas
 
     # nix stuff
+    inputs.nix-alien.packages.${stdenv.hostPlatform.system}.default
     home-manager
     (pkgs.writeShellApplication {
       name = "ns";

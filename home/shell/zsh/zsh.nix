@@ -16,7 +16,7 @@
 
       localVariables = {
         FZF_DEFAULT_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
-        FZF_ALT_N_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
+        FZF_CTRL_T_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
         FZF_ALT_C_COMMAND = "fd --type=d --hidden --strip-cwd-prefix --exclude .git";
         FZF_DEFAULT_OPTS = "--height 50% --layout=default --border --color=hl:#2dd4bf --bind='ctrl-j:down,ctrl-k:up,alt-j:preview-down,alt-k:preview-up,ctrl-d:preview-page-down,ctrl-u:preview-page-up'";
         FZF_CTRL_T_OPTS = "--preview 'bat --color=always -n --line-range :500 {}'";
@@ -74,6 +74,14 @@
       initContent = ''
         [[ $- != *i* ]] && return
 
+        # niri and tmux socket fix, hacky sure
+        if [ -n "$TMUX" ]; then
+            local LIVE_SOCKET=(/run/user/$UID/niri-*.sock(NY1))
+            if [ -n "$LIVE_SOCKET" ]; then
+                export NIRI_SOCKET="$LIVE_SOCKET"
+            fi
+        fi
+
         source ${pkgs.zinit}/share/zinit/zinit.zsh
         fastfetch
 
@@ -100,6 +108,9 @@
         bindkey -M emacs '\es' sesh-sessions
         bindkey -M vicmd '\es' sesh-sessions
         bindkey -M viins '\es' sesh-sessions
+        bindkey -M emacs '\en' fzf-file-widget
+        bindkey -M vicmd '\en' fzf-file-widget
+        bindkey -M viins '\en' fzf-file-widget
         ## some hacky fixes
         # Fix backspace for Zsh vi mode
         bindkey "^H" backward-delete-char
