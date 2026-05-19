@@ -36,7 +36,7 @@ in
 {
 
   imports = [
-    ../../home/shell/zsh.nix
+    ../../home/shell/zsh/zsh.nix
     ../../home/sharedVars.nix
     ../../home/wm/niri/niri.nix
     ../../home/programs/yazi.nix

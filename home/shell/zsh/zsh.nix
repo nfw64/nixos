@@ -93,28 +93,8 @@
         zinit ice depth=1
         zinit light jeffreytse/zsh-vi-mode
 
-        function y() {
-            local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-            yazi "$@" --cwd-file="$tmp"
-            if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-                builtin cd -- "$cwd"
-            fi
-            rm -f -- "$tmp"
-        }
-
-        function sesh-sessions() {
-            {
-                exec </dev/tty
-                exec <&1
-                local session
-                session=$(
-                    sesh list -t -c | fzf --height 50% --border-label ' sesh ' --border --prompt '🛸  '
-                )
-                zle reset-prompt > /dev/null 2>&1 || true
-                [[ -z "$session" ]] && return
-                sesh connect $session
-            }
-        }
+        ## source functions
+        source ${./functions.zsh}
 
         zle     -N             sesh-sessions
         bindkey -M emacs '\es' sesh-sessions

@@ -63,7 +63,7 @@
     floorp-bin
     ruby
     easyeffects
-    inputs.curd.packages.${stdenv.hostPlatform.system}.default
+    inputs.jerry.packages.${stdenv.hostPlatform.system}.default
     inputs.nix-alien.packages.${pkgs.stdenv.hostPlatform.system}.nix-alien
     pear-desktop
     lutris

@@ -26,8 +26,10 @@ border_style  = { fg = "{{colors.surface_tint.default.hex}}" }
 [git]
 unknown_sign = ""
 modified_sign = "M"
+added_sign = "A"
 deleted_sign = "D"
 untracked_sign = "U"
+updated_sign = "C"
 ignored_sign = "I"
 
 # : Indicator [[[
