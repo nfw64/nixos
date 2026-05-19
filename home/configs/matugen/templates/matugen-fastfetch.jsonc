@@ -64,11 +64,6 @@
             "keyColor": "{{colors.secondary.default.hex}}"
         },
         {
-            "type": "packages",
-            "key": "│ ├󰏗 ",
-            "keyColor": "{{colors.secondary.default.hex}}"
-        },
-        {
             "type": "shell",
             "key": "└ └󰞷 ",
             "keyColor": "{{colors.secondary.default.hex}}"

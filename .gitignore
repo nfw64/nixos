@@ -14,6 +14,7 @@ home/configs/gtk-4.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css
 home/configs/tmux/generated.conf
+home/configs/fastfetch/config.jsonc
 
 
 home/configs/gtk-3.0/settings.ini
