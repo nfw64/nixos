@@ -27,7 +27,6 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nix-alien.url = "github:thiagokokada/nix-alien";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    jerry.url = "github:justchokingaround/jerry";
   };
 
   outputs =

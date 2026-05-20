@@ -108,6 +108,7 @@
         bindkey -M emacs '\es' sesh-sessions
         bindkey -M vicmd '\es' sesh-sessions
         bindkey -M viins '\es' sesh-sessions
+        zle     -N             fzf-file-widget
         bindkey -M emacs '\en' fzf-file-widget
         bindkey -M vicmd '\en' fzf-file-widget
         bindkey -M viins '\en' fzf-file-widget
@@ -119,7 +120,7 @@
         bindkey '^[[F' end-of-line
         bindkey -r "^G"
 
-        eval "$(fzf --zsh)" # fzf
+        zvm_after_init_commands+=('eval "$(fzf --zsh)"')
         source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
         if [[ $- == *i* ]] && [ -t 0 ]; then
             eval "$(pay-respects zsh)"
