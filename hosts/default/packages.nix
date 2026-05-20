@@ -1,15 +1,8 @@
 {
   pkgs,
+  inputs,
   ...
 }:
-
-let
-  jerryScript = pkgs.fetchurl {
-    url = "https://github.com/justchokingaround/jerry/raw/main/jerry.sh";
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-  };
-
-in
 {
   home.packages = with pkgs; [
 
@@ -30,7 +23,6 @@ in
     (papirus-icon-theme.override {
       color = "bluegrey";
     })
-    cbonsai
 
     eza
     qt6Packages.qt6ct
@@ -75,22 +67,23 @@ in
       name = "jerry";
 
       runtimeInputs = with pkgs; [
-        grep
-        sed
-        curl
         fzf
         mpv
         openssl
-        rofi
         ueberzugpp
         jq
+        chafa
       ];
 
       text = ''
         # Run the safely cached script and pass all arguments cleanly
-        bash "${jerryScript}" "$@"
+        bash "${inputs.jerry}/jerry.sh" "$@"
       '';
     })
+    openssl
+    ueberzugpp
+    jq
+    chafa
 
     floorp-bin
     easyeffects

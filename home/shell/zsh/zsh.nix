@@ -104,6 +104,15 @@
         ## source functions
         source ${./functions.zsh}
 
+        ## widgets
+        zle     -N             list_oldfiles
+        bindkey -M emacs '\ev' list_oldfiles
+        bindkey -M vicmd '\ev' list_oldfiles
+        bindkey -M viins '\ev' list_oldfiles
+        zle     -N             tm
+        bindkey -M emacs '\ez' tm
+        bindkey -M vicmd '\ez' tm 
+        bindkey -M viins '\ez' tm 
         zle     -N             sesh-sessions
         bindkey -M emacs '\es' sesh-sessions
         bindkey -M vicmd '\es' sesh-sessions
@@ -112,7 +121,9 @@
         bindkey -M emacs '\en' fzf-file-widget
         bindkey -M vicmd '\en' fzf-file-widget
         bindkey -M viins '\en' fzf-file-widget
+
         ## some hacky fixes
+        setopt ignoreeof
         # Fix backspace for Zsh vi mode
         bindkey "^H" backward-delete-char
         bindkey "^?" backward-delete-char
