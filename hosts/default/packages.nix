@@ -81,7 +81,6 @@
     bitwarden-desktop
     python3
     wl-clipboard
-    cava
     grim
     slurp
     zoxide

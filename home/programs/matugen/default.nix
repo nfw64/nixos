@@ -1,10 +1,10 @@
 {
   config,
-  self,
   ...
 }:
 
 {
   xdg.configFile."matugen".source =
-    config.lib.file.mkOutOfStoreSymlink "${self}/nixos/home/programs/matugen/assets";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/programs/matugen/matugen";
+
 }

@@ -12,5 +12,6 @@
     sesh
   ];
   xdg.configFile."tmux".source =
-    config.lib.file.mkOutOfStoreSymlink "${self}/home/programs/tmux/assets";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/programs/tmux/tmux-kun";
+
 }

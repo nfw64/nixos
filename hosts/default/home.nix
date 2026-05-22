@@ -11,7 +11,6 @@ let
   configs = {
     kitty = "kitty";
     fastfetch = "fastfetch";
-    flameshot = "flameshot";
     Kvantum = "Kvantum";
     qt5ct = "qt5ct";
     qt6ct = "qt6ct";

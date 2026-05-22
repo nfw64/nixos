@@ -1,6 +1,9 @@
-{ config, self, ... }:
+{
+  config,
+  ...
+}:
 
 {
   xdg.configFile."Thunar".source =
-    config.lib.file.mkOutOfStoreSymlink "${self}/home/programs/thunar/assets";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/programs/thunar/narnar";
 }

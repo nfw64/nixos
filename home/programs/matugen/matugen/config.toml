@@ -40,10 +40,6 @@ output_path = '~/.cache/wal/colors.json'
 input_path = '~/.config/matugen/templates/matugen.kvconfig'
 output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 
-[templates.wlogout]
-input_path = '~/.config/matugen/templates/wlogout.css'
-output_path = '~/.config/wlogout/colors.css'
-
 # Gtk
 [templates.gtk]
 input_path = '~/.config/matugen/templates/matugen-gtk.css'

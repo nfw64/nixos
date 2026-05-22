@@ -25,10 +25,7 @@ QtObject {
     readonly property var process: myProcess
 
     function exec() {
-        // 1. Safe dry-run testing print:
-        console.log("TESTING - Button clicked! Target command would be: " + button.command);
-
-        // 2. Keep this commented out so Quickshell doesn't quit during your test
+        process.startDetached();
         Qt.quit();
     }
 }

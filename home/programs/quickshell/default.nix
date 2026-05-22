@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  self,
   ...
 }:
 {
@@ -10,11 +9,11 @@
     quickshell
     jq
     brightnessctl
-    nmcli
+    networkmanager
     awww
   ];
 
   xdg.configFile."quickshell".source =
-    config.lib.file.mkOutOfStoreSymlink "${self}/home/programs/quickshell/assets";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/programs/quickshell/qs";
 
 }

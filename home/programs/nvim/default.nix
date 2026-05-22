@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  self,
   ...
 }:
 
@@ -20,5 +19,5 @@
 
   # Symlink the base config. Adjust the path if your dotfiles are elsewhere.
   xdg.configFile."nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${self}/home/programs/nvim/assets";
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/programs/nvim/neovim";
 }

@@ -1,25 +1,23 @@
 # Ignore matugen outputs
 home/configs/Kvantum/matugen/matugen.kvconfig
-home/configs/cava/config
 home/configs/kitty/themes/Matugen.conf
 home/configs/kitty/current-theme.conf
-home/configs/matugen/colors.json
+home/programs/matugen/matugen/colors.json
 home/wm/niri/niri/colors.kdl
 home/configs/qt5ct/colors/matugen-qt5ct.conf
 home/configs/qt6ct/colors/matugen-qt6ct.conf
-home/configs/quickshell/Theme.qml
-home/configs/quickshell/wallpaper.conf
-home/configs/wlogout/colors.css
 home/configs/gtk-4.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css
-home/configs/tmux/generated.conf
 home/configs/fastfetch/config.jsonc
-
+home/configs/quickshell/Theme.qml
+home/configs/quickshell/wallpaper.conf
+home/configs/tmux/generated.conf
+home/configs/wlogout/colors.css
+home/programs/quickshell/qs/Theme.qml
+home/programs/quickshell/qs/wallpaper.conf
+home/programs/tmux/tmux-kun/generated.conf
 
 home/configs/gtk-3.0/settings.ini
 home/configs/gtk-4.0/settings.ini
-
-# ignore tmux plugins except tpm
-home/programs/tmux/assets/.tmux/plugins/*
-!home/programs/tmux/assets/.tmux/plugins/tpm
+home/programs/tmux/tmux-kun/.tmux/plugins/*
