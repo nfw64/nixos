@@ -3,7 +3,7 @@ timeout 150 'brightnessctl -s set 10' resume 'brightnessctl -r'
 
 timeout 180 'niri msg power-off-monitors' resume 'niri msg power-on-monitors'
 # Lock screen
-timeout 300 'swylock'
+timeout 300 'quickshell -p ~/.config/quickshell/Lock.qml'
 
 # Monitor power management
 timeout 330 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors && brightnessctl -r'
@@ -13,7 +13,7 @@ timeout 330 'niri msg action power-off-monitors' resume 'niri msg action power-o
 timeout 1800 'systemctl suspend'
 
 # System event hooks
-before-sleep 'playerctl pause; swylock'
+before-sleep 'playerctl pause; loginctl lock-session; quickshell -p ~/.config/quickshell/Lock.qml'
 after-resume 'niri msg action power-on-monitors'
-lock 'swylock'
+lock 'quickshell -p ~/.config/quickshell/Lock.qml'
 unlock 'niri msg action power-on-monitors'

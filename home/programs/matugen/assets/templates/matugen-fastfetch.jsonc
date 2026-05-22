@@ -1,0 +1,117 @@
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": {
+        "source": "nixos",
+        "type": "none",
+        "padding": {
+            "top": 3,
+            "left": 3,
+            "right": 5,
+        },
+        "color": {
+            "1": "{{colors.primary.default.hex}}",
+            "2": "{{colors.secondary.default.hex}}" 
+        }
+    },
+    "modules": [
+        "break",
+        {
+            "type": "custom",
+            "format": "\u001b[90m┌───────────────────────Hardware──────────────────────────┐"
+        },
+        {
+            "type": "host",
+            "key": "󰌢  PC",
+            "keyColor": "{{colors.primary.default.hex}}"
+        },
+        {
+            "type": "cpu",
+            "key": "│ ├󰻠 ",
+            "keyColor": "{{colors.primary.default.hex}}"
+        },
+        {
+            "type": "gpu",
+            "key": "│ ├󰍹 ",
+            "keyColor": "{{colors.primary.default.hex}}"
+        },
+        {
+            "type": "memory",
+            "key": "│ ├󰑭 ",
+            "keyColor": "{{colors.primary.default.hex}}"
+        },
+        {
+            "type": "disk",
+            "key": "└ └󰋊 ",
+            "keyColor": "{{colors.primary.default.hex}}"
+        },
+        {
+            "type": "custom",
+            "format": "\u001b[90m└─────────────────────────────────────────────────────────┘"
+        },
+        "break",
+        {
+            "type": "custom",
+            "format": "\u001b[90m┌───────────────────────Software──────────────────────────┐"
+        },
+        {
+            "type": "os",
+            "key": "  OS",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        {
+            "type": "kernel",
+            "key": "│ ├󰌽 ",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        {
+            "type": "shell",
+            "key": "└ └󰞷 ",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        "break",
+        {
+            "type": "lm",
+            "key": "│ ├󰍁 ",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        {
+            "type": "wm",
+            "key": "│ ├󱂬 ",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        {
+            "type": "terminal",
+            "key": "└ └󰆍 ",
+            "keyColor": "{{colors.secondary.default.hex}}"
+        },
+        {
+            "type": "custom",
+            "format": "\u001b[90m└─────────────────────────────────────────────────────────┘"
+        },
+        "break",
+        {
+            "type": "custom",
+            "format": "\u001b[90m┌────────────────────────Stats────────────────────────────┐"
+        },
+        {
+            "type": "command",
+            "key": "  ›  OS Age  ",
+            "keyColor": "{{colors.tertiary.default.hex}}",
+            "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo $days_difference days"
+        },
+        {
+            "type": "uptime",
+            "key": "  ›  Uptime  ",
+            "keyColor": "{{colors.tertiary.default.hex}}"
+        },
+        {
+            "type": "custom",
+            "format": "\u001b[90m└─────────────────────────────────────────────────────────┘"
+        },
+        {
+            "type": "colors",
+            "paddingLeft": 2,
+            "symbol": "circle"
+        }
+    ]
+}

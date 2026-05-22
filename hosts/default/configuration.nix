@@ -99,7 +99,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = { inherit self inputs; };
     users.myriad = import ./home.nix;
     backupFileExtension = "backup";
   };
@@ -190,9 +190,18 @@
       settings = {
         default_session = {
           command = "${
-            inputs.tuigreet-fork.packages.${pkgs.system}.default
+            inputs.tuigreet-fork.packages.${pkgs.stdenv.hostPlatform.system}.default
           }/bin/tuigreet --time --remember --cmd niri-session";
           user = "greeter";
+        };
+        display = {
+          show_time = true;
+          greeting = "Welcome back!";
+          align-greeting = "center";
+        };
+        secret = {
+          mode = "characters";
+          characters = "*";
         };
       };
     };
@@ -220,7 +229,6 @@
   };
   security = {
     rtkit.enable = true;
-    pam.services.swaylock = { };
   };
 
   fonts.packages = with pkgs; [

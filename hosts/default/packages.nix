@@ -42,17 +42,6 @@
     protonplus
     mangohud
 
-    # nvim
-    tree-sitter
-    neovim
-
-    #nvim lsp stuff and formatter or mmore
-    qt6.qtdeclarative
-    statix
-    nil
-    nixpkgs-fmt
-    shfmt
-
     #cli tools
     fzf
     fzf-git-sh

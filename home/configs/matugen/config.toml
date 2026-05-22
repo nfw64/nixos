@@ -44,15 +44,10 @@ output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 input_path = '~/.config/matugen/templates/wlogout.css'
 output_path = '~/.config/wlogout/colors.css'
 
-# Gtk3
-[templates.gtk3]
+# Gtk
+[templates.gtk]
 input_path = '~/.config/matugen/templates/matugen-gtk.css'
-output_path = '~/.local/share/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css'
-
-# Gtk4
-[templates.gtk4]
-input_path = '~/.config/matugen/templates/matugen-gtk.css'
-output_path = '~/.local/share/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css'
+output_path = '~/.cache/matugen/colors-gtk.css'
 
 [templates.qt5]
 input_path = '~/.config/matugen/templates/qtct-colors.conf'

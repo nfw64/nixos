@@ -9,7 +9,7 @@ binds {
     // shell
     Mod+R { spawn-sh "qs ipc call launcher toggle"; }
     Mod+Y { spawn-sh "qs ipc call wallpaper toggle"; }
-    Mod+Escape { spawn-sh "pkill wlogout || wlogout"; }
+    Mod+Escape { spawn-sh "qs -p ~/.config/quickshell/logout/logout.qml"; }
 
     // OVERVIEW
 

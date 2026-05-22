@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  self,
   ...
 }:
 
@@ -8,20 +9,12 @@ let
   dotfiles = "${config.home.homeDirectory}/nixos";
   create-symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
-    wlogout = "wlogout";
-    tmux = "tmux";
-    quickshell = "quickshell";
     kitty = "kitty";
-    cava = "cava";
     fastfetch = "fastfetch";
     flameshot = "flameshot";
     Kvantum = "Kvantum";
-    matugen = "matugen";
-    nwg-look = "nwg-look";
     qt5ct = "qt5ct";
     qt6ct = "qt6ct";
-    Thunar = "Thunar";
-    nvim = "nvim";
     "starship.toml" = "starship.toml";
     "nbfc.json" = "nbfc.json";
   };
@@ -34,10 +27,16 @@ in
 {
 
   imports = [
-    ../../home/shell/zsh/zsh.nix
-    ../../home/sharedVars.nix
-    ../../home/wm/niri/niri.nix
-    ../../home/programs/yazi.nix
+    "${self}/home/sharedVars.nix"
+    "${self}/home/wm/niri/niri.nix"
+    "${self}/home/programs/cava/default.nix"
+    "${self}/home/programs/matugen/default.nix"
+    "${self}/home/programs/nvim/default.nix"
+    "${self}/home/programs/quickshell/default.nix"
+    "${self}/home/programs/thunar/default.nix"
+    "${self}/home/programs/tmux/default.nix"
+    "${self}/home/programs/zsh/zsh.nix"
+    "${self}/home/programs/yazi.nix"
 
     ./packages.nix
   ];
@@ -47,12 +46,6 @@ in
   };
 
   home = {
-    pointerCursor = {
-      gtk.enable = false;
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Ice";
-      size = 24;
-    };
     sessionPath = [
       "${dotfiles}/assets/scripts"
     ];
@@ -65,47 +58,51 @@ in
       TERMINAL = "kitty";
       BROWSER = "firefox";
       NH_FLAKE = "/home/myriad/nixos/";
-      QT_QPA_PLATFORMTHEME = "qt6ct";
     };
+  };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 24;
   };
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      gtk-theme = "adw-gtk3-dark";
-      icon-theme = "Papirus-Dark";
-      cursor-theme = "Bibata-Modern-Ice";
-      cursor-size = 24;
       color-scheme = "prefer-dark";
-      font-name = "JetBrainsMonoNL Nerd Font SemiBold 11";
+      gtk-theme = "adw-gtk3-dark";
     };
   };
 
-  xdg.configFile =
-    (builtins.mapAttrs (name: subpath: {
-      source = create-symlink "${dotfiles}/home/configs/${subpath}";
-      recursive = true;
-    }) configs)
-    // {
-      "gtk-3.0/settings.ini".text = ''
-        [Settings]
-        gtk-theme-name=adw-gtk3-dark
-        gtk-font-name=JetBrainsMonoNL Nerd Font SemiBold 11
-        gtk-application-prefer-dark-theme=1
-        gtk-cursor-theme-name=Bibata-Modern-Ice
-        gtk-cursor-theme-size=24
-        gtk-icon-theme-name=Papirus-Dark
-      '';
+  gtk = {
+    enable = true;
 
-      "gtk-4.0/settings.ini".text = ''
-        [Settings]
-        gtk-theme-name=adw-gtk3-dark 
-        gtk-font-name=JetBrainsMonoNL Nerd Font SemiBold 11
-        gtk-application-prefer-dark-theme=1
-        gtk-cursor-theme-name=Bibata-Modern-Ice
-        gtk-cursor-theme-size=24
-        gtk-icon-theme-name=Papirus-Dark
-      '';
+    gtk3.extraCss = ''@import url("file:///home/myriad/.cache/matugen/colors-gtk.css");'';
+    gtk4.extraCss = ''@import url("file:///home/myriad/.cache/matugen/colors-gtk.css");'';
+
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = "adw-gtk3-dark";
+      gtk-icon-theme-name = "Papirus-Dark";
     };
+
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+      gtk-theme-name = "adw-gtk3-dark";
+      gtk-icon-theme-name = "Papirus-Dark";
+    };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "qt6ct";
+  };
+
+  xdg.configFile = builtins.mapAttrs (name: subpath: {
+    source = create-symlink "${dotfiles}/home/configs/${subpath}";
+    recursive = true;
+  }) configs;
 
   home.file = builtins.mapAttrs (name: subpath: {
     source = create-symlink "${dotfiles}/assets/${subpath}";
