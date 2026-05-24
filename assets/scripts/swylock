@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-wallpaper=$(awww query | grep -oP "image: \K.*")
-swaylock --image $wallpaper -e

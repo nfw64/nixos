@@ -8,8 +8,6 @@ QtObject {
     required property string icon
     property var keybind: null
 
-    // Comment out the real process while you are testing
-
     default property list<QtObject> internalObjects: [
         Process {
             id: myProcess
@@ -25,10 +23,8 @@ QtObject {
     readonly property var process: myProcess
 
     function exec() {
-        // 1. Safe dry-run testing print:
-        console.log("TESTING - Button clicked! Target command would be: " + button.command);
-
-        // 2. Keep this commented out so Quickshell doesn't quit during your test
-        Qt.quit();
+        // debugging purposes, or i will accidentally shut down my pc
+        //console.log("TESTING - Button clicked! Target command would be: " + button.command);
+        process.startDetached();
     }
 }

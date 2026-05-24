@@ -18,7 +18,6 @@
   };
 
   home.packages = with pkgs; [
-    wlogout
     polkit_gnome
     swayidle
     xdg-desktop-portal-gtk

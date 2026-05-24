@@ -21,15 +21,16 @@ let
 in
 
 {
-  import = [
-    "./programs/cava/default.nix"
-    "./programs/matugen/default.nix"
-    "./programs/nvim/default.nix"
-    "./programs/quickshell/default.nix"
-    "./programs/thunar/default.nix"
-    "./programs/tmux/default.nix"
-    "./programs/zsh/zsh.nix"
-    "./programs/yazi.nix"
+  imports = [
+    ./wm/niri/niri.nix
+    ./programs/cava/default.nix
+    ./programs/matugen/default.nix
+    ./programs/nvim/default.nix
+    ./programs/quickshell/default.nix
+    ./programs/thunar/default.nix
+    ./programs/tmux/default.nix
+    ./programs/zsh/zsh.nix
+    ./programs/yazi.nix
   ];
 
   xdg.configFile = builtins.mapAttrs (name: subpath: {

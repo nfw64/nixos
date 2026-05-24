@@ -6,9 +6,21 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "assets"
+import "../"
 
 Scope {
+    property var theme: DefaultTheme {}
+
+    IpcHandler {
+        target: "logout"
+
+        function toggle(): void {
+            layout.isPanelOpen = !layout.isPanelOpen;
+        }
+    }
+
     Layout {
+        id: layout
         Button {
             command: "loginctl lock-session"
             keybind: Qt.Key_L

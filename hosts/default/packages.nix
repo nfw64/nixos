@@ -17,12 +17,7 @@
     glib
     matugen
     quickshell
-    xwayland-satellite
     awww
-    bibata-cursors
-    (papirus-icon-theme.override {
-      color = "bluegrey";
-    })
 
     eza
     qt6Packages.qt6ct
@@ -52,23 +47,7 @@
     sesh
 
     #anime stuff
-    (pkgs.writeShellApplication {
-      name = "jerry";
-
-      runtimeInputs = with pkgs; [
-        fzf
-        mpv
-        openssl
-        ueberzugpp
-        jq
-        chafa
-      ];
-
-      text = ''
-        # Run the safely cached script and pass all arguments cleanly
-        bash "${inputs.jerry}/jerry.sh" "$@"
-      '';
-    })
+    inputs.curd.packages.${stdenv.hostPlatform.system}.default
     openssl
     ueberzugpp
     jq

@@ -4,12 +4,12 @@ binds {
     Mod+T { spawn "kitty"; }
     Mod+N { spawn "floorp"; }
     Mod+B { spawn "thunar"; }
-    Mod+CTRL+Grave { spawn "kitty" "-e" "htop"; }
+    Ctrl+Alt+Delete { spawn "kitty" "-e" "htop"; }
 
     // shell
     Mod+R { spawn-sh "qs ipc call launcher toggle"; }
     Mod+Y { spawn-sh "qs ipc call wallpaper toggle"; }
-    Mod+Escape { spawn-sh "qs -p ~/.config/quickshell/logout/logout.qml"; }
+    Mod+Escape { spawn-sh "qs ipc call logout toggle"; }
 
     // OVERVIEW
 
@@ -113,6 +113,7 @@ binds {
     XF86AudioMicMute { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
     XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioStop { spawn "qs" "ipc" "call" "media" "toggle";}
     XF86AudioPause { spawn "playerctl" "play-pause"; }
     XF86AudioNext { spawn "playerctl" "next"; }
     XF86AudioPrev { spawn "playerctl" "previous"; }
@@ -124,6 +125,6 @@ binds {
 
     // SYSTEM CONTROLS
 
-    Mod+Shift+E { quit; }
-    CTRL+ALT+DELETE { power-off-monitors; }
+    Mod+Ctrl+Alt+E { quit; }
+    Mod+Ctrl+Alt+L { spawn "loginctl" "lock-session"; }
 }

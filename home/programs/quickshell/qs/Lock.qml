@@ -37,7 +37,7 @@ ShellRoot {
     // Session Settings (Changed from Settings to QtObject to fix the Qt 6.11 initialization error)
     QtObject {
         id: lockSettings
-        property bool hidePassword: false
+        property bool hidePassword: true
         property int revealDuration: 300
     }
 
@@ -117,10 +117,23 @@ ShellRoot {
                 FileView {
                     id: configFile
                     path: Quickshell.env("HOME") + "/.config/quickshell/wallpaper.conf"
+
+                    // Force the engine to block initialization until it has read the file content
+                    Component.onCompleted: {
+                        configFile.waitForJob(); // <-- This kills the 1-second background thread lag instantly
+
+                        const saved = configFile.text().trim();
+                        if (saved !== "") {
+                            root.staticWallpaperPath = saved;
+                        }
+                    }
+
+                    // Keep this clean fallback hook if you still want to handle changes on-the-fly
                     onTextChanged: {
                         const saved = configFile.text().trim();
-                        if (saved !== "")
+                        if (saved !== "") {
                             root.staticWallpaperPath = saved;
+                        }
                     }
                 }
 
@@ -129,8 +142,6 @@ ShellRoot {
                 property string currentUser: "User"
                 property string faceIconPath: ""
                 property string kbLayout: "US"
-                property string weatherIcon: ""
-                property string weatherTemp: "--°C"
 
                 // UI States
                 property real introState: 0.0
@@ -236,28 +247,6 @@ ShellRoot {
                     onTriggered: batPoller.running = true
                 }
 
-                Process {
-                    id: weatherPoller
-                    property string scriptPath: Qt.resolvedUrl("calendar/weather.sh").toString().replace(/^file:\/\//, "")
-                    command: ["bash", "-c", '"' + scriptPath + '" --current-icon; "' + scriptPath + '" --current-temp']
-                    stdout: StdioCollector {
-                        onStreamFinished: {
-                            let lines = this.text.trim().split("\n");
-                            if (lines.length >= 2) {
-                                screenRoot.weatherIcon = lines[0] || "";
-                                screenRoot.weatherTemp = lines[1] || "--°C";
-                            }
-                        }
-                    }
-                }
-                Timer {
-                    interval: 900000
-                    running: true
-                    repeat: true
-                    triggeredOnStart: true
-                    onTriggered: weatherPoller.running = true
-                }
-
                 // ---------------------------------------------------------
                 // 1. LIVING BACKGROUND
                 // ---------------------------------------------------------
@@ -273,16 +262,38 @@ ShellRoot {
                     source: root.staticWallpaperPath
                     fillMode: Image.PreserveAspectCrop
                     asynchronous: true
-                    visible: false
                     cache: false
+
+                    opacity: 0
+
+                    onStatusChanged: {
+                        if (status === Image.Ready) {
+                            fadeInAnimation.start();
+                        }
+                    }
+
+                    NumberAnimation {
+                        id: fadeInAnimation
+                        target: bgWallpaper
+                        property: "opacity"
+                        from: 0
+                        to: 0.8
+                        duration: 560
+                        easing.type: Easing.InOutQuad
+                    }
                 }
 
                 MultiEffect {
+                    id: effectWall
                     source: bgWallpaper
-                    anchors.fill: bgWallpaper
+                    anchors.fill: parent
+
                     blurEnabled: true
                     blurMax: 64 * screenRoot.sc
-                    blur: 1.0
+                    blur: 1
+
+                    opacity: bgWallpaper.opacity + 0.2
+                    visible: bgWallpaper.status === Image.Ready
                 }
 
                 Rectangle {

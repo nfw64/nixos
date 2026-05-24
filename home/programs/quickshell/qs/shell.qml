@@ -14,6 +14,7 @@ import "notifications"
 import "wallpaper"
 import "media"
 import "osd"
+import "logout"
 
 ShellRoot {
     //settings.watchFiles: false
@@ -21,6 +22,11 @@ ShellRoot {
     Theme {
         id: ts
     }
+
+    Logout {
+        theme: ts
+    }
+
     Bar {
         theme: ts
     }

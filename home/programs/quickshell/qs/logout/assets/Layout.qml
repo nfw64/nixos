@@ -6,14 +6,17 @@ import Quickshell.Wayland
 
 Variants {
     id: root
-    property color backgroundColor: "#e60c0c0c"
-    property color buttonColor: "#1e1e1e"
-    property color buttonHoverColor: "#3700b3"
+
+    property color backgroundColor: Qt.alpha(theme.bgBase, 0.8)
+    property color buttonColor: theme.bgHover
+    property color buttonHoverColor: theme.bgSurfaceDef
+    property bool isPanelOpen: false
     default property list<Button> buttons
 
     model: Quickshell.screens
     PanelWindow {
         id: mainPanel
+        visible: mainRectangle.opacity > 0
 
         property var modelData
         screen: modelData
@@ -28,7 +31,7 @@ Variants {
             Keys.onPressed: event => {
                 // 1. Handle explicit Escape sequence
                 if (event.key === Qt.Key_Escape) {
-                    mainRectangle.opacity = 0;
+                    root.isPanelOpen = false;
                     event.accepted = true;
                     return;
                 }
@@ -37,7 +40,7 @@ Variants {
                 for (var i = 0; i < root.buttons.length; i++) {
                     var btn = root.buttons[i];
                     if (btn.keybind && event.key === btn.keybind) {
-                        mainRectangle.opacity = 0; // Trigger fade out sequence
+                        root.isPanelOpen = false;
                         btn.exec();                // Execute backend process
                         event.accepted = true;
                         return;
@@ -61,33 +64,19 @@ Variants {
             color: backgroundColor
             anchors.fill: parent
 
-            opacity: 0
+            visible: opacity > 0
+            opacity: root.isPanelOpen ? 1.0 : 0.0
+
             Behavior on opacity {
                 NumberAnimation {
                     duration: 100
                     easing.type: Easing.InOutQuad
-                    onFinished: {
-                        if (panel.opacity === 0) {
-                            Qt.quit();
-                        }
-                    }
                 }
-            }
-
-            onOpacityChanged: {
-                if (opacity === 0) {
-                    Qt.quit();
-                }
-            }
-
-            // 3. Trigger the fade-in once the component is fully loaded
-            Component.onCompleted: {
-                mainRectangle.opacity = 1;
             }
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: Qt.quit()
+                onClicked: root.isPanelOpen = false
 
                 GridLayout {
                     anchors.centerIn: parent
@@ -122,7 +111,10 @@ Variants {
                                 id: ma
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                onClicked: modelData.exec()
+                                onClicked: {
+                                    root.isPanelOpen = false;
+                                    modelData.exec();
+                                }
                             }
 
                             Image {
