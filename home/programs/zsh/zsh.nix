@@ -15,6 +15,7 @@
 
   programs = {
     starship.enable = true;
+    zoxide.enable = true;
 
     zsh = {
       enable = true;
@@ -55,6 +56,7 @@
         nos = "nh os switch";
         nhs = "nh home switch";
         nfu = "nix flake update";
+        nsp = "nix-shell -p";
 
         # git aliases
         gco = "git checkout";
@@ -76,7 +78,6 @@
       history = {
         size = 290000;
         save = 290000;
-        path = "$HOME/.zhistory";
       };
 
       initContent = ''

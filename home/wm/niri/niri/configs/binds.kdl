@@ -2,7 +2,7 @@ binds {
     // APPLICATIONS
 
     Mod+T { spawn "kitty"; }
-    Mod+N { spawn "floorp"; }
+    Mod+N { spawn "firefox-beta"; }
     Mod+B { spawn "thunar"; }
     Ctrl+Alt+Delete { spawn "kitty" "-e" "htop"; }
 

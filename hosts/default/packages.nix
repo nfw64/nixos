@@ -53,7 +53,7 @@
     jq
     chafa
 
-    floorp-bin
+    firefox-beta
     easyeffects
     pear-desktop
     lutris
@@ -62,7 +62,6 @@
     wl-clipboard
     grim
     slurp
-    zoxide
     ripgrep
     nodejs
     thunar

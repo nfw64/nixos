@@ -23,18 +23,18 @@ in
 {
   imports = [
     ./wm/niri/niri.nix
-    ./programs/cava/default.nix
-    ./programs/matugen/default.nix
-    ./programs/nvim/default.nix
-    ./programs/quickshell/default.nix
-    ./programs/thunar/default.nix
-    ./programs/tmux/default.nix
+    ./dots/cava/default.nix
+    ./dots/matugen/default.nix
+    ./dots/nvim/default.nix
+    ./dots/quickshell/default.nix
+    ./dots/thunar/default.nix
+    ./dots/tmux/default.nix
     ./programs/zsh/zsh.nix
     ./programs/yazi.nix
   ];
 
   xdg.configFile = builtins.mapAttrs (name: subpath: {
-    source = create-symlink "${dotfiles}/home/configs/${subpath}";
+    source = create-symlink "${dotfiles}/home/dots/${subpath}";
     recursive = true;
   }) configs;
 

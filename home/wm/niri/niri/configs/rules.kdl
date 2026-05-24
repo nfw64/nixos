@@ -18,7 +18,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id="floorp"
+    match app-id="firefox-beta"
     open-on-workspace "3"
     open-maximized true
 }
@@ -52,6 +52,11 @@ window-rule {
 
 window-rule {
     match app-id=r#"^(pavucontrol|gnome-calculator|org\.gnome\.Calculator)$"#
+    open-floating true
+}
+
+window-rule {
+    match title=r"Extension: \(Bitwarden Password Manager\)"
     open-floating true
 }
 
