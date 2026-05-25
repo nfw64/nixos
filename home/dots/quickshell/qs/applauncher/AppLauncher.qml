@@ -172,7 +172,15 @@ Scope {
                                         event.accepted = true;
                                         root.selectedIndex = Math.min(root.selectedIndex + 1, resultsList.count - 1);
                                         resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain);
+                                    } else if (event.key === Qt.Key_J && (event.modifiers & Qt.ControlModifier)) {
+                                        event.accepted = true;
+                                        root.selectedIndex = Math.min(root.selectedIndex + 1, resultsList.count - 1);
+                                        resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain);
                                     } else if (event.key === Qt.Key_Up) {
+                                        event.accepted = true;
+                                        root.selectedIndex = Math.max(root.selectedIndex - 1, 0);
+                                        resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain);
+                                    } else if (event.key === Qt.Key_K && (event.modifiers & Qt.ControlModifier)) {
                                         event.accepted = true;
                                         root.selectedIndex = Math.max(root.selectedIndex - 1, 0);
                                         resultsList.positionViewAtIndex(root.selectedIndex, ListView.Contain);

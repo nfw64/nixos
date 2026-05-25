@@ -136,7 +136,7 @@
         zvm_after_init_commands+=('eval "$(fzf --zsh)"')
         source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
         if [[ $- == *i* ]] && [ -t 0 ]; then
-            eval "$(pay-respects zsh)"
+            eval "$(pay-respects zsh --nocnf)"
         fi
       '';
       completionInit = ''

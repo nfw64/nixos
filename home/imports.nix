@@ -29,8 +29,10 @@ in
     ./dots/quickshell/default.nix
     ./dots/thunar/default.nix
     ./dots/tmux/default.nix
+    ./dots/rofi/default.nix
     ./programs/zsh/zsh.nix
     ./programs/yazi.nix
+    ./programs/firefox.nix
   ];
 
   xdg.configFile = builtins.mapAttrs (name: subpath: {

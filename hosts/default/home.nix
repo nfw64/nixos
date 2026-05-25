@@ -7,7 +7,6 @@
 {
 
   imports = [
-    ../../home/sharedVars.nix
     ../../home/imports.nix
     ./packages.nix
   ];
@@ -19,21 +18,43 @@
 
     username = "myriad";
     homeDirectory = "/home/myriad";
-    stateVersion = "25.11";
+    stateVersion = "26.05";
     sessionVariables = {
       EDITOR = "nvim";
       TERMINAL = "kitty";
       BROWSER = "firefox";
       NH_FLAKE = "${config.home.homeDirectory}/nixos/";
+      BITWARDEN_SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/bitwarden-ssh-agent.sock";
+      SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/bitwarden-ssh-agent.sock";
     };
   };
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Ice";
-    size = 24;
-  };
+  home.pointerCursor =
+    let
+      getFrom = url: hash: name: {
+        gtk.enable = true;
+        inherit name;
+        size = 24;
+        package = pkgs.runCommand "moveUp" { } ''
+          mkdir -p $out/share/icons
+          ln -s ${
+            pkgs.fetchzip {
+              inherit url hash;
+            }
+          }/dist $out/share/icons/${name}
+        '';
+      };
+    in
+    getFrom "https://github.com/yeyushengfan258/ArcMidnight-Cursors/archive/refs/heads/main.zip"
+      "sha256-VgOpt0rukW0+rSkLFoF9O0xO/qgwieAchAev1vjaqPE="
+      "ArcMidnight-Cursors";
+
+  #home.pointerCursor = {
+  #  gtk.enable = true;
+  #  package = pkgs.bibata-cursors;
+  #  name = "Bibata-Modern-Ice";
+  #  size = 24;
+  #};
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {

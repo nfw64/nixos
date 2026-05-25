@@ -5,11 +5,18 @@ binds {
     Mod+N { spawn "firefox-beta"; }
     Mod+B { spawn "thunar"; }
     Ctrl+Alt+Delete { spawn "kitty" "-e" "htop"; }
+    Mod+Ctrl+O { spawn "curd"; }
+
+    // DMENUS
+    Mod+V { spawn "bookmarks-rofi.sh"; }
+    Mod+E { spawn "tmux-rofi.sh"; }
+    Mod+C { spawn "repos-rofi.sh"; }
 
     // shell
     Mod+R { spawn-sh "qs ipc call launcher toggle"; }
     Mod+Y { spawn-sh "qs ipc call wallpaper toggle"; }
     Mod+Escape { spawn-sh "qs ipc call logout toggle"; }
+    Mod+Ctrl+Q { spawn-sh "qs ipc call notifications dismiss_all"; }
 
     // OVERVIEW
 
@@ -23,7 +30,7 @@ binds {
 
     // WINDOW MANAGEMENT
 
-    Mod+CTRL+Q { close-window; }
+    Mod+Q { close-window; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 
@@ -93,8 +100,8 @@ binds {
 
     // COLUMN & WINDOW SIZING
 
-    Mod+Q { switch-preset-column-width; }
-    Mod+E { switch-preset-window-height; }
+    Mod+Shift+Q { switch-preset-column-width; }
+    Mod+Shift+E { switch-preset-window-height; }
 
     Mod+Minus { set-column-width "-10%"; }
     Mod+Equal { set-column-width "+10%"; }

@@ -1,4 +1,4 @@
-list_oldfiles() {
+_list_oldfiles() {
     # Get the oldfiles list from Neovim
     local oldfiles=($(nvim -u NONE --headless +'lua io.write(table.concat(vim.v.oldfiles, "\n") .. "\n")' +qa))
     # Filter invalid paths or files not found
@@ -23,6 +23,24 @@ list_oldfiles() {
         cd "$first_dir" || { echo "Failed to cd to $first_dir"; return 1; }
         nvim "${files[@]}"
     fi
+     zle reset-prompt
+}
+
+list_oldfiles() {
+    # Clear ZLE constraints so fzf runs cleanly
+    zle -I 
+
+    # Run your logic
+    _list_oldfiles
+
+    # Force your prompt theme to recalculate the new 'cd' path
+    local precmd
+    for precmd in $precmd_functions; do
+        $precmd
+    done
+
+    # Redraw the prompt smoothly
+    zle reset-prompt
 }
 
 

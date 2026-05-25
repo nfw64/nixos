@@ -12,7 +12,6 @@
     # Utilities
     libnotify
     pavucontrol
-    networkmanagerapplet
     brightnessctl
     htop
     gvfs

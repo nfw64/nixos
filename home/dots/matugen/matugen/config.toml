@@ -21,12 +21,15 @@ output_path = "~/.config/cava/colors"
 [templates.tmux]
 input_path = '~/.config/matugen/templates/tmux-colors.conf'
 output_path = '~/.config/tmux/generated.conf'
-# tmux have issues with asynchronous apply.sh script
 post_hook = 'tmux source-file ~/.config/tmux/generated.conf'
 
 [templates.fastfetch]
 input_path = '~/.config/matugen/templates/matugen-fastfetch.jsonc'
 output_path = '~/.config/fastfetch/config.jsonc'
+
+[templates.rofi]
+input_path = '~/.config/matugen/templates/rofi-colors.rasi'
+output_path = '~/.config/rofi/theme.rasi'
 
 [templates.yazi]
 input_path = '~/.config/matugen/templates/yazi-theme.toml'
@@ -40,16 +43,25 @@ output_path = '~/.cache/wal/colors.json'
 input_path = '~/.config/matugen/templates/matugen.kvconfig'
 output_path = '~/.config/Kvantum/matugen/matugen.kvconfig'
 
-# Gtk
 [templates.gtk]
 input_path = '~/.config/matugen/templates/matugen-gtk.css'
 output_path = '~/.cache/matugen/colors-gtk.css'
 
-[templates.qt5]
-input_path = '~/.config/matugen/templates/qtct-colors.conf'
-output_path = '~/.config/qt5ct/colors/matugen-qt5ct.conf'
-# cp is too lightweight to be put inside apply.sh
-post_hook = 'cp -f ~/.config/qt5ct/colors/matugen-qt5ct.conf ~/.config/qt6ct/colors/matugen-qt6ct.conf'
+[templates.qt5ct]
+input_path = "~/.config/matugen/templates/qtct.conf.template"
+output_path = "~/.config/qt5ct/colors/matugen.conf"
+
+[templates.qt6ct]
+input_path = "~/.config/matugen/templates/qtct.conf.template"
+output_path = "~/.config/qt6ct/colors/matugen.conf"
+
+[templates.qt5_style]
+input_path = "~/.config/matugen/templates/qt-style.qss.template"
+output_path = "~/.config/qt5ct/qss/matugen-style.qss"
+
+[templates.qt6_style]
+input_path = "~/.config/matugen/templates/qt-style.qss.template"
+output_path = "~/.config/qt6ct/qss/matugen-style.qss"
 
 [templates.quickshell]
 input_path = '~/.config/matugen/templates/quickshell.qml'

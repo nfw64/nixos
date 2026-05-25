@@ -1,23 +1,20 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
+  programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-beta.override {
-      nativeMessagingHosts = [
-        pkgs.pywalfox-native
-        pkgs.tridactyl-native
-      ];
-    };
+    package = pkgs.firefox-beta;
 
     nativeMessagingHosts = [
       pkgs.pywalfox-native
       pkgs.tridactyl-native
     ];
 
-    profiles.myprofile = {
+    profiles.myriad = {
       id = 0;
       name = "myriad";
       isDefault = true;
@@ -27,7 +24,7 @@
           owner = "yokoffing";
           repo = "Betterfox";
           rev = "150.0";
-          sha256 = "sha256-4YstG6vXN6K3pBve3769G0gZidB/8FzG0K/S60n53pU=";
+          sha256 = "sha256-elGsTJu+eSzyS9IAnQuEppyhdDkRQwggUP7aypuXRh8=";
         }
         + "/user.js"
       );
@@ -56,11 +53,13 @@
         "extensions.formautofill.addresses.enabled" = false;
         "extensions.formautofill.creditCards.enabled" = false;
       };
-
-      extensions = [ ];
     };
 
     policies = {
+      InstallAddonsPermission = {
+        Allow = [ "https://tridactyl.cmcaine.co.uk" ];
+      };
+
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = {
           default_area = "navbar";
@@ -75,7 +74,7 @@
           private_browsing = true;
         };
         "tridactyl.vim.betas@cmcaine.co.uk" = {
-          install_url = "https://tridactyl.cmcaine.co.uk/betas/tridactyl_beta-latest.xpi";
+          install_url = "https://tridactyl.cmcaine.co.uk/betas/tridactyl-latest.xpi";
           installation_mode = "force_installed";
           private_browsing = true;
           default_area = "addons-container";

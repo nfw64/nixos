@@ -24,14 +24,6 @@
     fastfetch
     libsForQt5.qtstyleplugin-kvantum
     kdePackages.qtstyleplugin-kvantum
-    pywalfox-native
-
-    # zsh
-    zsh
-    pay-respects
-    nix-search
-    starship
-    zinit
 
     # gaming lol
     protonplus
@@ -45,6 +37,7 @@
     fd
     tmux
     sesh
+    nix-search
 
     #anime stuff
     inputs.curd.packages.${stdenv.hostPlatform.system}.default
@@ -53,7 +46,8 @@
     jq
     chafa
 
-    firefox-beta
+    vesktop
+    meld
     easyeffects
     pear-desktop
     lutris

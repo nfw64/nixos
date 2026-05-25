@@ -1,7 +1,16 @@
 configuration {
     modi:                       "drun,filebrowser,window";
-    show-icons:                 true;
+    show-icons:                 false;
     display-drun:               "";
+kb-row-up:                      "Up,Control+k,Shift+Tab,Shift+ISO_Left_Tab";
+    kb-row-down:                "Down,Control+j";
+    kb-accept-entry:            "Return,KP_Enter";
+    terminal:                   "mate-terminal";
+    kb-remove-to-eol:           "Control+Shift+e";
+    kb-mode-next:               "";
+    kb-mode-previous:           "";
+    kb-mode-complete:           "";
+    kb-remove-char-back:        "BackSpace";
     display-window:             "";
     display-filebrowser:        "";
     drun-display-format:        "{name}";
@@ -10,7 +19,7 @@ configuration {
     hover-select:               true;
     me-select-entry:            "";
     me-accept-entry:            "MousePrimary";
-    case-sensitive: 		false;
+    case-sensitive:             false;
 }
 
 @theme "theme.rasi"

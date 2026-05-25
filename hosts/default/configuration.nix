@@ -89,7 +89,8 @@
       "kernel.sched_wakeup_granularity_ns" = 2000000;
       "kernel.sched_migration_cost_ns" = 500000;
     };
-    kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v4;
+    kernelPackages =
+      inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v4;
   };
   powerManagement = {
     enable = true;
@@ -188,20 +189,15 @@
     greetd = {
       enable = true;
       settings = {
+        terminal = {
+          vt = 1;
+        };
+
         default_session = {
           command = "${
             inputs.tuigreet-fork.packages.${pkgs.stdenv.hostPlatform.system}.default
-          }/bin/tuigreet --time --remember --cmd niri-session";
+          }/bin/tuigreet --time --remember --asterisks --greeting 'Welcome back!' --cmd niri-session";
           user = "greeter";
-        };
-        display = {
-          show_time = true;
-          greeting = "Welcome back!";
-          align-greeting = "center";
-        };
-        secret = {
-          mode = "characters";
-          characters = "*";
         };
       };
     };
@@ -237,6 +233,6 @@
     noto-fonts-color-emoji
   ];
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 
 }

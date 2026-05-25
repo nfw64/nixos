@@ -1,4 +1,2 @@
 environment {
-    GTK_THEME "adw-gtk3-dark"
-    ADW_DEBUG_COLOR_SCHEME "prefer-dark"
 }

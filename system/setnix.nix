@@ -7,6 +7,7 @@ _: {
     };
     settings = {
       max-jobs = "auto";
+      use-xdg-base-directories = true;
       cores = 0;
       experimental-features = [
         "nix-command"

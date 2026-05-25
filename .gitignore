@@ -4,11 +4,10 @@ home/dots/kitty/themes/Matugen.conf
 home/dots/kitty/current-theme.conf
 home/dost/matugen/matugen/colors.json
 home/wm/niri/niri/colors.kdl
-home/dots/qt5ct/colors/matugen-qt5ct.conf
-home/dots/qt6ct/colors/matugen-qt6ct.conf
 home/dots/gtk-4.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-3.0/gtk-colors.css
 assets/local/themes/adw-gtk3-dark/gtk-4.0/gtk-colors.css
+home/dots/rofi/theme.rasi
 home/dots/fastfetch/config.jsonc
 home/dots/quickshell/Theme.qml
 home/dots/quickshell/wallpaper.conf
@@ -17,6 +16,11 @@ home/dots/wlogout/colors.css
 home/dots/quickshell/qs/Theme.qml
 home/dots/quickshell/qs/wallpaper.conf
 home/dots/tmux/tmux-kun/generated.conf
+home/dots/matugen/matugen/colors.json
+home/dots/qt5ct/colors/matugen.conf
+home/dots/qt5ct/qss/matugen-style.qss
+home/dots/qt6ct/colors/matugen.conf
+home/dots/qt6ct/qss/matugen-style.qss
 
 home/configs/gtk-3.0/settings.ini
 home/configs/gtk-4.0/settings.ini
