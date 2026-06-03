@@ -21,6 +21,8 @@
     libva
     libva-utils
     playerctl
+    gcc
+    nodejs
 
     # utils2
     bluez

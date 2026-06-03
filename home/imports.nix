@@ -23,7 +23,6 @@ in
 {
   imports = [
     ./wm/niri/niri.nix
-    ./dots/cava/default.nix
     ./dots/matugen/default.nix
     ./dots/nvim/default.nix
     ./dots/quickshell/default.nix

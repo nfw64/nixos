@@ -1,24 +1,46 @@
-return {
-  "folke/flash.nvim",
-  event = "VeryLazy",
-  ---@type Flash.Config
-  opts = {
-    label = {
-            uppercase = false,
-            exclude = "",
-            current = true,
-            after = true, ---@type boolean|number[]
-            before = false, ---@type boolean|number[]
-            style = "overlay", ---@type "eol" | "overlay" | "right_align" | "inline"
-            reuse = "lowercase", ---@type "lowercase" | "all" | "none"
-            distance = true,
-        },
-    },
-  keys = {
-    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
-}
+require("flash").setup({
+	labels = "asdfhjklg",
+	search = {
+		multi_window = true,
+		forward = true,
+		wrap = true,
+		mode = "exact",
+		exclude = {
+			"notify",
+			"cmp_menu",
+			"noice",
+			"flash_prompt",
+			function(win)
+				-- exclude non-focusable windows
+				return not vim.api.nvim_win_get_config(win).focusable
+			end,
+		},
+	},
+	jump = {
+		nohlsearch = true,
+		autojump = true,
+	},
+	label = {
+		uppercase = false,
+		style = "overlay",
+	},
+	modes = {
+		char = {
+			enabled = true,
+			keys = { "f", "F", "t", "T", ";", "," },
+			highlight = { backdrop = false },
+		},
+		treesitter = {
+			labels = "asdfhjklg;",
+			highlight = {
+				backdrop = true,
+			},
+		},
+		treesitter_search = {
+			jump = { pos = "range" },
+			search = { multi_window = true, wrap = true, incremental = false },
+			remote_op = { restore = true },
+			label = { before = true, after = true, style = "inline" },
+		},
+	},
+})

@@ -40,7 +40,23 @@
     nix-search
 
     #anime stuff
-    inputs.curd.packages.${stdenv.hostPlatform.system}.default
+    (pkgs.writeShellApplication {
+      name = "jerry";
+
+      runtimeInputs = with pkgs; [
+        fzf
+        mpv
+        openssl
+        ueberzugpp
+        jq
+        chafa
+      ];
+
+      text = ''
+        # Run the safely cached script and pass all arguments cleanly
+        bash "${inputs.jerry}/jerry.sh" "$@"
+      '';
+    })
     openssl
     ueberzugpp
     jq

@@ -180,7 +180,6 @@
               capslock = "overload(control, esc)";
               esc = "capslock";
             };
-            otherlayer = { };
           };
         };
       };
@@ -192,11 +191,8 @@
         terminal = {
           vt = 1;
         };
-
         default_session = {
-          command = "${
-            inputs.tuigreet-fork.packages.${pkgs.stdenv.hostPlatform.system}.default
-          }/bin/tuigreet --time --remember --asterisks --greeting 'Welcome back!' --cmd niri-session";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --greeting 'Welcome back!' --cmd niri-session";
           user = "greeter";
         };
       };

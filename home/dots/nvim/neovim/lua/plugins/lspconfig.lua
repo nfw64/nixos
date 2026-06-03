@@ -1,0 +1,137 @@
+-- NOTE: LSP Keybinds
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		-- Buffer local mappings
+		local opts = { buffer = ev.buf, silent = true }
+		-- Keymaps
+		-------------------------------------------------------------------------------------
+		opts.desc = "Show LSP references"
+		vim.keymap.set("n", "<leader>lr", "<cmd>Telescope lsp_references<CR>", opts)
+
+		opts.desc = "Go to declaration"
+		vim.keymap.set("n", "<leader>lK", vim.lsp.buf.declaration, opts)
+
+		opts.desc = "Show LSP definitions"
+		vim.keymap.set("n", "<leader>ldj", "<cmd>Telescope lsp_definitions<CR>", opts)
+
+		opts.desc = "Show LSP implementations"
+		vim.keymap.set("n", "<leader>li", "<cmd>Telescope lsp_implementations<CR>", opts)
+
+		opts.desc = "Show LSP type definitions"
+		vim.keymap.set("n", "<leader>ldk", "<cmd>Telescope lsp_type_definitions<CR>", opts)
+
+		opts.desc = "Run LSP CodeLens"
+		vim.keymap.set("n", "<leader>lx", vim.lsp.codelens.run, opts)
+
+		opts.desc = "Smart rename (LSP)"
+		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+
+		opts.desc = "Show buffer diagnostics"
+		vim.keymap.set("n", "<leader>lwb", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
+
+		opts.desc = "Show line diagnostics"
+		vim.keymap.set("n", "<leader>lwl", vim.diagnostic.open_float, opts)
+
+		------------------------------------------------------------------------------------
+
+		opts.desc = "See available code actions"
+		vim.keymap.set({ "n", "v" }, "<leader>ca", function()
+			vim.lsp.buf.code_action()
+		end, opts)
+
+		opts.desc = "Signature Help"
+		vim.keymap.set("i", "<A-h>", function()
+			vim.lsp.buf.signature_help()
+		end, opts)
+
+		opts.desc = "Show documentation for what is under cursor"
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+	end,
+})
+
+local opts = { silent = true }
+opts.desc = "Restart LSP"
+vim.keymap.set("n", "<leader>lms", "<cmd>lsp restart<CR>", opts)
+opts.desc = "Stop LSP"
+vim.keymap.set("n", "<leader>lmx", "<cmd>lsp stop<CR>", opts)
+opts.desc = "Disable LSP"
+vim.keymap.set("n", "<leader>lmd", "<cmd>lsp disable<CR>", opts)
+opts.desc = "Enable LSP"
+vim.keymap.set("n", "<leader>lme", "<cmd>lsp enable<CR>", opts)
+
+-- NOTE: Diagnostic Setup
+-- Define sign icons for each severity
+local signs = {
+	[vim.diagnostic.severity.ERROR] = " ",
+	[vim.diagnostic.severity.WARN] = " ",
+	[vim.diagnostic.severity.HINT] = "󰠠 ",
+	[vim.diagnostic.severity.INFO] = " ",
+}
+
+-- update diagnostic config function
+vim.diagnostic.config({
+	signs = { text = signs },
+	virtual_text = true,
+	underline = true, -- Always on
+	update_in_insert = false,
+	float = {
+		focusable = false,
+		style = "minimal",
+		border = "rounded",
+		source = true,
+	},
+})
+
+-- <leader>lx toggle for virtual text (no hover changes)
+vim.keymap.set("n", "<leader>lx", function()
+	local current = vim.diagnostic.config().virtual_text
+	vim.diagnostic.config({
+		virtual_text = not current, -- toggle true/false
+	})
+	vim.notify(
+		"Diagnostics virtual text " .. (not current and "enabled" or "disabled"),
+		vim.log.levels.INFO,
+		{ title = "Diagnostics" }
+	)
+end, { desc = "Toggle diagnostic virtual text" })
+
+-- NOTE: Setup servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+local ok, blink = pcall(require, "blink.cmp")
+if ok then
+	capabilities = blink.get_lsp_capabilities(capabilities)
+end
+
+-- Global LSP settings (applied to all servers)
+vim.lsp.config("*", {
+	capabilities = capabilities,
+})
+
+-- Configure and enable LSP servers
+
+-- lua_ls
+vim.lsp.config("lua_ls", {
+	settings = {
+		Lua = {
+			diagnostics = {
+				globals = { "vim" },
+			},
+			completion = {
+				callSnippet = "Replace",
+			},
+			-- workspace = {
+			--     library = {
+			--         [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+			--         [vim.fn.stdpath("config") .. "/lua"] = true,
+			--     },
+			-- },
+		},
+	},
+})
+
+vim.lsp.enable({
+	"lua_ls",
+	"nil_ls",
+})

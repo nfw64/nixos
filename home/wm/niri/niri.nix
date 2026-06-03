@@ -6,7 +6,7 @@
 {
   xdg.configFile = {
     swayidle = {
-      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/configs/swayidle";
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/wm/niri/dots/swayidle";
       recursive = true;
     };
     niri = {

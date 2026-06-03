@@ -1,29 +1,67 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
--- Hint: use `:h <option>` to figure out the meaning if needed
-vim.opt.clipboard = "unnamedplus" -- use system clipboard
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
-vim.opt.mouse = "a" -- allow the mouse to be used in Nvim
-vim.opt.wrap = true
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- Tab
-vim.opt.tabstop = 4 -- number of visual spaces per TAB
-vim.opt.softtabstop = 4 -- number of spacesin tab when editing
-vim.opt.shiftwidth = 4 -- insert 4 spaces on a tab
-vim.opt.expandtab = true -- tabs are spaces, mainly because of python
+-- line numbers
+vim.opt.number = true
+vim.opt.relativenumber = true
 
--- UI config
-vim.opt.number = true -- show absolute number
-vim.opt.relativenumber = true -- add numbers to each line on the left side
-vim.opt.cursorline = true -- highlight cursor line underneath the cursor horizontally
-vim.opt.splitbelow = true -- open new vertical split bottom
-vim.opt.splitright = true -- open new horizontal splits right
-vim.opt.termguicolors = true -- enabl 24-bit RGB color in the TUI
-vim.opt.showmode = false -- we are experienced, wo don't need the "-- INSERT --" mode hint
+-- indentation
+vim.opt.expandtab = true
+vim.opt.ignorecase = true
+vim.opt.shiftwidth = 2
+vim.opt.showtabline = 2
+vim.opt.smartindent = true
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2
+vim.opt.wrap = false
 
--- Searching
-vim.opt.incsearch = true -- search as characters are entered
-vim.opt.hlsearch = false -- do not highlight matches
-vim.opt.ignorecase = true -- ignore case in searches by default
-vim.opt.smartcase = true -- but make it case sensitive if an uppercase is entered
+-- backup and undo
+vim.opt.backup = false
+vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
+vim.opt.undofile = true
+
+-- search
+vim.opt.inccommand = "split"
+
+-- UI
+vim.o.showcmd = true
+vim.o.statuscolumn = "%s %l %C"
+vim.opt.cmdheight = 0
+vim.opt.cursorcolumn = false
+vim.opt.fillchars:append({ eob = " " })
+vim.opt.scrolloff = 8
+vim.opt.showmode = false -- Hides the redundant '-- INSERT --' text
+vim.opt.signcolumn = "yes"
+vim.opt.termguicolors = true
+vim.opt.winborder = "single"
+
+-- folding (for nvim-ufo)
+vim.o.foldcolumn = "0"
+vim.o.foldenable = true
+vim.o.foldlevel = 99
+vim.o.foldmethod = "manual"
+
+-- window splits
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+-- misc
+vim.cmd([[hi @lsp.type.number gui=bold]])
+vim.cmd([[set noswapfile]])
+vim.g.lsp_defaults = false
+vim.o.commentstring = ""
+vim.opt.clipboard:append("unnamedplus")
+vim.opt.colorcolumn = "0"
+vim.opt.confirm = true
+vim.opt.isfname:append("@-@")
+vim.opt.mouse = "a"
+vim.opt.timeoutlen = 250
+vim.opt.ttm = 50
+vim.opt.updatetime = 50
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+	group = vim.api.nvim_create_augroup("highlight_yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+	end,
+})

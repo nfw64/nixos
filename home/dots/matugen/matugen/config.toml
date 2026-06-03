@@ -7,16 +7,12 @@ type = "SchemeFidelity"
 #post_hook = 'hyprctl reload'
 
 [templates.neovim]
-input_path = '~/.config/matugen/templates/colors.json'
-output_path = '~/.config/matugen/colors.json'
+input_path = '~/.config/matugen/templates/nvim-colors.lua'
+output_path = '~/.config/nvim/lua/generated.lua'
 
 [templates.niri]
 input_path = '~/.config/matugen/templates/niri.kdl'
 output_path = '~/.config/niri/colors.kdl'
-
-[templates.cava]
-input_path = "~/.config/matugen/templates/cava-colors.ini.template"
-output_path = "~/.config/cava/colors"
 
 [templates.tmux]
 input_path = '~/.config/matugen/templates/tmux-colors.conf'

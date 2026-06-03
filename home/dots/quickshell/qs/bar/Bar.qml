@@ -545,7 +545,6 @@ Scope {
                         Row {
                             id: systemInfoContent
                             anchors.centerIn: parent
-                            spacing: 12
 
                             readonly property color batteryColor: {
                                 if (SystemInfo.batteryCharging)
@@ -597,10 +596,9 @@ Scope {
 
                                 property bool isConnected: SystemInfo.networkType !== "disconnected"
 
-                                opacity: isConnected ? 1.0 : 0.0
-                                scale: isConnected ? 1.0 : 0.8
+                                scale: 0.8
 
-                                width: isConnected ? (netContent.width + 12) : 0
+                                width: netContent.width + 12
 
                                 Behavior on width {
                                     NumberAnimation {
@@ -634,8 +632,7 @@ Scope {
                                 Row {
                                     id: netContent
                                     anchors.centerIn: parent
-                                    spacing: 6
-                                    opacity: netPill.isConnected ? 1.0 : 0.0
+                                    spacing: 10
                                     Behavior on opacity {
                                         NumberAnimation {
                                             duration: 150
@@ -652,14 +649,14 @@ Scope {
                                             return "󰖪";
                                         }
                                         color: root.theme.bgSurface
-                                        font.pixelSize: 14
+                                        font.pixelSize: 16
                                         font.family: "Hack Nerd Font"
                                     }
                                     Text {
                                         anchors.verticalCenter: parent.verticalCenter
                                         text: SystemInfo.networkInfo
                                         color: root.theme.bgSurface
-                                        font.pixelSize: 11
+                                        font.pixelSize: 12
                                         font.family: "Hack Nerd Font"
                                         visible: text !== ""
                                     }

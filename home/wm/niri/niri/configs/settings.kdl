@@ -22,10 +22,9 @@ hotkey-overlay {
 }
 
 cursor {
-  xcursor-theme "Bibata-Modern-Ice"
-  xcursor-size 24
+  xcursor-theme "MeguminCursor"
+  xcursor-size 72
   hide-when-typing
-  hide-after-inactive-ms 2000
 }
 
 

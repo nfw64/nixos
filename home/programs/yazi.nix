@@ -115,6 +115,11 @@ in
             run = "remove";
             desc = "remove";
           }
+          {
+            on = [ "T" ];
+            run = "shell kitty"; # Replace with your terminal
+            desc = "Open terminal here";
+          }
         ];
       };
     };

@@ -2,6 +2,8 @@
 
 pywalfox update >/dev/null 2>&1 &
 kitty +kitten themes --reload-in=all Matugen &
+pkill -SIGUSR1 nvim
+
 
 # hyprctl reload &
 

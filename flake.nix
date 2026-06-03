@@ -19,18 +19,12 @@
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    tuigreet-fork = {
-      url = "github:NotAShelf/tuigreet";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nixpkgs.url = "nixpkgs/nixos-unstable";
     nix-alien.url = "github:thiagokokada/nix-alien";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    curd = {
-      url = "github:Wraient/curd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    jerry.url = "github:justchokingaround/jerry";
+    qml-language-server.url = "github:cushycush/qml-language-server";
   };
 
   outputs =

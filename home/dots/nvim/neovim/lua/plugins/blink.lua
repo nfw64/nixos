@@ -1,26 +1,72 @@
-return {
-  -- Configure blink.cmp
-  {
-    "saghen/blink.cmp",
-    opts = {
-      keymap = {
-        preset = "none", -- Disable defaults so they do not conflict
+require("blink.cmp").setup({
+	fuzzy = { implementation = "prefer_rust" },
+	keymap = {
+		preset = "none",
 
-        -- Accept suggestion with Ctrl-n
-        ["<C-n>"] = { "accept", "fallback" },
-        ["<CR>"] = { "accept", "fallback" },
-               
+		["<Tab>"] = { "accept", "select_next", "fallback" },
+		["<C-l>"] = { "accept", "fallback" },
+		["<C-CR>"] = { "accept", "fallback" },
 
-        -- Navigate suggestions with Ctrl-j and Ctrl-k
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
+		["<C-j>"] = { "select_next", "snippet_forward", "fallback" },
+		["<C-k>"] = { "select_prev", "snippet_backward", "fallback" },
 
-        -- Retain standard LazyVim/blink.cmp essential behavior
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<C-e>"] = { "hide" },
-        ["<Tab>"] = { "snippet_forward", "fallback" },
-        ["<S-Tab>"] = { "snippet_backward", "fallback" },
-      },
-    },
-  },
-}
+		["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+		["<C-h>"] = { "hide" },
+	},
+
+	cmdline = {
+		enabled = true,
+		keymap = { preset = "inherit" }, -- Ensures cmdline defaults don't conflict
+		completion = {
+			menu = {
+				---@diagnostic disable-next-line: unused-local
+				auto_show = function(ctx)
+					return vim.fn.getcmdtype() == ":"
+					-- enable for inputs as well, with:
+					-- or vim.fn.getcmdtype() == '@'
+				end,
+			},
+		},
+	},
+
+	-- editor insert mode completions
+	completion = {
+		menu = {
+			auto_show = true, -- show on type
+		},
+		documentation = {
+			auto_show = true, -- show function signature/docs
+		},
+		ghost_text = {
+			enabled = false,
+			show_with_menu = false,
+		},
+		accept = {
+			auto_brackets = {
+				enabled = true,
+			},
+		},
+	},
+
+	sources = {
+		default = { "lsp", "path", "buffer", "snippets" },
+		providers = {
+			lsp = {
+				opts = {
+					tailwind_color_icon = "  ",
+				},
+			},
+		},
+	},
+
+	appearance = {
+		use_nvim_cmp_as_default = false,
+		nerd_font_variant = "mono",
+	},
+
+	snippets = {
+		preset = "luasnip",
+	},
+})
+
+require("luasnip.loaders.from_vscode").lazy_load() -- load friendly snippets collection

@@ -28,7 +28,7 @@ Scope {
         }
 
         Button {
-            command: "loginctl kill-session $XDG_SESSION_ID"
+            command: "niri msg action quit"
             keybind: Qt.Key_Q
             icon: "logout"
         }

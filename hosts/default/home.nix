@@ -29,32 +29,27 @@
     };
   };
 
-  home.pointerCursor =
-    let
-      getFrom = url: hash: name: {
-        gtk.enable = true;
-        inherit name;
-        size = 24;
-        package = pkgs.runCommand "moveUp" { } ''
-          mkdir -p $out/share/icons
-          ln -s ${
-            pkgs.fetchzip {
-              inherit url hash;
-            }
-          }/dist $out/share/icons/${name}
-        '';
-      };
-    in
-    getFrom "https://github.com/yeyushengfan258/ArcMidnight-Cursors/archive/refs/heads/main.zip"
-      "sha256-VgOpt0rukW0+rSkLFoF9O0xO/qgwieAchAev1vjaqPE="
-      "ArcMidnight-Cursors";
+  home.pointerCursor = {
+    gtk.enable = true;
+    name = "Qingyi"; # Make sure this matches your folder name capitalization
+    size = 64;
 
-  #home.pointerCursor = {
-  #  gtk.enable = true;
-  #  package = pkgs.bibata-cursors;
-  #  name = "Bibata-Modern-Ice";
-  #  size = 24;
-  #};
+    # No build dependencies needed anymore, just a dead-simple folder mirror
+    package = pkgs.runCommand "pointerCursor" { } ''
+      mkdir -p $out/share/icons
+      cp -r ${../../assets/local/cursor/Qingyi} $out/share/icons/Qingyi
+
+      chmod +w $out/share/icons/Qingyi/index.theme
+      echo "Inherits=hicolor" >> $out/share/icons/Qingyi/index.theme
+    '';
+  };
+
+  # home.pointerCursor = {
+  #   gtk.enable = true;
+  #   name = "Bibata-Modern-Ice";
+  #   size = 64;
+  #   package = pkgs.bibata-cursors;
+  # };
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
@@ -108,7 +103,6 @@
       gtk-xft-hinting = 1;
       gtk-xft-hintstyle = "hintslight";
       gtk-xft-rgba = "rgb";
-
     };
   };
 

@@ -1,3 +1,7 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
-vim.opt.confirm = true
+require("config.options")
+require("commands")
+
+require("config.pack")
+require("config.lze")
+
+require("config.keybinds")
