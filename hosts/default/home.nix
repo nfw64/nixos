@@ -31,25 +31,15 @@
 
   home.pointerCursor = {
     gtk.enable = true;
-    name = "Qingyi"; # Make sure this matches your folder name capitalization
+    name = "Firefly"; # Make sure this matches your folder name capitalization
     size = 64;
 
     # No build dependencies needed anymore, just a dead-simple folder mirror
     package = pkgs.runCommand "pointerCursor" { } ''
       mkdir -p $out/share/icons
-      cp -r ${../../assets/local/cursor/Qingyi} $out/share/icons/Qingyi
-
-      chmod +w $out/share/icons/Qingyi/index.theme
-      echo "Inherits=hicolor" >> $out/share/icons/Qingyi/index.theme
+      cp -r ${../../assets/local/cursor/Firefly} $out/share/icons/Firefly
     '';
   };
-
-  # home.pointerCursor = {
-  #   gtk.enable = true;
-  #   name = "Bibata-Modern-Ice";
-  #   size = 64;
-  #   package = pkgs.bibata-cursors;
-  # };
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {

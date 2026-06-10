@@ -19,10 +19,8 @@ end
 
 local function auxiliary_function()
 	source_matugen()
+	dofile(os.getenv("HOME") .. "/.config/nvim/lua/plugins/lualine.lua")
 
-	dofile(os.getenv("HOME") .. "/.config/nvim/lua/plugins/lualine.lua") -- path of your lualine setup
-
-	-- Any other options you wish to set upon matugen reloads can also go here!
 	vim.api.nvim_set_hl(0, "Comment", { italic = true })
 end
 

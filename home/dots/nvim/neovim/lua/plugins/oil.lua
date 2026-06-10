@@ -10,9 +10,8 @@ require("oil").setup({
 		["<M-h>"] = "actions.select_split",
 		["<S-h>"] = "actions.parent",
 		["<S-l>"] = "actions.select",
-		["`"] = function()
+		["'"] = function()
 			require("oil.actions").cd.callback()
-			require("oil").close()
 		end,
 		["q"] = "actions.close",
 	},

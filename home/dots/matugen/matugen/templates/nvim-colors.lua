@@ -22,45 +22,45 @@ require("base16-colorscheme").setup({
 local primary_hex = "{{colors.primary.default.hex}}"
 local bg_hex = "{{colors.background.default.hex}}"
 
-local function hex_to_rgb(hex)
-	hex = hex:gsub("#", "")
-	return tonumber("0x" .. hex:sub(1, 2)), tonumber("0x" .. hex:sub(3, 4)), tonumber("0x" .. hex:sub(5, 6))
+local function mix(hex1, hex2, w)
+	local c1, c2 = tonumber(hex1:gsub("#", ""), 16), tonumber(hex2:gsub("#", ""), 16)
+  -- stylua: ignore
+	local function ch(shift) return math.floor((bit.band(bit.rshift(c1, shift), 255) * w) + (bit.band(bit.rshift(c2, shift), 255) * (1 - w))) end
+	return string.format("#%02x%02x%02x", ch(16), ch(8), ch(0))
 end
 
-local p_r, p_g, p_b = hex_to_rgb(primary_hex)
-local b_r, b_g, b_b = hex_to_rgb(bg_hex)
-local mix_factor = 0.50
-local final_r = math.floor(p_r * mix_factor + b_r * (1 - mix_factor))
-local final_g = math.floor(p_g * mix_factor + b_g * (1 - mix_factor))
-local final_b = math.floor(p_b * mix_factor + b_b * (1 - mix_factor))
-local darker_visual_bg = string.format("#%02x%02x%02x", final_r, final_g, final_b)
+local darker_visual_bg = mix(primary_hex, bg_hex, 0.50)
 
+-- visual colors
 vim.api.nvim_set_hl(0, "Visual", {
 	bg = darker_visual_bg,
 	fg = bg_hex,
 })
 
-local base16_ts_fix = vim.api.nvim_create_augroup("Base16ResetTS", { clear = true })
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	group = base16_ts_fix,
-	pattern = "base16-*",
-	callback = function()
-		-- High-impact groups that base16 washes out into a single flat color
-		local problematic_groups = {
-			"@variable",
-			"@variable.builtin",
-			"@property",
-			"@field",
-			"@parameter",
-			"@attribute",
-			"@namespace",
-		}
-
-		-- Delete the base16 highlight definitions for these groups
-		-- This forces Neovim to use standard, working syntax fallback groups
-		for _, group in ipairs(problematic_groups) do
-			vim.api.nvim_set_hl(0, group, {})
-		end
-	end,
+-- flash nvim colors
+vim.api.nvim_set_hl(0, "FlashBackdrop", {
+	fg = "{{colors.outline_variant.default.hex}}",
+})
+vim.api.nvim_set_hl(0, "FlashLabel", {
+	bg = "{{colors.primary.default.hex}}",
+	fg = bg_hex,
+	bold = true,
+})
+vim.api.nvim_set_hl(0, "FlashMatch", {
+	bg = "{{colors.secondary_container.default.hex}}",
+	fg = "{{colors.on_secondary_container.default.hex}}",
+})
+vim.api.nvim_set_hl(0, "FlashCurrent", {
+	bg = "{{colors.tertiary.default.hex}}",
+	fg = bg_hex,
+	bold = true,
+})
+vim.api.nvim_set_hl(0, "FlashPrompt", { link = "Normal" })
+vim.api.nvim_set_hl(0, "FlashPromptIcon", {
+	fg = "{{colors.primary.default.hex}}",
+	bold = true,
+})
+vim.api.nvim_set_hl(0, "FlashCursor", {
+	bg = "{{colors.on_surface.default.hex}}",
+	fg = bg_hex,
 })

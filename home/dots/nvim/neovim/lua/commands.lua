@@ -1,5 +1,12 @@
 -- Custom packer commands
 
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "term://*fzf*",
+	callback = function()
+		vim.cmd("startinsert")
+	end,
+})
+
 _G.PckAdd = function(plugins, opts)
 	for _, plugin in ipairs(plugins) do
 		if not plugin.src:match("^https?://") then

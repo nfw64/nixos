@@ -9,8 +9,7 @@ PckAdd({
 	{ src = "rafamadriz/friendly-snippets" },
 
 	--  Code helpers
-	{ src = "nvim-telescope/telescope.nvim", branch = "master" },
-	{ src = "nvim-telescope/telescope-ui-select.nvim" },
+	{ src = "ibhagwan/fzf-lua" },
 	{ src = "windwp/nvim-autopairs" },
 	{ src = "kevinhwang91/nvim-ufo" },
 	{ src = "folke/todo-comments.nvim" },
@@ -23,30 +22,66 @@ PckAdd({
 	{ src = "windwp/nvim-ts-autotag" },
 	{ src = "romus204/tree-sitter-manager.nvim" },
 	-- UI related
+	{ src = "nvim-lualine/lualine.nvim" },
+	{ src = "https://github.com/nvzone/showkeys" },
+	{ src = "https://github.com/Bekaboo/dropbar.nvim" },
+
 	{ src = "NvChad/nvim-colorizer.lua" },
 	{ src = "MeanderingProgrammer/render-markdown.nvim" },
 	{ src = "https://github.com/declancm/cinnamon.nvim" },
 	{ src = "folke/noice.nvim" },
-	{ src = "akinsho/bufferline.nvim" },
+	{ src = "rcarriga/nvim-notify" },
 
 	-- git stuff
-	{ src = "NeogitOrg/neogit" },
 	{ src = "lewis6991/gitsigns.nvim" },
-	{ src = "ThePrimeagen/git-worktree.nvim" },
 	{ src = "tpope/vim-fugitive" },
-	{ src = "vimpostor/vim-tpipeline" },
 
 	-- Random
 	{ src = "folke/persistence.nvim" },
 	{ src = "stevearc/oil.nvim" },
 	{ src = "goolord/alpha-nvim" },
 	{ src = "m4xshen/hardtime.nvim" },
+	{ src = "scinac/vim-norm-trainer.nvim" },
+
+	-- unused
+	-- { src = "https://github.com/romgrk/barbar.nvim" },
+	-- {
+	-- 	"barbar.nvim",
+	-- 	after = function()
+	-- 		require("plugins.barbar")
+	-- 	end,
+	-- },
 }, {
 	-- prevent packadd! or packadd like this to allow on_require handler to load plugin spec
 	load = function() end,
 })
 
 require("lze").load({
+	{
+		"vim-norm-trainer.nvim",
+		cmd = { "NormGame" },
+	},
+	{
+		"dropbar.nvim",
+		lazy = false,
+		after = function()
+			require("plugins.dropbar")
+		end,
+	},
+	{
+		"hardtime.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		after = function()
+			require("hardtime").setup({
+				max_count = 5,
+				disable_mouse = false,
+				disabled_filetypes = {
+					["nvim-pack"] = false,
+					["drop*"] = false,
+				},
+			})
+		end,
+	},
 	{
 		"cinnamon.nvim",
 		event = { "BufReadPre", "BufNewFile" },
@@ -70,36 +105,39 @@ require("lze").load({
 		end,
 	},
 	{
-		"vim-tpipeline",
-	},
-	{
-		"hardtime.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		after = function()
-			require("hardtime").setup({
-				max_count = 5,
-				disabled_filetypes = {
-					["nvim-pack"] = false, -- Enable Hardtime in filetype starting with dapui
-				},
-			})
-		end,
-	},
-	{
 		"alpha-nvim",
 		after = function()
 			require("plugins.alpha")
 		end,
 	},
 	{
-		"noice.nvim",
+		"nvim-notify",
+		dep_of = "noice.nvim",
 		after = function()
-			require("plugins.noice")
+			require("plugins.notify")
 		end,
 	},
 	{
-		"bufferline.nvim",
+		"lualine.nvim",
 		after = function()
-			require("plugins.bufferline")
+			require("plugins.lualine")
+		end,
+	},
+	{
+		"showkeys",
+		cmd = "ShowkeysToggle",
+		keys = {
+			{ "<leader>ks", "<cmd>ShowkeysToggle<cr>", desc = "Enable showkeys" },
+		},
+		after = function()
+			require("plugins.showkeys")
+		end,
+	},
+	{
+		"noice.nvim",
+		dep_of = "lualine.nvim",
+		after = function()
+			require("plugins.noice")
 		end,
 	},
 	{
@@ -113,44 +151,25 @@ require("lze").load({
 			require("plugins.oil")
 		end,
 	},
+
 	{
-		"telescope-ui-select.nvim",
-		dep_of = "telescope.nvim",
-	},
-	{
-		"telescope.nvim",
-		-- Tell lze that requiring "telescope" should pull this plugin out of lazy state
-		on_require = { "^telescope" },
-		event = {
-			{
-				event = "CmdUndefined",
-				pattern = "Telescope*",
-				-- Returning true immediately triggers `lze` to run the 'load' function
-				callback = function()
-					return true
-				end,
-			},
-		},
+		"fzf-lua",
+		dep_of = "alpha-nvim",
+		on_require = { "^fzf-lua" },
 		keys = {
-			{ "<leader>ir", "<cmd>Telescope oldfiles<CR>", desc = "Fuzzy find recent files" },
-			{ "<leader>if", "<cmd>Telescope find_files<CR>", desc = "Fuzzy find files" },
-			{ "<leader>ig", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-			{ "<leader>ib", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
-			{ "<leader>ih", "<cmd>Telescope help_tags<cr>", desc = "Find help" },
-			{ "<leader>isg", "<cmd>Telescope grep_string<cr>", desc = "Find strings (grep)" },
-			{ "<leader>nn", "<cmd>Telescope notify<cr>", desc = "Find strings (grep)" },
-			{
-				"<leader>isc",
-				function()
-					local builtin = require("telescope.builtin")
-					local word = vim.fn.expand("<cWORD>")
-					builtin.grep_string({ search = word })
-				end,
-				desc = "Find Connected Words under cursor",
-			},
+			{ "<leader>ir", "<cmd>FzfLua oldfiles<CR>", desc = "Fuzzy find recent files" },
+			{ "<leader>if", "<cmd>FzfLua files<CR>", desc = "Fuzzy find files" },
+			{ "<leader>ig", "<cmd>FzfLua live_grep<cr>", desc = "Live grep" },
+			{ "<leader>ik", "<cmd>FzfLua keymaps<cr>", desc = "Live grep" },
+			{ "<leader>ib", "<cmd>FzfLua buffers<cr>", desc = "Find buffers" },
+			{ "<leader>ih", "<cmd>FzfLua help_tags<cr>", desc = "Find help" },
+			{ "<leader>isg", "<cmd>FzfLua grep<cr>", desc = "Find strings (grep)" },
+			{ "<leader>in", "<cmd>FzfLua profiles<cr>", desc = "Fzf Profiles" },
+			{ "<leader>isc", "<cmd>FzfLua grep_cWORD<cr>", desc = "Find Connected Words under cursor" },
 		},
 		after = function()
-			require("plugins.telescope")
+			require("plugins.fzflua")
+			require("fzf-lua").register_ui_select()
 		end,
 	},
 	----------------------------------------------------------------------------
@@ -158,30 +177,13 @@ require("lze").load({
 	----------------------------------------------------------------------------
 	{
 		"gitsigns.nvim",
-		event = { "BufReadPost", "BufNewFile" },
-		dep_of = { "telescope.nvim" },
-		after = function()
-			-- Require the file and execute ONLY the gitsigns config safely
-			local gitstuff = require("plugins.gitstuff")
-			gitstuff.setup_gitsigns()
-		end,
+		dep_of = "vim-fugitive",
 	},
 	{
 		"vim-fugitive",
-		cmd = { "Git", "G" },
+		event = { "BufReadPost", "BufNewFile" },
 		after = function()
-			local gitstuff = require("plugins.gitstuff")
-			gitstuff.setup_fugitive()
-		end,
-	},
-	{
-		"git-worktree.nvim",
-		on_require = { "telescope.nvim" },
-		cmd = { "Git", "G" },
-		-- Since it depends on telescope, load it when telescope loads or keybinds are pressed
-		after = function()
-			local gitstuff = require("plugins.gitstuff")
-			gitstuff.setup_worktree()
+			require("plugins.gitstuff")
 		end,
 	},
 	----------------------------------------------------------------------------
@@ -232,11 +234,12 @@ require("lze").load({
 		event = { "BufReadPre", "BufNewFile" },
 		dep_of = { "lazydev.nvim" },
 		after = function()
-			require("plugins.lspconfig")
+			require("lsp.lspconfig")
 		end,
 	},
 	{
 		"blink.cmp",
+		dep_of = "nvim-lspconfig",
 		event = "InsertEnter",
 		after = function()
 			require("plugins.blink")
@@ -258,14 +261,14 @@ require("lze").load({
 		"conform.nvim",
 		event = "BufWritePre",
 		after = function()
-			require("plugins.formatting")
+			require("lsp.formatting")
 		end,
 	},
 	{
 		"nvim-lint",
 		event = { "BufReadPost", "BufNewFile" },
 		after = function()
-			require("plugins.linting")
+			require("lsp.linting")
 		end,
 	},
 	{

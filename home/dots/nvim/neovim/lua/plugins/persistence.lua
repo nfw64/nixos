@@ -1,4 +1,11 @@
-require("persistence").setup({})
+require("persistence").setup({
+	options = {--[[<other options>,]]
+		"globals",
+	},
+	pre_save = function()
+		vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+	end,
+})
 
 -- stylua: ignore start
 vim.keymap.set("n", "<leader>qr", function() require("persistence").load() end, { desc = "Restore Session" })

@@ -22,7 +22,7 @@ vim.keymap.set("n", "<leader>re", "<cmd>e %<cr>", { desc = "Restart current buff
 --  Terminal   --
 -----------------
 
-vim.keymap.set("t", "jk", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-q><C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
 -----------------
 --   Cmdline   --
 -----------------
@@ -65,11 +65,11 @@ vim.keymap.set("n", "S", "<Nop>", { noremap = true, silent = true })
 --- marks management
 vim.keymap.set(
 	"n",
-	"'dA",
+	"<leader>mdA",
 	":delmarks! | delmarks A-Z 0-9 | wshada!<cr>",
 	{ noremap = true, silent = true, desc = "Delete ALL" }
 )
-vim.keymap.set("n", "'db", ":delmarks!<cr>", { noremap = true, silent = true, desc = "Delete local marks only" })
+vim.keymap.set("n", "<leader>mda", ":delmarks a-z", { noremap = true, silent = true, desc = "Delete local marks only" })
 
 -- quality of life
 vim.keymap.set("n", "=ap", "ma=ap'a") -- retain cursor position when indenting paragraph
@@ -99,8 +99,9 @@ vim.keymap.set("n", "x", '"_x', opts)
 vim.keymap.set({ "n", "t" }, "<Leader><CR>", "<Cmd>split<CR> <Cmd>term<CR>i", { desc = "Split Terminal" })
 
 -- move buffers
-vim.keymap.set("n", "<S-h>", ":bprevious<CR>", opts)
-vim.keymap.set("n", "<S-l>", ":bnext<CR>", opts)
+-- barbar.nvim
+-- vim.keymap.set("n", "<S-h>", ":bprevious<CR>", opts)
+-- vim.keymap.set("n", "<S-l>", ":bnext<CR>", opts)
 
 -- Replace the word cursor is on globally
 vim.keymap.set(
@@ -109,6 +110,8 @@ vim.keymap.set(
 	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
 	{ desc = "Replace word cursor is on globally" }
 )
+
+vim.keymap.set("n", "<leader>ss", [[:%s///gcI<Left><Left><Left><Left><Left>]], { desc = "Replace word" })
 
 vim.keymap.set(
 	"n",

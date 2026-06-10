@@ -2,36 +2,47 @@
 -- Author: lokesh-krishna
 -- MIT license, see LICENSE for more details.
 
+local mode = {
+	"mode",
+	fmt = function(str)
+		return "" .. str
+	end,
+}
+
+local diff = {
+	"diff",
+	colored = true,
+	symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+	-- cond = hide_in_width,
+}
+
+local filename = {
+	"filename",
+	file_status = true,
+	path = 0,
+}
+
+local branch = { "branch", icon = { "", color = { fg = "#A6D4DE" } }, "|" }
+
 require("lualine").setup({
+	icons_enabled = true,
 	options = {
-		theme = base16,
-		component_separators = "",
-		section_separators = { left = "", right = "" },
+		theme = auto,
+		component_separators = { left = "|", right = "|" },
+		section_separators = { left = "|", right = "" },
 	},
 	sections = {
-		lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-		lualine_b = {
-			"filename",
-			"branch",
-		},
-		lualine_c = {
-			"%=", --[[ add your center components here in place of this comment ]]
-		},
-    -- stylua: ignore
-		lualine_x = {{function() local ok, noice = pcall(require, "noice") if ok then return noice.api.status.command.get() end return "" end, cond = function() local ok, noice = pcall(require, "noice") return ok and noice.api.status.command.has() end},},
-		lualine_y = { "filetype", "progress" },
-		lualine_z = {
-			{ "location", separator = { right = "" }, left_padding = 2 },
+		lualine_a = { mode },
+		lualine_b = { branch },
+		lualine_c = { diff, filename },
+		lualine_x = {
+			{
+				require("noice").api.statusline.mode.get,
+				cond = require("noice").api.statusline.mode.has,
+				color = { fg = "#ff9e64" },
+			},
+			{ "fileformat" },
+			{ "filetype" },
 		},
 	},
-	inactive_sections = {
-		lualine_a = { "filename" },
-		lualine_b = {},
-		lualine_c = {},
-		lualine_x = {},
-		lualine_y = {},
-		lualine_z = { "location" },
-	},
-	tabline = {},
-	extensions = {},
 })

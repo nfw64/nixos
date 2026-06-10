@@ -1,3 +1,4 @@
+-- NOTE: LSP Custom Keybinds
 -- NOTE: LSP Keybinds
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -7,16 +8,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- Keymaps
 		-------------------------------------------------------------------------------------
 		opts.desc = "Show LSP references"
-		vim.keymap.set("n", "<leader>lr", "<cmd>Telescope lsp_references<CR>", opts)
+		vim.keymap.set("n", "<leader>lr", "<cmd>FzfLua lsp_references<CR>", opts)
 
 		opts.desc = "Go to declaration"
 		vim.keymap.set("n", "<leader>lK", vim.lsp.buf.declaration, opts)
 
 		opts.desc = "Show LSP definitions"
-		vim.keymap.set("n", "<leader>ldj", "<cmd>Telescope lsp_definitions<CR>", opts)
+		vim.keymap.set("n", "<leader>ldj", "<cmd>FzfLua lsp_definitions<CR>", opts)
 
 		opts.desc = "Show LSP implementations"
-		vim.keymap.set("n", "<leader>li", "<cmd>Telescope lsp_implementations<CR>", opts)
+		vim.keymap.set("n", "<leader>li", "<cmd>FzfLua lsp_implementations<CR>", opts)
 
 		opts.desc = "Show LSP type definitions"
 		vim.keymap.set("n", "<leader>ldk", "<cmd>Telescope lsp_type_definitions<CR>", opts)
@@ -28,7 +29,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
 
 		opts.desc = "Show buffer diagnostics"
-		vim.keymap.set("n", "<leader>lwb", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
+		vim.keymap.set("n", "<leader>lwb", "<cmd>FzfLua diagnostics_document<CR>", opts)
 
 		opts.desc = "Show line diagnostics"
 		vim.keymap.set("n", "<leader>lwl", vim.diagnostic.open_float, opts)
@@ -52,9 +53,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local opts = { silent = true }
 opts.desc = "Restart LSP"
-vim.keymap.set("n", "<leader>lms", "<cmd>lsp restart<CR>", opts)
+vim.keymap.set("n", "<leader>lmr", "<cmd>lsp restart<CR>", opts)
 opts.desc = "Stop LSP"
-vim.keymap.set("n", "<leader>lmx", "<cmd>lsp stop<CR>", opts)
+vim.keymap.set("n", "<leader>lms", "<cmd>lsp stop<CR>", opts)
 opts.desc = "Disable LSP"
 vim.keymap.set("n", "<leader>lmd", "<cmd>lsp disable<CR>", opts)
 opts.desc = "Enable LSP"
@@ -68,41 +69,30 @@ local signs = {
 	[vim.diagnostic.severity.HINT] = "󰠠 ",
 	[vim.diagnostic.severity.INFO] = " ",
 }
-
 -- update diagnostic config function
 vim.diagnostic.config({
 	signs = { text = signs },
 	virtual_text = true,
-	underline = true, -- Always on
+	underline = true,
 	update_in_insert = false,
 	float = {
 		focusable = false,
 		style = "minimal",
-		border = "rounded",
+		border = "single",
 		source = true,
 	},
 })
 
--- <leader>lx toggle for virtual text (no hover changes)
+-- toggle for virtual text
 vim.keymap.set("n", "<leader>lx", function()
 	local current = vim.diagnostic.config().virtual_text
-	vim.diagnostic.config({
-		virtual_text = not current, -- toggle true/false
-	})
-	vim.notify(
-		"Diagnostics virtual text " .. (not current and "enabled" or "disabled"),
-		vim.log.levels.INFO,
-		{ title = "Diagnostics" }
-	)
-end, { desc = "Toggle diagnostic virtual text" })
+	vim.diagnostic.config({ virtual_text = not current })
+end, { desc = "Toggle LSP virtual text" })
 
 -- NOTE: Setup servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local ok, blink = pcall(require, "blink.cmp")
-if ok then
-	capabilities = blink.get_lsp_capabilities(capabilities)
-end
+-- blink cmp
+capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 -- Global LSP settings (applied to all servers)
 vim.lsp.config("*", {
@@ -110,7 +100,6 @@ vim.lsp.config("*", {
 })
 
 -- Configure and enable LSP servers
-
 -- lua_ls
 vim.lsp.config("lua_ls", {
 	settings = {
@@ -121,17 +110,52 @@ vim.lsp.config("lua_ls", {
 			completion = {
 				callSnippet = "Replace",
 			},
-			-- workspace = {
-			--     library = {
-			--         [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-			--         [vim.fn.stdpath("config") .. "/lua"] = true,
-			--     },
-			-- },
+			workspace = {
+				library = {
+					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+					[vim.fn.stdpath("config") .. "/lua"] = true,
+				},
+			},
 		},
 	},
 })
 
+-- css
+vim.lsp.config("cssls", {
+	filetypes = { "css", "scss", "less" },
+	init_options = { provideFormatter = true },
+	single_file_support = true,
+	settings = {
+		css = {
+			lint = {
+				unknownAtRules = "ignore",
+			},
+			validate = true,
+		},
+		scss = {
+			lint = {
+				unknownAtRules = "ignore",
+			},
+			validate = true,
+		},
+		less = {
+			lint = {
+				unknownAtRules = "ignore",
+			},
+			validate = true,
+		},
+	},
+})
+
+vim.lsp.config("qml-ls", {
+	cmd = { "qml-language-server" },
+	filetypes = { "qml", "qmljs" },
+	root_markers = { ".git" },
+})
+
 vim.lsp.enable({
 	"lua_ls",
-	"nil_ls",
+	"qml-ls",
+	"nil",
+	"bash-language-server",
 })

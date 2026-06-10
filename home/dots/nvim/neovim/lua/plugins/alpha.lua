@@ -37,12 +37,14 @@ dashboard.section.header.val = {
 
 dashboard.section.buttons.val = {
 	dashboard.button("n", "  > New file", ":ene <BAR> startinsert <CR>"),
-	dashboard.button("f", "󰈞  > Find file", ":cd $HOME/Workspace | Telescope find_files<CR>"),
 	dashboard.button("r", "  > Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
 	---@diagnostic disable-next-line: param-type-mismatch
 	dashboard.button("s", "  > Settings", function()
-		vim.cmd("cd " .. vim.fn.stdpath("config"))
-		vim.cmd("Telescope find_files cwd=" .. vim.fn.stdpath("config") .. " prompt_title=Config\\ Files")
+		vim.uv.chdir(vim.fn.stdpath("config"))
+		require("fzf-lua").files({
+			cwd = vim.fn.stdpath("config"),
+			prompt = "Neovim Config> ",
+		})
 	end),
 	dashboard.button("q", "󰈆  > Quit NVIM", ":qa<CR>"),
 }

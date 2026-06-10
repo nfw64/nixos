@@ -5,7 +5,7 @@ require("blink.cmp").setup({
 
 		["<Tab>"] = { "accept", "select_next", "fallback" },
 		["<C-l>"] = { "accept", "fallback" },
-		["<C-CR>"] = { "accept", "fallback" },
+		["<C-cr>"] = { "accept", "fallback" },
 
 		["<C-j>"] = { "select_next", "snippet_forward", "fallback" },
 		["<C-k>"] = { "select_prev", "snippet_backward", "fallback" },
@@ -18,14 +18,7 @@ require("blink.cmp").setup({
 		enabled = true,
 		keymap = { preset = "inherit" }, -- Ensures cmdline defaults don't conflict
 		completion = {
-			menu = {
-				---@diagnostic disable-next-line: unused-local
-				auto_show = function(ctx)
-					return vim.fn.getcmdtype() == ":"
-					-- enable for inputs as well, with:
-					-- or vim.fn.getcmdtype() == '@'
-				end,
-			},
+			menu = { auto_show = true },
 		},
 	},
 

@@ -9,7 +9,6 @@ vim.opt.relativenumber = true
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.shiftwidth = 2
-vim.opt.showtabline = 2
 vim.opt.smartindent = true
 vim.opt.softtabstop = 2
 vim.opt.tabstop = 2

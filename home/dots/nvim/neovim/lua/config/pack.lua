@@ -1,11 +1,9 @@
 -- NOTE: early pack hooks
 local modules = {
 	"plugins.colorscheme",
-	"plugins.lualine",
 	"plugins.tmux",
 	"plugins.mini",
 	"plugins.whichkey",
-	"plugins.notify",
 }
 
 PckAdd({
@@ -13,9 +11,7 @@ PckAdd({
 	{ src = "BirdeeHub/lze" }, -- lazy load library
 	{ src = "kevinhwang91/promise-async" }, --nvim-ufo dependency
 	{ src = "MunifTanjim/nui.nvim" }, -- ui library
-	{ src = "nvim-lua/plenary.nvim" }, --(used by telescope & git_worktree.nvim)
-	{ src = "nvim-tree/nvim-web-devicons" },
-	{ src = "rcarriga/nvim-notify" },
+	{ src = "nvim-tree/nvim-web-devicons" }, -- icons
 
 	-- Core
 	{ src = "christoomey/vim-tmux-navigator" },
@@ -23,8 +19,6 @@ PckAdd({
 
 	-- ui stu
 	{ src = "folke/which-key.nvim" },
-	{ src = "nvim-lualine/lualine.nvim" },
-	{ src = "scinac/vim-norm-trainer.nvim" },
 })
 
 for _, module in ipairs(modules) do

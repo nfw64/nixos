@@ -5,7 +5,7 @@ require("mini.indentscope").setup({
 
 vim.g.miniindentscope_disable = false
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "alpha", "dashboard", "help", "trouble", "lazy", "mason" },
+	pattern = { "alpha", "dropbar_menu", "dashboard", "help", "trouble", "lazy", "mason" },
 	callback = function()
 		vim.b.miniindentscope_disable = true
 	end,

@@ -9,10 +9,10 @@ kitty +kitten themes --reload-in=all Matugen &
 current=$(dconf read /org/gnome/desktop/interface/color-scheme | tr -d "'")
 
 if [[ "$current" == "prefer-dark" ]]; then
-    dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-    dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3-dark'" &
+  dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+  dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3-dark'" &
 else
-    dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
-    dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3'" &
+  dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
+  dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3'" &
 
 fi

@@ -16,16 +16,17 @@ wk.add({
 
 	-- Structure: { LHS, group = "NAME", icon = { icon = "ICON", color = "COLOR" } }
   -- stylua: ignore start
+	{ "<leader><tab>", group = "tabs", icon = { icon = "󰓩 ", color = "cyan" }, expand = function() return require("which-key.extras").expand.buf() end,},
 	{ "<leader>\\", group = "explorer", icon = { icon = "󰣞", color = "red" } },
 	{ "<leader>c", group = "code", icon = { icon = "", color = "orange" } },
-	{ "<leader><tab>", group = "tabs", icon = { icon = "󰓩 ", color = "cyan" }, expand = function() return require("which-key.extras").expand.buf() end,},
 	{ "<leader>e", group = "files", icon = { icon = "", color = "red" } },
 	{ "<leader>f", group = "text", icon = { icon = "󰦨", color = "green" } },
 	{ "<leader>g", group = "git", icon = { icon = "", color = "purple" } },
 	{ "<leader>gh", group = "hunks", icon = { icon = "", color = "purple" } },
+	{ "<leader>i", group = "pickers", icon = { icon = "", color = "red" } },
 	{ "<leader>l", group = "lsp", icon = { icon = "", color = "azure" } },
 	{ "<leader>lm", group = "lsp/management", icon = { icon = "", color = "red" } },
-	{ "<leader>i", group = "pickers", icon = { icon = "", color = "red" } },
+	{ "<leader>m", group = "marks/management", icon = { icon = "", color = "red" } },
 	{ "<leader>n", group = "noice/messages", icon = { icon = "󰈸", color = "orange" } },
 	{ "<leader>p", group = "picker", icon = { icon = "", color = "green" } },
 	{ "<leader>q", group = "quit/session", icon = { icon = "󰍂", color = "red" } },
