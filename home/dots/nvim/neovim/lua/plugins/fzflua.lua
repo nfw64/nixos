@@ -5,7 +5,7 @@ fzf.setup({
 
 	winopts = {
 		height = 0.50,
-		width = 0.65,
+		width = 0.95,
 		row = 0.50,
 		col = 0.50,
 		border = "single",

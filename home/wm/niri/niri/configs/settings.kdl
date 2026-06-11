@@ -23,7 +23,7 @@ hotkey-overlay {
 
 cursor {
   xcursor-theme "Firefly"
-  xcursor-size 64
+  xcursor-size 72
   hide-when-typing
 }
 

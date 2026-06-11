@@ -9,7 +9,6 @@
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
-
     };
     minegrub-world-sel-theme = {
       url = "github:Lxtharia/minegrub-world-sel-theme";
@@ -27,49 +26,46 @@
     qml-language-server.url = "github:cushycush/qml-language-server";
   };
 
-  outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      home-manager,
-      ...
-    }:
-
-    let
-      sharedOverlays = [
-        (final: prev: {
-          pkgsi686Linux = prev.pkgsi686Linux // {
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  }: let
+    sharedOverlays = [
+      (final: prev: {
+        pkgsi686Linux =
+          prev.pkgsi686Linux
+          // {
             openldap = prev.pkgsi686Linux.openldap.overrideAttrs (oldAttrs: {
               doCheck = false;
             });
           };
-        })
+      })
+    ];
+  in {
+    nixosConfigurations.nixos-myriad = nixpkgs.lib.nixosSystem {
+      specialArgs = {inherit self inputs;};
+      system = "x86_64-linux";
+      modules = [
+        ./hosts/default/configuration.nix
+        {nixpkgs.overlays = sharedOverlays;}
+        home-manager.nixosModules.home-manager
+        inputs.minegrub-world-sel-theme.nixosModules.default
+        inputs.nix-index-database.nixosModules.default
       ];
-    in
-
-    {
-      nixosConfigurations.nixos-myriad = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit self inputs; };
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/default/configuration.nix
-          { nixpkgs.overlays = sharedOverlays; }
-          home-manager.nixosModules.home-manager
-          inputs.minegrub-world-sel-theme.nixosModules.default
-          inputs.nix-index-database.nixosModules.default
-        ];
-      };
-      homeConfigurations."myriad" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "x86_64-linux";
-          config.allowUnfree = true;
-          overlays = sharedOverlays;
-        };
-
-        extraSpecialArgs = { inherit self inputs; };
-        modules = [
-          ./hosts/default/home.nix
-        ];
-      };
     };
+    homeConfigurations."myriad" = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+        overlays = sharedOverlays;
+      };
+
+      extraSpecialArgs = {inherit self inputs;};
+      modules = [
+        ./hosts/default/home.nix
+      ];
+    };
+  };
 }

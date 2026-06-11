@@ -23,14 +23,11 @@ PckAdd({
 	{ src = "romus204/tree-sitter-manager.nvim" },
 	-- UI related
 	{ src = "nvim-lualine/lualine.nvim" },
-	{ src = "https://github.com/nvzone/showkeys" },
-	{ src = "https://github.com/Bekaboo/dropbar.nvim" },
-
-	{ src = "NvChad/nvim-colorizer.lua" },
+	{ src = "NvChad/nvim-colorizer.lua" }, -- hex or rgb color in buff
 	{ src = "MeanderingProgrammer/render-markdown.nvim" },
-	{ src = "https://github.com/declancm/cinnamon.nvim" },
-	{ src = "folke/noice.nvim" },
-	{ src = "rcarriga/nvim-notify" },
+	{ src = "https://github.com/declancm/cinnamon.nvim" }, -- ctrl d/u animations
+	{ src = "folke/noice.nvim" }, -- yeah
+	{ src = "rcarriga/nvim-notify" }, -- noice dependency
 
 	-- git stuff
 	{ src = "lewis6991/gitsigns.nvim" },
@@ -42,15 +39,7 @@ PckAdd({
 	{ src = "goolord/alpha-nvim" },
 	{ src = "m4xshen/hardtime.nvim" },
 	{ src = "scinac/vim-norm-trainer.nvim" },
-
-	-- unused
-	-- { src = "https://github.com/romgrk/barbar.nvim" },
-	-- {
-	-- 	"barbar.nvim",
-	-- 	after = function()
-	-- 		require("plugins.barbar")
-	-- 	end,
-	-- },
+	{ src = "https://github.com/sphamba/smear-cursor.nvim" },
 }, {
 	-- prevent packadd! or packadd like this to allow on_require handler to load plugin spec
 	load = function() end,
@@ -62,13 +51,6 @@ require("lze").load({
 		cmd = { "NormGame" },
 	},
 	{
-		"dropbar.nvim",
-		lazy = false,
-		after = function()
-			require("plugins.dropbar")
-		end,
-	},
-	{
 		"hardtime.nvim",
 		event = { "BufReadPre", "BufNewFile" },
 		after = function()
@@ -76,8 +58,8 @@ require("lze").load({
 				max_count = 5,
 				disable_mouse = false,
 				disabled_filetypes = {
-					["nvim-pack"] = false,
-					["drop*"] = false,
+					["nvim-pack"] = true,
+					["drop*"] = true,
 				},
 			})
 		end,
@@ -87,6 +69,13 @@ require("lze").load({
 		event = { "BufReadPre", "BufNewFile" },
 		after = function()
 			require("plugins.cinnamon")
+		end,
+	},
+	{
+		"smear-cursor.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		after = function()
+			require("plugins.smear")
 		end,
 	},
 	{
@@ -151,7 +140,6 @@ require("lze").load({
 			require("plugins.oil")
 		end,
 	},
-
 	{
 		"fzf-lua",
 		dep_of = "alpha-nvim",

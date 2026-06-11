@@ -20,6 +20,10 @@
       "rev": "b127d48bf8e9ac9cf41f6e0fbead317503f76558",
       "src": "https://github.com/saghen/blink.lib"
     },
+    "buffer_manager.nvim": {
+      "rev": "a0ac2db39c8bd4a2b6ca897f38c88770f90d9323",
+      "src": "https://github.com/j-morano/buffer_manager.nvim"
+    },
     "cinnamon.nvim": {
       "rev": "450cb3247765fed7871b41ef4ce5fa492d834215",
       "src": "https://github.com/declancm/cinnamon.nvim"
@@ -131,6 +135,10 @@
     "showkeys": {
       "rev": "cb0a50296f11f1e585acffba8c253b9e8afc1f84",
       "src": "https://github.com/nvzone/showkeys"
+    },
+    "smear-cursor.nvim": {
+      "rev": "9e9378d6ee34bb3782e0e8c63d9ec8ca618b479b",
+      "src": "https://github.com/sphamba/smear-cursor.nvim"
     },
     "todo-comments.nvim": {
       "rev": "31e3c38ce9b29781e4422fc0322eb0a21f4e8668",

@@ -84,7 +84,7 @@ vim.diagnostic.config({
 })
 
 -- toggle for virtual text
-vim.keymap.set("n", "<leader>lx", function()
+vim.keymap.set("n", "<leader>lmx", function()
 	local current = vim.diagnostic.config().virtual_text
 	vim.diagnostic.config({ virtual_text = not current })
 end, { desc = "Toggle LSP virtual text" })
@@ -147,15 +147,21 @@ vim.lsp.config("cssls", {
 	},
 })
 
-vim.lsp.config("qml-ls", {
+vim.lsp.config("qml-language-server", {
 	cmd = { "qml-language-server" },
-	filetypes = { "qml", "qmljs" },
+	filetypes = { "qml" },
+	root_markers = { { "qmldir", "shell.qml" } },
+})
+
+vim.lsp.config("bash-language-server", {
+	cmd = { "bash-language-servre" },
+	filetypes = { "sh", "bash" },
 	root_markers = { ".git" },
 })
 
 vim.lsp.enable({
 	"lua_ls",
-	"qml-ls",
+	"qml-language-server",
 	"nil",
-	"bash-language-server",
+	"bashls",
 })

@@ -50,7 +50,7 @@ Scope {
       required property var modelData
       screen: modelData
 
-      visible: root.popupVisible
+      visible: root.popupVisible || mainRect.opacity > 0
       focusable: true
       color: "transparent"
 
@@ -67,348 +67,398 @@ Scope {
         right: true
       }
 
-      // Backdrop
-      MouseArea {
-        anchors.fill: parent
-        onClicked: root.popupVisible = false
-
-        Rectangle {
-          anchors.fill: parent
-          color: root.theme.bgOverlay
-        }
-      }
-
-      // Media panel
       Rectangle {
-        anchors.centerIn: parent
-        width: 420
-        height: contentCol.implicitHeight + 48
-        radius: 16
-        color: root.theme.bgBase
-        border.color: root.theme.bgBorder
-        border.width: 1
+        id: mainRect
+        anchors.fill: parent
+        color: "transparent"
+        opacity: 0
+        visible: popupVisible || opacity > 0
 
+        states: [
+        State {
+          name: "open"
+          when: popupVisible
+          PropertyChanges {
+            target: mainRect
+            opacity: 1
+          }
+        },
+        State {
+          name: "closed"
+          when: !popupVisible
+          PropertyChanges {
+            target: mainRect
+            opacity: 0
+          }
+        }
+        ]
+
+        transitions: [
+        Transition {
+          from: "closed"; to: "open"
+          ParallelAnimation {
+            NumberAnimation {
+              target: mainRect
+              property: "opacity"
+              duration: 100
+            }
+          }
+        },
+        Transition {
+          from: "open"; to: "closed"
+          ParallelAnimation {
+            NumberAnimation {
+              target: mainRect
+              property: "opacity"
+              duration: 100
+            }
+          }
+        }
+        ]
+
+        // Backdrop
         MouseArea {
           anchors.fill: parent
-          onClicked: event => event.accepted = true
+          onClicked: root.popupVisible = false
+
+          Rectangle {
+            anchors.fill: parent
+            color: root.theme.bgOverlay
+          }
         }
 
-        Keys.onEscapePressed: root.popupVisible = false
-        Keys.onSpacePressed: {
-          if (root.activePlayer) root.activePlayer.togglePlaying();
-        }
+        // Media panel
+        Rectangle {
+          anchors.centerIn: parent
+          width: 420
+          height: contentCol.implicitHeight + 48
+          radius: 16
+          color: root.theme.bgBase
+          border.color: root.theme.bgBorder
+          border.width: 1
 
-        ColumnLayout {
-          id: contentCol
-          anchors.fill: parent
-          anchors.margins: 24
-          spacing: 16
-
-          // No player state
-          Text {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignHCenter
-            text: "  No media playing"
-            color: root.theme.textMuted
-            font.pixelSize: 14
-            font.family: "Hack Nerd Font"
-            horizontalAlignment: Text.AlignHCenter
-            visible: root.activePlayer === null
+          MouseArea {
+            anchors.fill: parent
+            onClicked: event => event.accepted = true
           }
 
-          // Album art + track info
-          RowLayout {
-            Layout.fillWidth: true
+          Keys.onEscapePressed: root.popupVisible = false
+          Keys.onSpacePressed: {
+            if (root.activePlayer) root.activePlayer.togglePlaying();
+          }
+
+          ColumnLayout {
+            id: contentCol
+            anchors.fill: parent
+            anchors.margins: 24
             spacing: 16
-            visible: root.activePlayer !== null
 
-            // Album art
-            Rectangle {
-              Layout.preferredWidth: 120
-              Layout.preferredHeight: 120
-              radius: 12
-              color: root.theme.bgSurface
-              clip: true
+            // No player state
+            Text {
+              Layout.fillWidth: true
+              Layout.alignment: Qt.AlignHCenter
+              text: "  No media playing"
+              color: root.theme.textMuted
+              font.pixelSize: 14
+              font.family: "Hack Nerd Font"
+              horizontalAlignment: Text.AlignHCenter
+              visible: root.activePlayer === null
+            }
 
-              Image {
-                anchors.fill: parent
-                source: root.activePlayer ? root.activePlayer.trackArtUrl : ""
-                fillMode: Image.PreserveAspectCrop
-                sourceSize.width: 120
-                sourceSize.height: 120
-                visible: status === Image.Ready
+            // Album art + track info
+            RowLayout {
+              Layout.fillWidth: true
+              spacing: 16
+              visible: root.activePlayer !== null
 
-                Accessible.role: Accessible.StaticText
-                Accessible.name: "Album artwork"
+              // Album art
+              Rectangle {
+                Layout.preferredWidth: 120
+                Layout.preferredHeight: 120
+                radius: 12
+                color: root.theme.bgSurface
+                clip: true
+
+                Image {
+                  anchors.fill: parent
+                  source: root.activePlayer ? root.activePlayer.trackArtUrl : ""
+                  fillMode: Image.PreserveAspectCrop
+                  sourceSize.width: 120
+                  sourceSize.height: 120
+                  visible: status === Image.Ready
+
+                  Accessible.role: Accessible.StaticText
+                  Accessible.name: "Album artwork"
+                }
+
+                // Fallback icon
+                Text {
+                  anchors.centerIn: parent
+                  text: "󰎆"
+                  color: root.theme.textMuted
+                  font.pixelSize: 40
+                  font.family: "Hack Nerd Font"
+                  visible: !root.activePlayer || root.activePlayer.trackArtUrl === ""
+                }
               }
 
-              // Fallback icon
-              Text {
-                anchors.centerIn: parent
-                text: "󰎆"
-                color: root.theme.textMuted
-                font.pixelSize: 40
-                font.family: "Hack Nerd Font"
-                visible: !root.activePlayer || root.activePlayer.trackArtUrl === ""
+              // Track info
+              ColumnLayout {
+                Layout.fillWidth: true
+                spacing: 4
+
+                Text {
+                  text: root.activePlayer ? root.activePlayer.trackTitle : ""
+                  color: root.theme.textPrimary
+                  font.pixelSize: 15
+                  font.family: "Hack Nerd Font"
+                  font.bold: true
+                  elide: Text.ElideRight
+                  Layout.fillWidth: true
+
+                  Accessible.role: Accessible.StaticText
+                  Accessible.name: "Track: " + text
+                }
+
+                Text {
+                  text: root.activePlayer ? root.activePlayer.trackArtist : ""
+                  color: root.theme.textSecondary
+                  font.pixelSize: 13
+                  font.family: "Hack Nerd Font"
+                  elide: Text.ElideRight
+                  Layout.fillWidth: true
+                  visible: text !== ""
+
+                  Accessible.role: Accessible.StaticText
+                  Accessible.name: "Artist: " + text
+                }
+
+                Text {
+                  text: root.activePlayer ? root.activePlayer.trackAlbum : ""
+                  color: root.theme.textMuted
+                  font.pixelSize: 12
+                  font.family: "Hack Nerd Font"
+                  elide: Text.ElideRight
+                  Layout.fillWidth: true
+                  visible: text !== ""
+
+                  Accessible.role: Accessible.StaticText
+                  Accessible.name: "Album: " + text
+                }
+
+                Item { Layout.fillHeight: true }
+
+                // Player identity
+                Text {
+                  text: {
+                    if (!root.activePlayer) return "";
+                    const name = root.activePlayer.identity || "";
+                    return name !== "" ? "  " + name : "";
+                  }
+                  color: root.theme.textMuted
+                  font.pixelSize: 11
+                  font.family: "Hack Nerd Font"
+                  visible: text !== ""
+                }
               }
             }
 
-            // Track info
+            // Progress bar
             ColumnLayout {
               Layout.fillWidth: true
               spacing: 4
+              visible: root.activePlayer !== null && root.activePlayer.length > 0
 
-              Text {
-                text: root.activePlayer ? root.activePlayer.trackTitle : ""
-                color: root.theme.textPrimary
-                font.pixelSize: 15
-                font.family: "Hack Nerd Font"
-                font.bold: true
-                elide: Text.ElideRight
-                Layout.fillWidth: true
-
-                Accessible.role: Accessible.StaticText
-                Accessible.name: "Track: " + text
-              }
-
-              Text {
-                text: root.activePlayer ? root.activePlayer.trackArtist : ""
-                color: root.theme.textSecondary
-                font.pixelSize: 13
-                font.family: "Hack Nerd Font"
-                elide: Text.ElideRight
-                Layout.fillWidth: true
-                visible: text !== ""
-
-                Accessible.role: Accessible.StaticText
-                Accessible.name: "Artist: " + text
-              }
-
-              Text {
-                text: root.activePlayer ? root.activePlayer.trackAlbum : ""
-                color: root.theme.textMuted
-                font.pixelSize: 12
-                font.family: "Hack Nerd Font"
-                elide: Text.ElideRight
-                Layout.fillWidth: true
-                visible: text !== ""
-
-                Accessible.role: Accessible.StaticText
-                Accessible.name: "Album: " + text
-              }
-
-              Item { Layout.fillHeight: true }
-
-              // Player identity
-              Text {
-                text: {
-                  if (!root.activePlayer) return "";
-                  const name = root.activePlayer.identity || "";
-                  return name !== "" ? "  " + name : "";
-                }
-                color: root.theme.textMuted
-                font.pixelSize: 11
-                font.family: "Hack Nerd Font"
-                visible: text !== ""
-              }
-            }
-          }
-
-          // Progress bar
-          ColumnLayout {
-            Layout.fillWidth: true
-            spacing: 4
-            visible: root.activePlayer !== null && root.activePlayer.length > 0
-
-            // Clickable progress bar
-            Rectangle {
-              Layout.fillWidth: true
-              height: 6
-              radius: 3
-              color: root.theme.bgSurface
-
-              Accessible.role: Accessible.ProgressBar
-              Accessible.name: "Playback progress"
-
+              // Clickable progress bar
               Rectangle {
-                width: root.activePlayer && root.activePlayer.length > 0
+                Layout.fillWidth: true
+                height: 6
+                radius: 3
+                color: root.theme.bgSurface
+
+                Accessible.role: Accessible.ProgressBar
+                Accessible.name: "Playback progress"
+
+                Rectangle {
+                  width: root.activePlayer && root.activePlayer.length > 0
                   ? parent.width * (root.activePlayer.position / root.activePlayer.length)
                   : 0
-                height: parent.height
-                radius: 3
+                  height: parent.height
+                  radius: 3
+                  color: root.theme.accentPrimary
+
+                  Behavior on width {
+                    NumberAnimation { duration: 200 }
+                  }
+                }
+
+                MouseArea {
+                  anchors.fill: parent
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: mouse => {
+                    if (root.activePlayer && root.activePlayer.length > 0) {
+                      const ratio = mouse.x / width;
+                      root.activePlayer.position = ratio * root.activePlayer.length;
+                    }
+                  }
+                }
+              }
+
+              // Time labels
+              RowLayout {
+                Layout.fillWidth: true
+
+                Text {
+                  text: formatTime(root.activePlayer ? root.activePlayer.position : 0)
+                  color: root.theme.textMuted
+                  font.pixelSize: 10
+                  font.family: "Hack Nerd Font"
+                }
+
+                Item { Layout.fillWidth: true }
+
+                Text {
+                  text: formatTime(root.activePlayer ? root.activePlayer.length : 0)
+                  color: root.theme.textMuted
+                  font.pixelSize: 10
+                  font.family: "Hack Nerd Font"
+                }
+              }
+            }
+
+            // Controls
+            RowLayout {
+              Layout.alignment: Qt.AlignHCenter
+              spacing: 20
+              visible: root.activePlayer !== null
+
+              // Previous
+              Rectangle {
+                width: 40
+                height: 40
+                radius: 20
+                color: prevHover.containsMouse ? root.theme.bgHover : "transparent"
+
+                Accessible.role: Accessible.Button
+                Accessible.name: "Previous track"
+
+                Text {
+                  anchors.centerIn: parent
+                  text: "󰒮"
+                  color: root.theme.textPrimary
+                  font.pixelSize: 20
+                  font.family: "Hack Nerd Font"
+                }
+
+                MouseArea {
+                  id: prevHover
+                  anchors.fill: parent
+                  hoverEnabled: true
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: { if (root.activePlayer) root.activePlayer.previous(); }
+                }
+              }
+
+              // Play/Pause
+              Rectangle {
+                width: 48
+                height: 48
+                radius: 24
                 color: root.theme.accentPrimary
 
-                Behavior on width {
-                  NumberAnimation { duration: 200 }
+                Accessible.role: Accessible.Button
+                Accessible.name: root.activePlayer && root.activePlayer.isPlaying ? "Pause" : "Play"
+
+                Text {
+                  anchors.centerIn: parent
+                  text: root.activePlayer && root.activePlayer.isPlaying ? "󰏤" : "󰐊"
+                  color: root.theme.bgBase
+                  font.pixelSize: 24
+                  font.family: "Hack Nerd Font"
+                }
+
+                MouseArea {
+                  anchors.fill: parent
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: { if (root.activePlayer) root.activePlayer.togglePlaying(); }
                 }
               }
 
-              MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: mouse => {
-                  if (root.activePlayer && root.activePlayer.length > 0) {
-                    const ratio = mouse.x / width;
-                    root.activePlayer.position = ratio * root.activePlayer.length;
-                  }
+              // Next
+              Rectangle {
+                width: 40
+                height: 40
+                radius: 20
+                color: nextHover.containsMouse ? root.theme.bgHover : "transparent"
+
+                Accessible.role: Accessible.Button
+                Accessible.name: "Next track"
+
+                Text {
+                  anchors.centerIn: parent
+                  text: "󰒭"
+                  color: root.theme.textPrimary
+                  font.pixelSize: 20
+                  font.family: "Hack Nerd Font"
+                }
+
+                MouseArea {
+                  id: nextHover
+                  anchors.fill: parent
+                  hoverEnabled: true
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: { if (root.activePlayer) root.activePlayer.next(); }
                 }
               }
             }
 
-            // Time labels
+            // Volume slider
             RowLayout {
               Layout.fillWidth: true
+              spacing: 10
+              visible: root.activePlayer !== null
 
               Text {
-                text: formatTime(root.activePlayer ? root.activePlayer.position : 0)
+                text: root.activePlayer && root.activePlayer.volume <= 0 ? "󰖁" :
+                root.activePlayer && root.activePlayer.volume < 0.5 ? "󰖀" : "󰕾"
                 color: root.theme.textMuted
-                font.pixelSize: 10
+                font.pixelSize: 16
                 font.family: "Hack Nerd Font"
               }
-
-              Item { Layout.fillWidth: true }
-
-              Text {
-                text: formatTime(root.activePlayer ? root.activePlayer.length : 0)
-                color: root.theme.textMuted
-                font.pixelSize: 10
-                font.family: "Hack Nerd Font"
-              }
-            }
-          }
-
-          // Controls
-          RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: 20
-            visible: root.activePlayer !== null
-
-            // Previous
-            Rectangle {
-              width: 40
-              height: 40
-              radius: 20
-              color: prevHover.containsMouse ? root.theme.bgHover : "transparent"
-
-              Accessible.role: Accessible.Button
-              Accessible.name: "Previous track"
-
-              Text {
-                anchors.centerIn: parent
-                text: "󰒮"
-                color: root.theme.textPrimary
-                font.pixelSize: 20
-                font.family: "Hack Nerd Font"
-              }
-
-              MouseArea {
-                id: prevHover
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: { if (root.activePlayer) root.activePlayer.previous(); }
-              }
-            }
-
-            // Play/Pause
-            Rectangle {
-              width: 48
-              height: 48
-              radius: 24
-              color: root.theme.accentPrimary
-
-              Accessible.role: Accessible.Button
-              Accessible.name: root.activePlayer && root.activePlayer.isPlaying ? "Pause" : "Play"
-
-              Text {
-                anchors.centerIn: parent
-                text: root.activePlayer && root.activePlayer.isPlaying ? "󰏤" : "󰐊"
-                color: root.theme.bgBase
-                font.pixelSize: 24
-                font.family: "Hack Nerd Font"
-              }
-
-              MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: { if (root.activePlayer) root.activePlayer.togglePlaying(); }
-              }
-            }
-
-            // Next
-            Rectangle {
-              width: 40
-              height: 40
-              radius: 20
-              color: nextHover.containsMouse ? root.theme.bgHover : "transparent"
-
-              Accessible.role: Accessible.Button
-              Accessible.name: "Next track"
-
-              Text {
-                anchors.centerIn: parent
-                text: "󰒭"
-                color: root.theme.textPrimary
-                font.pixelSize: 20
-                font.family: "Hack Nerd Font"
-              }
-
-              MouseArea {
-                id: nextHover
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: { if (root.activePlayer) root.activePlayer.next(); }
-              }
-            }
-          }
-
-          // Volume slider
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: 10
-            visible: root.activePlayer !== null
-
-            Text {
-              text: root.activePlayer && root.activePlayer.volume <= 0 ? "󰖁" :
-                    root.activePlayer && root.activePlayer.volume < 0.5 ? "󰖀" : "󰕾"
-              color: root.theme.textMuted
-              font.pixelSize: 16
-              font.family: "Hack Nerd Font"
-            }
-
-            Rectangle {
-              Layout.fillWidth: true
-              height: 4
-              radius: 2
-              color: root.theme.bgSurface
-
-              Accessible.role: Accessible.ProgressBar
-              Accessible.name: "Volume: " + Math.round((root.activePlayer ? root.activePlayer.volume : 0) * 100) + "%"
 
               Rectangle {
-                width: root.activePlayer ? parent.width * Math.min(root.activePlayer.volume, 1.0) : 0
-                height: parent.height
+                Layout.fillWidth: true
+                height: 4
                 radius: 2
-                color: root.theme.accentCyan
-              }
+                color: root.theme.bgSurface
 
-              MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: mouse => {
-                  if (root.activePlayer) {
-                    root.activePlayer.volume = Math.max(0, Math.min(1.0, mouse.x / width));
+                Accessible.role: Accessible.ProgressBar
+                Accessible.name: "Volume: " + Math.round((root.activePlayer ? root.activePlayer.volume : 0) * 100) + "%"
+
+                Rectangle {
+                  width: root.activePlayer ? parent.width * Math.min(root.activePlayer.volume, 1.0) : 0
+                  height: parent.height
+                  radius: 2
+                  color: root.theme.accentCyan
+                }
+
+                MouseArea {
+                  anchors.fill: parent
+                  cursorShape: Qt.PointingHandCursor
+                  onClicked: mouse => {
+                    if (root.activePlayer) {
+                      root.activePlayer.volume = Math.max(0, Math.min(1.0, mouse.x / width));
+                    }
                   }
                 }
               }
-            }
 
-            Text {
-              text: Math.round((root.activePlayer ? root.activePlayer.volume : 0) * 100) + "%"
-              color: root.theme.textMuted
-              font.pixelSize: 10
-              font.family: "Hack Nerd Font"
+              Text {
+                text: Math.round((root.activePlayer ? root.activePlayer.volume : 0) * 100) + "%"
+                color: root.theme.textMuted
+                font.pixelSize: 10
+                font.family: "Hack Nerd Font"
+              }
             }
           }
         }

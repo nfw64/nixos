@@ -12,6 +12,7 @@ wk.add({
 	{ "<leader>rc", group = "configuration" },
 	{ "<leader>rce", ":tabedit $MYVIMRC<CR>", desc = "Edit init.lua in new tab" },
 	{ "<leader>rcs", ":source %<cr>", desc = "Source current file" },
+	{ "<leader>b", "<cmd>bp|bd #<CR>", desc = "Quit current buffer" },
 })
 
 -- restart

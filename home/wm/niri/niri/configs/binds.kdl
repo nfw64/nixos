@@ -16,6 +16,7 @@ binds {
     Mod+R { spawn-sh "qs ipc call launcher toggle"; }
     Mod+Y { spawn-sh "qs ipc call wallpaper toggle"; }
     Mod+Escape { spawn-sh "qs ipc call logout toggle"; }
+    Alt+Escape { spawn-sh "qs ipc call popups close"; }
     Mod+Ctrl+Q { spawn-sh "qs ipc call notifications dismiss_all"; }
 
     // OVERVIEW

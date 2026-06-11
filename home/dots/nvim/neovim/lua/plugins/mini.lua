@@ -163,6 +163,23 @@ vim.keymap.set("n", "<leader>ee", function()
 	mini_files.reveal_cwd()
 end, { desc = "Toggle into currently opened file" })
 
+-- auto close picker after buffer opened
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniFilesBufferCreate",
+	group = vim.api.nvim_create_augroup("MiniFilesCloseOnSelect", { clear = true }),
+	callback = function(args)
+		local buf_id = args.data.buf_id
+
+		-- Map the standard edit/open key (CR / Enter) to open and close
+		vim.keymap.set("n", "<CR>", function()
+			-- 1. Perform the default open action
+			MiniFiles.go_in({})
+			-- 2. Immediately close the file explorer
+			MiniFiles.close()
+		end, { buffer = buf_id, desc = "Open file and close menu" })
+	end,
+})
+
 -- NOTE: mini.operators
 require("mini.operators").setup({
 	evaluate = {

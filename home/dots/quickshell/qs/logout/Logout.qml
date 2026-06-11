@@ -9,52 +9,52 @@ import "assets"
 import "../"
 
 Scope {
-    property var theme: DefaultTheme {}
+  property var theme: DefaultTheme {}
 
-    IpcHandler {
-        target: "logout"
+  IpcHandler {
+    target: "logout"
 
-        function toggle(): void {
-            layout.isPanelOpen = !layout.isPanelOpen;
-        }
+    function toggle(): void {
+      layout.isPanelOpen = !layout.isPanelOpen;
+    }
+  }
+
+  Layout {
+    id: layout
+    Button {
+      command: "loginctl lock-session"
+      keybind: Qt.Key_L
+      icon: "lock"
     }
 
-    Layout {
-        id: layout
-        Button {
-            command: "loginctl lock-session"
-            keybind: Qt.Key_L
-            icon: "lock"
-        }
-
-        Button {
-            command: "niri msg action quit"
-            keybind: Qt.Key_Q
-            icon: "logout"
-        }
-
-        Button {
-            command: "systemctl suspend"
-            keybind: Qt.Key_S
-            icon: "sleep"
-        }
-
-        Button {
-            command: "systemctl hibernate"
-            keybind: Qt.Key_H
-            icon: "hibernate"
-        }
-
-        Button {
-            command: "systemctl poweroff"
-            keybind: Qt.Key_P
-            icon: "power"
-        }
-
-        Button {
-            command: "systemctl reboot"
-            keybind: Qt.Key_R
-            icon: "restart"
-        }
+    Button {
+      command: "niri msg action quit"
+      keybind: Qt.Key_Q
+      icon: "logout"
     }
+
+    Button {
+      command: "systemctl suspend"
+      keybind: Qt.Key_S
+      icon: "sleep"
+    }
+
+    Button {
+      command: "systemctl hibernate"
+      keybind: Qt.Key_H
+      icon: "hibernate"
+    }
+
+    Button {
+      command: "systemctl poweroff"
+      keybind: Qt.Key_P
+      icon: "power"
+    }
+
+    Button {
+      command: "systemctl reboot"
+      keybind: Qt.Key_R
+      icon: "restart"
+    }
+  }
 }

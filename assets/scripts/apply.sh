@@ -14,5 +14,4 @@ if [[ "$current" == "prefer-dark" ]]; then
 else
   dconf write /org/gnome/desktop/interface/color-scheme "'prefer-light'"
   dconf write /org/gnome/desktop/interface/gtk-theme "'adw-gtk3'" &
-
 fi
