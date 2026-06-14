@@ -2,10 +2,7 @@
   config,
   pkgs,
   ...
-}:
-
-{
-
+}: {
   imports = [
     ../../home/imports.nix
     ./packages.nix
@@ -31,13 +28,13 @@
 
   home.pointerCursor = {
     gtk.enable = true;
-    name = "Firefly"; # Make sure this matches your folder name capitalization
+    name = "Megumin"; # Make sure this matches your folder name capitalization
     size = 64;
 
     # No build dependencies needed anymore, just a dead-simple folder mirror
-    package = pkgs.runCommand "pointerCursor" { } ''
+    package = pkgs.runCommand "pointerCursor" {} ''
       mkdir -p $out/share/icons
-      cp -r ${../../assets/local/cursor/Firefly} $out/share/icons/Firefly
+      cp -r ${../../assets/local/cursor/Megumin} $out/share/icons/Megumin
     '';
   };
 
@@ -76,7 +73,6 @@
       gtk-xft-hinting = 1;
       gtk-xft-hintstyle = "hintslight";
       gtk-xft-rgba = "rgb";
-
     };
 
     gtk4.extraConfig = {

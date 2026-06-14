@@ -4,9 +4,6 @@ local opts = {
 }
 local wk = require("which-key")
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 wk.add({
 
 	{ "<leader>rc", group = "configuration" },

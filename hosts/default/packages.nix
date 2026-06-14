@@ -2,10 +2,8 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   home.packages = with pkgs; [
-
     #utils
     cliphist
     nh
@@ -40,25 +38,34 @@
     nix-search
 
     #anime stuff
-    (pkgs.writeShellApplication {
-      name = "jerry";
+    (pkgs.buildGoModule {
+      pname = "kari";
+      version = "latest";
+      src = inputs.kari;
 
-      runtimeInputs = with pkgs; [
-        fzf
-        mpv
-        openssl
-        ueberzugpp
-        jq
-        chafa
-      ];
+      subPackages = ["cmd/kari"];
 
-      text = ''
-        # Run the safely cached script and pass all arguments cleanly
-        bash "${inputs.jerry}/jerry.sh" "$@"
+      vendorHash = "sha256-a//13YOUpG3+IMT8X6Lt4z0ceMOJe9D/Mad4QnnN6Ts=";
+
+      nativeBuildInputs = [pkgs.makeWrapper];
+
+      postInstall = ''
+        wrapProgram $out/bin/kari \
+          --prefix PATH : ${pkgs.lib.makeBinPath [
+          pkgs.aria2
+          pkgs.mpv
+          pkgs.python313Packages.yt-dlp
+        ]}
       '';
+
+      meta = {
+        description = "Kari — hunt media from the terminal";
+        homepage = "https://github.com/Dhairya3391/kari";
+        mainProgram = "kari";
+      };
     })
+
     openssl
-    ueberzugpp
     jq
     chafa
 

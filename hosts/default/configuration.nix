@@ -4,9 +4,7 @@
   inputs,
   self,
   ...
-}:
-
-{
+}: {
   imports = [
     ./hardware-configuration.nix
     "${self}/system/programs/steam.nix"
@@ -26,9 +24,9 @@
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
+    wantedBy = ["graphical-session.target"];
+    wants = ["graphical-session.target"];
+    after = ["graphical-session.target"];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -45,7 +43,7 @@
   };
 
   boot = {
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = ["ntfs"];
     loader = {
       systemd-boot.enable = false;
       grub = {
@@ -71,7 +69,7 @@
       };
     };
     initrd = {
-      kernelModules = [ "i915" ];
+      kernelModules = ["i915"];
       systemd.enable = true;
     };
     kernelParams = [
@@ -100,7 +98,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    extraSpecialArgs = { inherit self inputs; };
+    extraSpecialArgs = {inherit self inputs;};
     users.myriad = import ./home.nix;
     backupFileExtension = "backup";
   };
@@ -130,7 +128,6 @@
 
   programs = {
     gamemode.enable = true;
-    nm-applet.enable = true;
     zsh.enable = true;
     xfconf.enable = true;
     niri.enable = true;
@@ -166,7 +163,12 @@
     shell = pkgs.zsh;
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "electron-39.8.10"
+    ];
+  };
 
   services = {
     envfs.enable = true;
@@ -174,7 +176,7 @@
       enable = true;
       keyboards = {
         default = {
-          ids = [ "*" ];
+          ids = ["*"];
           settings = {
             main = {
               capslock = "overload(control, esc)";
@@ -230,5 +232,4 @@
   ];
 
   system.stateVersion = "26.05";
-
 }

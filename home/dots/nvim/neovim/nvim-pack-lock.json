@@ -13,16 +13,12 @@
       "src": "https://github.com/RRethy/base16-nvim"
     },
     "blink.cmp": {
-      "rev": "78336bc89ee5365633bcf754d93df01678b5c08f",
+      "rev": "05fd5da399a9e3a559ba2585d70c17a8f50a4471",
       "src": "https://github.com/saghen/blink.cmp.git"
     },
     "blink.lib": {
       "rev": "b127d48bf8e9ac9cf41f6e0fbead317503f76558",
-      "src": "https://github.com/saghen/blink.lib"
-    },
-    "buffer_manager.nvim": {
-      "rev": "a0ac2db39c8bd4a2b6ca897f38c88770f90d9323",
-      "src": "https://github.com/j-morano/buffer_manager.nvim"
+      "src": "https://github.com/saghen/blink.lib.git"
     },
     "cinnamon.nvim": {
       "rev": "450cb3247765fed7871b41ef4ce5fa492d834215",
@@ -31,10 +27,6 @@
     "conform.nvim": {
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim.git"
-    },
-    "dropbar.nvim": {
-      "rev": "808ba31cde89aec8833e9789f5e04557cd31c9e1",
-      "src": "https://github.com/Bekaboo/dropbar.nvim"
     },
     "flash.nvim": {
       "rev": "fcea7ff883235d9024dc41e638f164a450c14ca2",
@@ -69,7 +61,7 @@
       "src": "https://github.com/BirdeeHub/lze.git"
     },
     "mini.nvim": {
-      "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
+      "rev": "a59a9b7fb0a42cbcf022938ee5f0724320b66f63",
       "src": "https://github.com/echasnovski/mini.nvim.git"
     },
     "noice.nvim": {
@@ -93,7 +85,7 @@
       "src": "https://github.com/mfussenegger/nvim-lint.git"
     },
     "nvim-lspconfig": {
-      "rev": "229b79051b380377664edc4cbd534930154921a1",
+      "rev": "a683e0ddf0cf64c6cd689e18ffb480ade3c162b7",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-notify": {
@@ -132,10 +124,6 @@
       "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim.git"
     },
-    "showkeys": {
-      "rev": "cb0a50296f11f1e585acffba8c253b9e8afc1f84",
-      "src": "https://github.com/nvzone/showkeys"
-    },
     "smear-cursor.nvim": {
       "rev": "9e9378d6ee34bb3782e0e8c63d9ec8ca618b479b",
       "src": "https://github.com/sphamba/smear-cursor.nvim"
@@ -145,7 +133,7 @@
       "src": "https://github.com/folke/todo-comments.nvim.git"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "75fb910f9f02b07f65248369c437c3b168261421",
+      "rev": "95f81026390077f8eea9eef6d32ad59d4c3bd3ee",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim.git"
     },
     "vim-fugitive": {

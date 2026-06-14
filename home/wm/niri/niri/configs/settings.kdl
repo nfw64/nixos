@@ -22,7 +22,7 @@ hotkey-overlay {
 }
 
 cursor {
-  xcursor-theme "Firefly"
+  xcursor-theme "Megumin"
   xcursor-size 72
   hide-when-typing
 }

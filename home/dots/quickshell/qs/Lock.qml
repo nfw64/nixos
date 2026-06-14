@@ -15,7 +15,6 @@ ShellRoot {
 
   Theme {
     id: ts
-    id: bruh
   }
 
   readonly property color base: ts.bgBase

@@ -105,6 +105,14 @@ window-rule {
   open-floating true
 }
 
+window-rule {
+  // This app-id regular expression will work for both:
+  // - host Firefox ("firefox")
+  // - Flatpak Firefox ("org.mozilla.firefox")
+  match title="vesktop"
+  open-floating true
+}
+
 // Fix the Steam notifications position
 window-rule {
   match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#

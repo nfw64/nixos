@@ -40,13 +40,6 @@ PopupWindow {
 
     focus: isPanelOpen // Requests keyboard focus when the panel opens
 
-    Keys.onPressed: (event) => {
-      if (event.key === Qt.Key_Escape) {
-        isPanelOpen = false;
-        event.accepted = true;
-      }
-    }
-
     MouseArea {
       anchors.fill: parent
       z: -999 // Sits completely in the background layer

@@ -24,6 +24,10 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     jerry.url = "github:justchokingaround/jerry";
     qml-language-server.url = "github:cushycush/qml-language-server";
+    kari = {
+      url = "github:Dhairya3391/kari";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {

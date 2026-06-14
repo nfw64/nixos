@@ -2,9 +2,7 @@
   pkgs,
   config,
   ...
-}:
-
-{
+}: {
   home.packages = with pkgs; [
     zsh
     pay-respects
@@ -24,25 +22,34 @@
       syntaxHighlighting.enable = false;
 
       localVariables = {
-        FZF_DEFAULT_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
-        FZF_CTRL_T_COMMAND = "fd --hidden --strip-cwd-prefix --exclude .git";
+        FZF_DEFAULT_COMMAND = "fd --type f --hidden --strip-cwd-prefix";
+        FZF_CTRL_T_COMMAND = "fd --type f --hidden --strip-cwd-prefix";
         FZF_ALT_C_COMMAND = "fd --type=d --hidden --strip-cwd-prefix --exclude .git";
-        FZF_DEFAULT_OPTS = "--height 50% --layout=default --border --color=hl:#2dd4bf --bind='ctrl-j:down,ctrl-k:up,alt-j:preview-down,alt-k:preview-up,ctrl-d:preview-page-down,ctrl-u:preview-page-up'";
         FZF_CTRL_T_OPTS = "--preview 'bat --color=always -n --line-range :500 {}'";
         FZF_ALT_C_OPTS = "--preview 'eza --icons=always --tree --color=always {} | head -200'";
-        FZF_TMUX_OPTS = " -p90%,70% ";
+        FZF_TMUX_OPTS = "--p90%,70%";
+        FZF_DEFAULT_OPTS = "--height=60% --layout=reverse --border=rounded --prompt=' ' --pointer=' ' --preview-window=right:65%:wrap:border-left";
+
         TMUX_CONF = "$HOME/.config/tmux/tmux.conf"; # tmux
+        ZVM_ESCAPE_KEYTIMEOUT = "0";
       };
 
       shellAliases = {
         vim = "nvim";
         svim = "sudoedit";
 
-        ls = "eza --no-filesize --long --color=always --icons=always --no-user";
-        lst = "ls -aTL 2";
+        ls = "eza --icons";
+        ll = "eza -lh --icons --git";
+        la = "eza -lah --icons --git";
+        tree = "eza --tree --icons";
+
         zrel = "source ~/.config/zsh/.zshrc";
         psx = "ps aux | grep";
         cd = "z";
+        cat = "bat";
+        grep = "rg --color=auto";
+        diff = "diff --color=auto";
+        df = "df -h";
         # Tmux
         tmux = "tmux -f $TMUX_CONF";
         a = "attach";
@@ -82,14 +89,6 @@
 
       initContent = ''
         [[ $- != *i* ]] && return
-
-        # niri and tmux socket fix, hacky sure
-        if [ -n "$TMUX" ]; then
-            local LIVE_SOCKET=(/run/user/$UID/niri-*.sock(NY1))
-            if [ -n "$LIVE_SOCKET" ]; then
-                export NIRI_SOCKET="$LIVE_SOCKET"
-            fi
-        fi
 
         source ${pkgs.zinit}/share/zinit/zinit.zsh
         fastfetch
@@ -132,8 +131,16 @@
         bindkey '^[[H' beginning-of-line
         bindkey '^[[F' end-of-line
         bindkey -r "^G"
+        ZVM_INSERT_MODE_CURSOR=$ZVM_CURSOR_BEAM
+        ZVM_NORMAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
+        ZVM_VISUAL_MODE_CURSOR=$ZVM_CURSOR_BLOCK
 
-        zvm_after_init_commands+=('eval "$(fzf --zsh)"')
+        # Disable command mode line highlight
+        ZVM_VI_HIGHLIGHT_BACKGROUND=none
+        ZVM_VI_HIGHLIGHT_FOREGROUND=none
+        ZVM_VI_HIGHLIGHT_EXTRASTYLE=none
+
+        zvm_after_init=('eval "$(fzf --zsh)"')
         source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
         if [[ $- == *i* ]] && [ -t 0 ]; then
             eval "$(pay-respects zsh --nocnf)"

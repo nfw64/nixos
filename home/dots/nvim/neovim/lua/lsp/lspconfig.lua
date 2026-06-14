@@ -26,13 +26,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>lx", vim.lsp.codelens.run, opts)
 
 		opts.desc = "Smart rename (LSP)"
-		vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>lcr", vim.lsp.buf.rename, opts)
 
 		opts.desc = "Show buffer diagnostics"
-		vim.keymap.set("n", "<leader>lwb", "<cmd>FzfLua diagnostics_document<CR>", opts)
-
-		opts.desc = "Show line diagnostics"
-		vim.keymap.set("n", "<leader>lwl", vim.diagnostic.open_float, opts)
+		vim.keymap.set("n", "<leader>lb", "<cmd>FzfLua diagnostics_document<CR>", opts)
 
 		------------------------------------------------------------------------------------
 
@@ -162,6 +159,6 @@ vim.lsp.config("bash-language-server", {
 vim.lsp.enable({
 	"lua_ls",
 	"qml-language-server",
-	"nil",
+	"nil_ls",
 	"bashls",
 })
