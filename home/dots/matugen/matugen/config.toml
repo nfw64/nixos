@@ -19,6 +19,10 @@ input_path = '~/.config/matugen/templates/tmux-colors.conf'
 output_path = '~/.config/tmux/generated.conf'
 post_hook = 'tmux source-file ~/.config/tmux/generated.conf'
 
+[templates.vesktop]
+input_path = '~/.config/matugen/templates/vesktop.css'
+output_path = '~/.config/vesktop/themes/midnight-discord.css'
+
 [templates.fastfetch]
 input_path = '~/.config/matugen/templates/matugen-fastfetch.jsonc'
 output_path = '~/.config/fastfetch/config.jsonc'

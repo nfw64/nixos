@@ -2,6 +2,8 @@
   description = "nixos-flakes";
 
   inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,15 +20,21 @@
       url = "github:sxyazi/yazi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    nix-alien.url = "github:thiagokokada/nix-alien";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    jerry.url = "github:justchokingaround/jerry";
-    qml-language-server.url = "github:cushycush/qml-language-server";
     kari = {
       url = "github:Dhairya3391/kari";
       flake = false;
+    };
+    minecraft-plymouth = {
+      url = "github:nikp123/minecraft-plymouth-theme";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    qml-language-server = {
+      url = "github:cushycush/qml-language-server";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -50,25 +58,17 @@
   in {
     nixosConfigurations.nixos-myriad = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit self inputs;};
-      system = "x86_64-linux";
       modules = [
+        {nixpkgs.hostPlatform = "x86_64-linux";}
         ./hosts/default/configuration.nix
-        {nixpkgs.overlays = sharedOverlays;}
+        {
+          nixpkgs.overlays = sharedOverlays;
+          nixpkgs.config.allowUnfree = true;
+        }
+
         home-manager.nixosModules.home-manager
         inputs.minegrub-world-sel-theme.nixosModules.default
         inputs.nix-index-database.nixosModules.default
-      ];
-    };
-    homeConfigurations."myriad" = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        overlays = sharedOverlays;
-      };
-
-      extraSpecialArgs = {inherit self inputs;};
-      modules = [
-        ./hosts/default/home.nix
       ];
     };
   };

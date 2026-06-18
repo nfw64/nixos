@@ -17,33 +17,32 @@ import "osd"
 import "logout"
 
 ShellRoot {
-    //settings.watchFiles: false
+  //settings.watchFiles: false
+  Theme {
+    id: ts
+  }
 
-    Theme {
-        id: ts
-    }
+  Logout {
+    theme: ts
+  }
 
-    Logout {
-        theme: ts
-    }
+  Bar {
+    theme: ts
+  }
 
-    Bar {
-        theme: ts
-    }
-
-    AppLauncher {
-        theme: ts
-    }
-    NotificationPopup {
-        theme: ts
-    }
-    WallpaperManager {
-        theme: ts
-    }
-    MediaControl {
-        theme: ts
-    }
-    OSD {
-        theme: ts
-    }
+  AppLauncher {
+    theme: ts
+  }
+  NotificationPopup {
+    theme: ts
+  }
+  WallpaperManager {
+    theme: ts
+  }
+  MediaControl {
+    theme: ts
+  }
+  OSD {
+    theme: ts
+  }
 }

@@ -1,4 +1,6 @@
 require("generated")
+vim.api.nvim_set_hl(0, "WinBar", { bg = "NONE" })
+vim.api.nvim_set_hl(0, "WinBarNC", { bg = "NONE" })
 local function source_matugen()
 	-- Update this with the location of your output file
 	local matugen_path = os.getenv("HOME") .. "/.config/nvim/lua/generated.lua" -- dofile doesn't expand $HOME or ~
@@ -20,7 +22,10 @@ end
 local function auxiliary_function()
 	source_matugen()
 	dofile(os.getenv("HOME") .. "/.config/nvim/lua/plugins/lualine.lua")
-
+	require("lualine").refresh({
+		scope = "global",
+		place = { "statusline" },
+	})
 	vim.api.nvim_set_hl(0, "Comment", { italic = true })
 end
 

@@ -13,11 +13,11 @@
       "src": "https://github.com/RRethy/base16-nvim"
     },
     "blink.cmp": {
-      "rev": "05fd5da399a9e3a559ba2585d70c17a8f50a4471",
+      "rev": "39682a9c737920578cf68887c21eaa4ce3845c67",
       "src": "https://github.com/saghen/blink.cmp.git"
     },
     "blink.lib": {
-      "rev": "b127d48bf8e9ac9cf41f6e0fbead317503f76558",
+      "rev": "08ac9a9b873d3c7376e408a36c40c4131e2809ce",
       "src": "https://github.com/saghen/blink.lib.git"
     },
     "cinnamon.nvim": {
@@ -57,11 +57,11 @@
       "src": "https://github.com/nvim-lualine/lualine.nvim.git"
     },
     "lze": {
-      "rev": "177bba953cf422e4b8e4fa6f9b0a603b135e169e",
+      "rev": "bb97115ec6dad1872d5005f7ef6c0e05cf5132e9",
       "src": "https://github.com/BirdeeHub/lze.git"
     },
     "mini.nvim": {
-      "rev": "a59a9b7fb0a42cbcf022938ee5f0724320b66f63",
+      "rev": "bf8169f3e518be8de3f88073ace37d91f576cb04",
       "src": "https://github.com/echasnovski/mini.nvim.git"
     },
     "noice.nvim": {
@@ -133,7 +133,7 @@
       "src": "https://github.com/folke/todo-comments.nvim.git"
     },
     "tree-sitter-manager.nvim": {
-      "rev": "95f81026390077f8eea9eef6d32ad59d4c3bd3ee",
+      "rev": "ff0c04f418c610540148cb5a29a5960251f9a223",
       "src": "https://github.com/romus204/tree-sitter-manager.nvim.git"
     },
     "vim-fugitive": {

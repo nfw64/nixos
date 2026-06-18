@@ -29,6 +29,12 @@ window-rule {
     open-maximized true
 }
 
+window-rule {
+    match title=r#"^(Discord)"#
+    open-on-workspace "4"
+    open-maximized true
+}
+
 // FLOATING WINDOW RULES
 window-rule {
     match app-id="polkit-gnome"

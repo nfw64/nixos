@@ -14,7 +14,14 @@ Scope {
 
   property var theme: DefaultTheme {}
   property bool barVisible: true
-  property bool popup: false
+  // Inside your root component (where mainBar is defined)
+  property var panelStates: ["", "network", "bluetooth"]
+  property int activePanelIndex: 0 // Starts at index 0 (no panel visible)
+
+  // This convenience property lets your panels read the string name directly
+  property string activePanel: panelStates[activePanelIndex]
+
+  property string font: "Hack Nerd Font"
 
   // MPRIS active player
   property var activePlayer: {
@@ -31,7 +38,8 @@ Scope {
   IpcHandler {
     target: "popups"
     function close(): void {
-      root.popup = !root.popup
+      root.activePanelIndex = (root.activePanelIndex + 1) % root.panelStates.length
+      // console.log(root.activePanelIndex)
     }
   }
 
@@ -587,6 +595,35 @@ Scope {
                   }
                 }
               }
+              Rectangle {
+                height: 24
+                width: tempContent.width + 12
+                radius: 12
+                color: root.theme.bgSurface
+                Accessible.role: Accessible.StaticText
+                Accessible.name: "Temperature: " + SystemInfo.temperature
+
+                Row {
+                  id: tempContent
+                  anchors.centerIn: parent
+                  spacing: 6
+
+                  Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: "󰔏"
+                    color: root.theme.accentRed
+                    font.pixelSize: 14
+                    font.family: root.font
+                  }
+                  Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: SystemInfo.temperature
+                    color: root.theme.textPrimary
+                    font.pixelSize: 11
+                    font.family: root.font
+                  }
+                }
+              }
 
               // Network
               Rectangle {
@@ -666,7 +703,7 @@ Scope {
                   anchors.fill: parent
                   cursorShape: Qt.PointingHandCursor
                   onClicked: {
-                    root.popup = !root.popup;
+                    root.activePanelIndex = (root.activePanelIndex === 1) ? 0 : 1
                   }
                 }
                 Process {
@@ -675,13 +712,40 @@ Scope {
                   running: false
                 }
               }
+              BluetoothPanel {
+                id: bluetoothMenu
+                anchor.window: mainBar
+                theme: root.theme
+
+                isPanelOpen: root.activePanel === "bluetooth"
+
+                onIsPanelOpenChanged: {
+                  if (!isPanelOpen && root.activePanel === "bluetooth") {
+                    root.activePanelIndex = 0
+                  }
+                }
+                onRequestClose: {
+                  root.activePanelIndex = 0
+                }
+                anchor.rect.x: mainBar.width - width - 10
+                anchor.rect.y: mainBar.height + 5
+              }
+
               NetworkPanel {
                 id: networkMenu
                 anchor.window: mainBar
                 theme: root.theme
-                property bool isPanelOpen: root.popup ? true : false
 
-                // Offsets calculated relative to the target window boundaries
+                isPanelOpen: root.activePanel === "network"
+                onRequestClose: {
+                  root.activePanelIndex = 0
+                }
+                onIsPanelOpenChanged: {
+                  if (!isPanelOpen && root.activePanel === "network") {
+                    root.activePanelIndex = 0 // Reset to hidden state
+                  }
+                }
+
                 anchor.rect.x: mainBar.width - width - 10
                 anchor.rect.y: mainBar.height + 5
               }

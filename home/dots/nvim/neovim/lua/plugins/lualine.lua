@@ -1,47 +1,60 @@
--- Bubbles config for lualine
--- Author: lokesh-krishna
--- MIT license, see LICENSE for more details.
-
-local mode = {
-	"mode",
-	fmt = function(str)
-		return "" .. str
-	end,
-}
-
-local diff = {
-	"diff",
-	colored = true,
-	symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
-	-- cond = hide_in_width,
-}
-
-local filename = {
-	"filename",
-	file_status = true,
-	path = 0,
-}
-
-local branch = { "branch", icon = { "", color = { fg = "#A6D4DE" } }, "|" }
+local ok, base16 = pcall(require, "base16-colorscheme")
+local colors = ok and base16.colors or {}
 
 require("lualine").setup({
 	icons_enabled = true,
 	options = {
-		theme = auto,
-		component_separators = { left = "|", right = "|" },
-		section_separators = { left = "|", right = "" },
+		section_separators = { left = "", right = "" },
+		component_separators = { left = "", right = "" },
+	},
+	extensions = {
+		"oil",
+		"fzf",
+		"fugitive",
+	},
+
+	winbar = {
+		lualine_b = {
+			{
+				"buffers",
+				buffers_color = {
+					active = { fg = colors.base0F },
+					inactive = { fg = colors.base0D },
+				},
+				symbols = {
+					alternate_file = "",
+				},
+			},
+		},
+		lualine_x = {
+			{ "diagnostics" },
+			{ "lsp_status" },
+		},
 	},
 	sections = {
-		lualine_a = { mode },
-		lualine_b = { branch },
-		lualine_c = { diff, filename },
-		lualine_x = {
+		lualine_a = {
 			{
-				require("noice").api.statusline.mode.get,
-				cond = require("noice").api.statusline.mode.has,
-				color = { fg = "#ff9e64" },
+				"mode",
+				fmt = function(str)
+					return "" .. str
+				end,
 			},
-			{ "fileformat" },
+		},
+		lualine_b = {
+			{
+				"branch",
+				draw_empty = false,
+				icon = { "", color = { fg = "#A6D4DE" } },
+			},
+		},
+		lualine_c = {
+			{
+				"diff",
+				colored = true,
+				symbols = { added = " ", modified = " ", removed = " " },
+			},
+		},
+		lualine_x = {
 			{ "filetype" },
 		},
 	},

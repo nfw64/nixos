@@ -48,6 +48,8 @@ vim.opt.splitright = true
 vim.cmd([[hi @lsp.type.number gui=bold]])
 vim.cmd([[set noswapfile]])
 vim.g.lsp_defaults = false
+vim.o.sidescroll = 1
+vim.o.sidescrolloff = 0
 vim.o.commentstring = ""
 vim.opt.clipboard:append("unnamedplus")
 vim.opt.colorcolumn = "0"

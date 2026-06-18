@@ -7,12 +7,13 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    "${self}/system/programs/steam.nix"
-    "${self}/system/xdg.nix"
-    "${self}/system/environment.nix"
-    "${self}/system/packages.nix"
-    "${self}/system/setnix.nix"
-    "${self}/system/programs/nbfc.nix"
+    ../../system/programs/steam.nix
+    ../../system/xdg.nix
+    ../../system/environment.nix
+    ../../system/packages.nix
+    ../../system/setnix.nix
+    ../../system/programs/nbfc.nix
+    ../../system/programs/qylock.nix
   ];
 
   swapDevices = [
@@ -44,6 +45,14 @@
 
   boot = {
     supportedFilesystems = ["ntfs"];
+    plymouth = {
+      enable = true;
+      theme = "mc";
+      themePackages = [
+        inputs.minecraft-plymouth.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+      font = "${inputs.minecraft-plymouth.packages.${pkgs.stdenv.hostPlatform.system}.default}/share/fonts/OTF/Minecraft.otf";
+    };
     loader = {
       systemd-boot.enable = false;
       grub = {
@@ -51,6 +60,7 @@
         device = "nodev";
         efiSupport = true;
         useOSProber = true;
+        splashImage = "${inputs.minegrub-world-sel-theme}/minegrub-world-selection/dirt.png";
         minegrub-world-sel = {
           enable = true;
           customIcons = with config.system; [
@@ -75,24 +85,20 @@
     kernelParams = [
       "i915.enable_psr=0"
       "intel_pstate=active"
+      "quiet"
+      "splash"
     ];
 
     kernel.sysctl = {
       "vm.swappiness" = 10;
-
       "vm.vfs_cache_pressure" = 50;
-
-      "kernel.sched_latency_ns" = 10000000;
-      "kernel.sched_min_granularity_ns" = 1000000;
-      "kernel.sched_wakeup_granularity_ns" = 2000000;
-      "kernel.sched_migration_cost_ns" = 500000;
     };
     kernelPackages =
       inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v4;
   };
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "schedutil";
+    cpuFreqGovernor = "powersave";
   };
 
   home-manager = {
@@ -146,6 +152,7 @@
     nh = {
       flake = "/home/myriad/nixos/";
     };
+
     nix-index-database.comma.enable = true;
 
     dconf.enable = true;
@@ -164,13 +171,16 @@
   };
 
   nixpkgs.config = {
-    allowUnfree = true;
     permittedInsecurePackages = [
       "electron-39.8.10"
     ];
   };
 
   services = {
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
     envfs.enable = true;
     keyd = {
       enable = true;
@@ -183,19 +193,6 @@
               esc = "capslock";
             };
           };
-        };
-      };
-    };
-
-    greetd = {
-      enable = true;
-      settings = {
-        terminal = {
-          vt = 1;
-        };
-        default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --asterisks --greeting 'Welcome back!' --cmd niri-session";
-          user = "greeter";
         };
       };
     };
@@ -216,7 +213,6 @@
     upower.enable = true;
     thermald.enable = true;
     power-profiles-daemon.enable = true;
-    dbus.enable = true;
     gnome.gnome-keyring.enable = true;
     gvfs.enable = true;
     tumbler.enable = true;
@@ -229,6 +225,7 @@
     nerd-fonts.jetbrains-mono
     noto-fonts
     noto-fonts-color-emoji
+    inputs.minecraft-plymouth.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   system.stateVersion = "26.05";

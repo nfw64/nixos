@@ -2,7 +2,7 @@ import QtQuick
 import Quickshell.Services.Notifications
 
 QtObject {
-    id: notifData
+    id: notificationData
 
     property Notification notification: null
     property bool closed: false
@@ -17,55 +17,59 @@ QtObject {
     property string image: ""
     property var    actions: []
     property int    urgency: NotificationUrgency.Normal
-    property real   expireTimeout: 5
+    property real   expireTimeout: defaultTimeout
 
     property bool hovered: false
 
+    readonly property int defaultTimeout: 5000  // ms — fallback auto-dismiss when app sends -1/0
+
     readonly property Connections _conn: Connections {
-        target: notifData.notification
+        target: notificationData.notification
 
         function onClosed(): void {
-            if (notifData.closed) return;
-            notifData.closed = true;
-            NotificationService._remove(notifData);
-            notifData.destroy();
+            if (notificationData.closed) return;
+            notificationData.closed = true;
+            NotificationService._remove(notificationData);
+            notificationData.destroy();
         }
 
         function onSummaryChanged(): void {
-            if (notifData.notification) notifData.summary = notifData.notification.summary || "";
+            if (notificationData.notification) notificationData.summary = notificationData.notification.summary || "";
         }
         function onBodyChanged(): void {
-            if (notifData.notification) notifData.body = notifData.notification.body || "";
+            if (notificationData.notification) notificationData.body = notificationData.notification.body || "";
         }
         function onAppIconChanged(): void {
-            if (notifData.notification) notifData.appIcon = notifData.notification.appIcon || "";
+            if (notificationData.notification) notificationData.appIcon = notificationData.notification.appIcon || "";
         }
         function onAppNameChanged(): void {
-            if (notifData.notification) notifData.appName = notifData.notification.appName || "";
+            if (notificationData.notification) notificationData.appName = notificationData.notification.appName || "";
         }
         function onImageChanged(): void {
-            if (notifData.notification) notifData.image = notifData.notification.image || "";
+            if (notificationData.notification) notificationData.image = notificationData.notification.image || "";
         }
         function onUrgencyChanged(): void {
-            if (notifData.notification) notifData.urgency = notifData.notification.urgency;
+            if (notificationData.notification) notificationData.urgency = notificationData.notification.urgency;
         }
         function onExpireTimeoutChanged(): void {
-            if (notifData.notification) notifData.expireTimeout = notifData.notification.expireTimeout;
+            if (notificationData.notification) notificationData.expireTimeout = notificationData.notification.expireTimeout;
         }
         function onActionsChanged(): void {
-            if (!notifData.notification) return;
-            notifData.actions = notifData.notification.actions.map(function(a) {
+            if (!notificationData.notification) return;
+            notificationData.actions = notificationData.notification.actions.map(function(a) {
                 return { identifier: a.identifier, text: a.text };
             });
         }
     }
 
     readonly property Timer _timer: Timer {
-        running: !notifData.closed
-                 && !notifData.hovered
-                 && notifData.urgency !== NotificationUrgency.Critical
-        interval: notifData.expireTimeout > 0 ? notifData.expireTimeout * 1000 : 5000
-        onTriggered: notifData.dismiss()
+        running: !notificationData.closed
+                 && !notificationData.hovered
+                 && notificationData.urgency !== NotificationUrgency.Critical
+        interval: notificationData.expireTimeout > 0 ? notificationData.expireTimeout : notificationData.defaultTimeout  // no * 1000: Quickshell passes raw D-Bus ms, not seconds
+        onTriggered: {
+            notificationData.dismiss()
+        }
     }
 
     Component.onCompleted: {
@@ -77,7 +81,9 @@ QtObject {
         appName   = notification.appName   || "";
         image     = notification.image     || "";
         urgency   = notification.urgency;
-        expireTimeout = notification.expireTimeout > 0 ? notification.expireTimeout : 5;
+
+        const rawTimeout = notification.expireTimeout;
+        expireTimeout = rawTimeout > 0 ? rawTimeout : defaultTimeout;
         actions   = notification.actions.map(function(a) {
             return { identifier: a.identifier, text: a.text };
         });
@@ -86,7 +92,7 @@ QtObject {
     function dismiss(): void {
         if (closed) return;
         closed = true;
-        NotificationService._remove(notifData);
+        NotificationService._remove(notificationData);
         if (notification) try { notification.dismiss(); } catch(e) {}
         destroy();
     }
@@ -94,7 +100,7 @@ QtObject {
     function invokeAction(identifier): void {
         if (!identifier || closed) return;
         closed = true;
-        NotificationService._remove(notifData);
+        NotificationService._remove(notificationData);
         if (notification) {
             const action = notification.actions.find(function(a) {
                 return a.identifier === identifier;

@@ -1,5 +1,22 @@
 -- Custom packer commands
 
+vim.api.nvim_create_autocmd("BufLeave", {
+	desc = "Wipe out empty, nameless scratch buffers left by plugins",
+	callback = function(args)
+		-- Check if the buffer is valid and loaded
+		if vim.api.nvim_buf_is_valid(args.buf) and vim.api.nvim_buf_is_loaded(args.buf) then
+			local name = vim.api.nvim_buf_get_name(args.buf)
+			local buftype = vim.api.nvim_get_option_value("buftype", { buf = args.buf })
+			local modified = vim.api.nvim_get_option_value("modified", { buf = args.buf })
+
+			-- If it has no name, isn't a special terminal/prompt, and isn't modified, kill it
+			if name == "" and buftype == "" and not modified then
+				vim.api.nvim_buf_delete(args.buf, { force = true })
+			end
+		end
+	end,
+})
+
 vim.api.nvim_create_autocmd("BufEnter", {
 	pattern = "term://*fzf*",
 	callback = function()

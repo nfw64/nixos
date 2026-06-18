@@ -97,9 +97,8 @@ vim.keymap.set("n", "x", '"_x', opts)
 vim.keymap.set({ "n", "t" }, "<Leader><CR>", "<Cmd>split<CR> <Cmd>term<CR>i", { desc = "Split Terminal" })
 
 -- move buffers
--- barbar.nvim
--- vim.keymap.set("n", "<S-h>", ":bprevious<CR>", opts)
--- vim.keymap.set("n", "<S-l>", ":bnext<CR>", opts)
+vim.keymap.set("n", "<S-h>", "<cmd>bprevious<CR>", opts)
+vim.keymap.set("n", "<S-l>", "<cmd>bnext<CR>", opts)
 
 -- Replace the word cursor is on globally
 vim.keymap.set(

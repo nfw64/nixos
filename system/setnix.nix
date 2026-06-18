@@ -1,5 +1,6 @@
-_: {
+{pkgs, ...}: {
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     gc = {
       automatic = true;
       dates = "daily";

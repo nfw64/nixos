@@ -5,7 +5,8 @@ binds {
     Mod+N { spawn "firefox-beta"; }
     Mod+B { spawn "thunar"; }
     Ctrl+Alt+Delete { spawn "kitty" "-e" "htop"; }
-    Mod+Ctrl+O { spawn "curd"; }
+    Mod+Ctrl+O { spawn-sh "kitty -- kari"; }
+    Mod+Ctrl+P { spawn-sh "niri msg pick-color | wl-copy"; }
 
     // DMENUS
     Mod+V { spawn "bookmarks-rofi.sh"; }

@@ -1,8 +1,4 @@
-{
-  config,
-  ...
-}:
-let
+{config, ...}: let
   dotfiles = "${config.home.homeDirectory}/nixos";
   create-symlink = path: config.lib.file.mkOutOfStoreSymlink path;
   configs = {
@@ -18,9 +14,7 @@ let
   homeFiles = {
     ".local/share/themes" = "local/themes";
   };
-in
-
-{
+in {
   imports = [
     ./wm/niri/niri.nix
     ./dots/matugen/default.nix
@@ -30,17 +24,21 @@ in
     ./dots/tmux/default.nix
     ./dots/rofi/default.nix
     ./programs/zsh/zsh.nix
+    ./programs/kari.nix
     ./programs/yazi.nix
     ./programs/firefox.nix
   ];
 
-  xdg.configFile = builtins.mapAttrs (name: subpath: {
-    source = create-symlink "${dotfiles}/home/dots/${subpath}";
-    recursive = true;
-  }) configs;
+  xdg.configFile =
+    builtins.mapAttrs (name: subpath: {
+      source = create-symlink "${dotfiles}/home/dots/${subpath}";
+      recursive = true;
+    })
+    configs;
 
-  home.file = builtins.mapAttrs (name: subpath: {
-    source = create-symlink "${dotfiles}/assets/${subpath}";
-  }) homeFiles;
-
+  home.file =
+    builtins.mapAttrs (name: subpath: {
+      source = create-symlink "${dotfiles}/assets/${subpath}";
+    })
+    homeFiles;
 }
