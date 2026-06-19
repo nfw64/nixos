@@ -35,6 +35,12 @@ end)
 vim.keymap.set("n", "<C-d>", function()
 	require("cinnamon").scroll("<C-d>zz")
 end)
+vim.keymap.set("n", "<C-f>", function()
+	require("cinnamon").scroll("<C-f>")
+end)
+vim.keymap.set("n", "<C-b>", function()
+	require("cinnamon").scroll("<C-b>")
+end)
 
 -- LSP:
 vim.keymap.set("n", "gd", function()

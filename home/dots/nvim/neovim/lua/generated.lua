@@ -1,26 +1,26 @@
 vim.pack.add({ "https://github.com/RRethy/base16-nvim" })
 
 require("base16-colorscheme").setup({
-	base00 = "#121318",
-	base01 = "#0d0e13",
-	base02 = "#1b1b21",
-	base03 = "#46464f",
-	base04 = "#c6c5d0",
-	base05 = "#e3e1e9",
-	base06 = "#303036",
-	base07 = "#38393f",
-	base08 = "#dea7ce",
-	base09 = "#e5bad8",
-	base0A = "#c3c5dd",
-	base0B = "#bac3ff",
-	base0C = "#5d3c55",
-	base0D = "#394379",
-	base0E = "#434659",
-	base0F = "#a2a6cb",
+	base00 = "#191113",
+	base01 = "#140c0d",
+	base02 = "#22191b",
+	base03 = "#524345",
+	base04 = "#d6c2c4",
+	base05 = "#efdee0",
+	base06 = "#382e2f",
+	base07 = "#413738",
+	base08 = "#e8b17b",
+	base09 = "#ecbe91",
+	base0A = "#e4bdc3",
+	base0B = "#ffb1c0",
+	base0C = "#5f401d",
+	base0D = "#713342",
+	base0E = "#5b3f44",
+	base0F = "#d599a2",
 })
 
-local primary_hex = "#bac3ff"
-local bg_hex = "#121318"
+local primary_hex = "#ffb1c0"
+local bg_hex = "#191113"
 
 local function mix(hex1, hex2, w)
 	local c1, c2 = tonumber(hex1:gsub("#", ""), 16), tonumber(hex2:gsub("#", ""), 16)
@@ -39,28 +39,28 @@ vim.api.nvim_set_hl(0, "Visual", {
 
 -- flash nvim colors
 vim.api.nvim_set_hl(0, "FlashBackdrop", {
-	fg = "#46464f",
+	fg = "#524345",
 })
 vim.api.nvim_set_hl(0, "FlashLabel", {
-	bg = "#bac3ff",
+	bg = "#ffb1c0",
 	fg = bg_hex,
 	bold = true,
 })
 vim.api.nvim_set_hl(0, "FlashMatch", {
-	bg = "#434659",
-	fg = "#dfe1f9",
+	bg = "#5b3f44",
+	fg = "#ffd9df",
 })
 vim.api.nvim_set_hl(0, "FlashCurrent", {
-	bg = "#e5bad8",
+	bg = "#ecbe91",
 	fg = bg_hex,
 	bold = true,
 })
 vim.api.nvim_set_hl(0, "FlashPrompt", { link = "Normal" })
 vim.api.nvim_set_hl(0, "FlashPromptIcon", {
-	fg = "#bac3ff",
+	fg = "#ffb1c0",
 	bold = true,
 })
 vim.api.nvim_set_hl(0, "FlashCursor", {
-	bg = "#e3e1e9",
+	bg = "#efdee0",
 	fg = bg_hex,
 })

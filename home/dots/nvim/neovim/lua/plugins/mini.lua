@@ -5,7 +5,13 @@ require("mini.indentscope").setup({
 
 vim.g.miniindentscope_disable = false
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "alpha", "dropbar_menu", "dashboard", "help", "trouble", "lazy", "mason" },
+	pattern = { "alpha", "term", "dropbar_menu", "dashboard", "help", "trouble", "lazy", "mason" },
+	callback = function()
+		vim.b.miniindentscope_disable = true
+	end,
+})
+vim.api.nvim_create_autocmd("TermOpen", {
+	pattern = "*",
 	callback = function()
 		vim.b.miniindentscope_disable = true
 	end,
@@ -14,6 +20,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- NOTE:  mini.cursorwords
 require("mini.cursorword").setup({
 	delay = 100,
+})
+
+vim.api.nvim_create_autocmd("TermOpen", {
+	callback = function()
+		vim.b.minicursorword_disable = true
+	end,
 })
 
 -- NOTE: mini.surround

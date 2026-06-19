@@ -166,6 +166,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "disk"
     ];
     shell = pkgs.zsh;
   };
@@ -211,6 +212,7 @@
     dbus.implementation = "broker";
 
     upower.enable = true;
+    udisks2.enable = true;
     thermald.enable = true;
     power-profiles-daemon.enable = true;
     gnome.gnome-keyring.enable = true;
@@ -218,6 +220,16 @@
     tumbler.enable = true;
   };
   security = {
+    polkit.enable = true;
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if ((action.id == "org.freedesktop.udisks2.filesystem-mount" ||
+             action.id == "org.freedesktop.udisks2.filesystem-mount-system") &&
+            subject.isInGroup("wheel")) {
+          return polkit.Result.YES;
+        }
+      });
+    '';
     rtkit.enable = true;
   };
 

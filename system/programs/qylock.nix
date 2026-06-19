@@ -20,7 +20,7 @@
 
     bgVid = pkgs.fetchurl {
       url = "https://huggingface.co/datasets/myriadv1/nixos-assets/resolve/main/bg.mp4";
-      hash = "sha256-7y11pvIbr0fKVIugC/r5VEGj0AiWUBix2Rf6GN8zqZI=";
+      hash = "sha256-JrGvpMEzfqN4wXADAPchiLfvBJb2GgGvjclH5oBgW8U=";
     };
 
     installPhase = ''

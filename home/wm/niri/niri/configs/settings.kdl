@@ -22,8 +22,6 @@ hotkey-overlay {
 }
 
 cursor {
-  xcursor-theme "Megumin"
-  xcursor-size 72
   hide-when-typing
 }
 

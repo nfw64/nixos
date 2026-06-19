@@ -30,8 +30,8 @@ window-rule {
 }
 
 window-rule {
-    match title=r#"^(Discord)"#
-    open-on-workspace "4"
+    match app-id="vesktop"
+    open-on-workspace "3"
     open-maximized true
 }
 
@@ -108,14 +108,6 @@ window-rule {
   // - host Firefox ("firefox")
   // - Flatpak Firefox ("org.mozilla.firefox")
   match app-id=r#"firefox$"# title="^Picture-in-Picture$"
-  open-floating true
-}
-
-window-rule {
-  // This app-id regular expression will work for both:
-  // - host Firefox ("firefox")
-  // - Flatpak Firefox ("org.mozilla.firefox")
-  match title="vesktop"
   open-floating true
 }
 

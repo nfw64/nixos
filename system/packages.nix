@@ -5,6 +5,7 @@
 
     # Utilities
     libnotify
+    ntfs3g
     pavucontrol
     brightnessctl
     htop

@@ -12,6 +12,7 @@
     matugen
     quickshell
     awww
+    trash-cli
 
     eza
     qt6Packages.qt6ct
@@ -25,6 +26,7 @@
 
     #cli tools
     fzf
+    ouch
     fzf-git-sh
     bat
     jq
@@ -32,6 +34,7 @@
     tmux
     sesh
     nix-search
+    nurl
     jq
     openssl
     chafa

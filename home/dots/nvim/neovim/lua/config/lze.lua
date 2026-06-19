@@ -35,7 +35,8 @@ PckAdd({
 
 	-- Random
 	{ src = "folke/persistence.nvim" },
-	{ src = "stevearc/oil.nvim" },
+	{ src = "nvim-lua/plenary.nvim" },
+	{ src = "mikavilpas/yazi.nvim" },
 	{ src = "goolord/alpha-nvim" },
 	{ src = "m4xshen/hardtime.nvim" },
 	{ src = "scinac/vim-norm-trainer.nvim" },
@@ -130,14 +131,19 @@ require("lze").load({
 		end,
 	},
 	{
-		"oil.nvim",
-		cmd = "Oil",
+		"plenary.nvim",
+		dep_of = "yazi.nvim",
+	},
+	{
+		"yazi.nvim",
+		cmd = "Yazi",
 		keys = {
-			{ "\\", "<cmd>Oil<cr>", desc = "Open Oil" },
-			{ "<leader>\\", "<cmd>Oil --float<cr>", desc = "Open Oil float" },
+			{ "\\", "<cmd>Yazi<cr>", desc = "Open Yazi" },
+			{ "<leader>\\", "<cmd>Yazi cwd<cr>", desc = "Open Yazi current cwd" },
+			{ "<C-w>\\", "<cmd>Yazi toggle<cr>", desc = "Resume Yazi" },
 		},
 		after = function()
-			require("plugins.oil")
+			require("plugins.yazi")
 		end,
 	},
 	{

@@ -6,6 +6,10 @@ type = "SchemeFidelity"
 #output_path = '~/.config/hypr/matugen/matugen-hypr.conf'
 #post_hook = 'hyprctl reload'
 
+[templates.starship]
+input_path = '~/.config/matugen/templates/starship.toml'
+output_path = '~/.config/starship.toml'
+
 [templates.neovim]
 input_path = '~/.config/matugen/templates/nvim-colors.lua'
 output_path = '~/.config/nvim/lua/generated.lua'

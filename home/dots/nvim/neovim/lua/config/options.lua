@@ -52,6 +52,7 @@ vim.o.sidescroll = 1
 vim.o.sidescrolloff = 0
 vim.o.commentstring = ""
 vim.opt.clipboard:append("unnamedplus")
+vim.opt.showtabline = 0
 vim.opt.colorcolumn = "0"
 vim.opt.confirm = true
 vim.opt.isfname:append("@-@")

@@ -20,7 +20,7 @@ vim.keymap.set("n", "<leader>re", "<cmd>e %<cr>", { desc = "Restart current buff
 --  Terminal   --
 -----------------
 
-vim.keymap.set("t", "<C-q><C-q>", [[<C-\><C-n>]], { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-q><C-q>", [[<C-\><C-n>]], { desc = "which_key_ignore" })
 -----------------
 --   Cmdline   --
 -----------------
@@ -34,7 +34,7 @@ vim.keymap.set({ "n", "v", "o" }, "gh", "^", { desc = "Go to start of line" })
 vim.keymap.set({ "n", "v", "o" }, "gl", "$", { desc = "Go to end of line" })
 vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<ESC>:w<cr>")
 
-vim.keymap.set({ "n", "t" }, "<Leader>x", "<Cmd>close<CR>", { desc = "Close tab" })
+vim.keymap.set({ "n" }, "<Leader>x", "<Cmd>close<CR>", { desc = "Close tab" })
 
 -----------------
 -- Visual mode --
@@ -94,7 +94,7 @@ vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste (no replace)" })
 vim.keymap.set("n", "x", '"_x', opts)
 
 -- Open split terminal
-vim.keymap.set({ "n", "t" }, "<Leader><CR>", "<Cmd>split<CR> <Cmd>term<CR>i", { desc = "Split Terminal" })
+vim.keymap.set({ "n", "t" }, "<C-q><C-w>", "<cmd>Floatterm<cr>", { desc = "which_key_ignore" })
 
 -- move buffers
 vim.keymap.set("n", "<S-h>", "<cmd>bprevious<CR>", opts)
@@ -125,7 +125,3 @@ vim.keymap.set("n", "Q", "<nop>")
 
 -- prevent x delete from registering when next paste
 vim.keymap.set("n", "x", '"_x', opts)
-
-------------------
--- Custom stuff --
-------------------

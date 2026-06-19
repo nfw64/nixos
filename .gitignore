@@ -25,3 +25,4 @@ home/dots/qt6ct/qss/matugen-style.qss
 home/configs/gtk-3.0/settings.ini
 home/configs/gtk-4.0/settings.ini
 home/dots/tmux/tmux-kun/.tmux/plugins/*
+home/dots/quickshell/qs/.qmlls.ini
