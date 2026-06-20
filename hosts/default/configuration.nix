@@ -167,6 +167,7 @@
       "networkmanager"
       "wheel"
       "disk"
+      "input"
     ];
     shell = pkgs.zsh;
   };

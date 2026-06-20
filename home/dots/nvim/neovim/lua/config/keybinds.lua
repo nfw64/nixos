@@ -24,7 +24,8 @@ vim.keymap.set("t", "<C-q><C-q>", [[<C-\><C-n>]], { desc = "which_key_ignore" })
 -----------------
 --   Cmdline   --
 -----------------
-vim.keymap.set("c", "<C-j>", "<C-n>", { desc = "Next command in history" })
+vim.keymap.set("c", "<C-k>", "<Up>", { desc = "Previous command history" })
+vim.keymap.set("c", "<C-j>", "<Down>", { desc = "Next command history" })
 
 ----------------
 --  Mixed mode --

@@ -36,6 +36,7 @@
 
       shellAliases = {
         vim = "nvim";
+        v = "nvim";
         svim = "sudoedit";
 
         ls = "eza --icons";

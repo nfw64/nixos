@@ -7,7 +7,7 @@ require("cinnamon").setup({
 		-- The scrolling mode
 		-- `cursor`: animate cursor and window scrolling for any movement
 		-- `window`: animate window scrolling ONLY when the cursor moves out of view
-		mode = "cursor",
+		mode = "window",
 
 		count_only = false,
 
@@ -26,6 +26,13 @@ require("cinnamon").setup({
 			time = 1000,
 		},
 	},
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "help",
+	callback = function()
+		vim.b.cinnamon_disable = true
+	end,
 })
 
 -- Centered scrolling:
@@ -49,19 +56,3 @@ end)
 vim.keymap.set("n", "gD", function()
 	require("cinnamon").scroll(vim.lsp.buf.declaration)
 end)
-
--- Flash.nvim integration:
--- vim.api.nvim_create_autocmd("User", {
--- 	pattern = "flashload",
--- 	callback = function()
--- 		print("hm")
--- 		require("flash").setup({
--- 			action = function(match, state)
--- 				require("cinnamon").scroll(function()
--- 					require("flash.jump").jump(match, state)
--- 					require("flash.jump").on_jump(state)
--- 				end)
--- 			end,
--- 		})
--- 	end,
--- })

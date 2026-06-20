@@ -9,11 +9,11 @@
       "src": "https://github.com/goolord/alpha-nvim.git"
     },
     "base16-nvim": {
-      "rev": "7d7a00013066f8ab41be28bd43136d5ca8d0fabd",
+      "rev": "21233d5fd574439ae1e2f5e4bfbc574214f4ab3d",
       "src": "https://github.com/RRethy/base16-nvim"
     },
     "blink.cmp": {
-      "rev": "26ec6f0a1a8101eb134f8b8568d6099be015fe70",
+      "rev": "bda905a4bf1b3edfa708b0be193b8c63d8620c96",
       "src": "https://github.com/saghen/blink.cmp.git"
     },
     "blink.lib": {
@@ -61,7 +61,7 @@
       "src": "https://github.com/BirdeeHub/lze.git"
     },
     "mini.nvim": {
-      "rev": "bf8169f3e518be8de3f88073ace37d91f576cb04",
+      "rev": "1345d191bb3da9c7b0e977f4387c5761f9bff68d",
       "src": "https://github.com/echasnovski/mini.nvim.git"
     },
     "noice.nvim": {
@@ -81,11 +81,11 @@
       "src": "https://github.com/NvChad/nvim-colorizer.lua.git"
     },
     "nvim-lint": {
-      "rev": "4b7957daf4b81eb578114bd6fcf20b6f5a2b59e8",
+      "rev": "01c9842c089069ab497430159312b2c8868a4590",
       "src": "https://github.com/mfussenegger/nvim-lint.git"
     },
     "nvim-lspconfig": {
-      "rev": "fef8b117ad5fb73943913f444f22065c4b834a60",
+      "rev": "bfcc0171a43f22afa61d927ffe9fcb6cb85dc99e",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-notify": {
@@ -153,7 +153,7 @@
       "src": "https://github.com/folke/which-key.nvim.git"
     },
     "yazi.nvim": {
-      "rev": "7514be498c56f2a57e5a72faf55c517b9576665b",
+      "rev": "0b74938cb3c723d5c5213ed4eb29510d413ef4e9",
       "src": "https://github.com/mikavilpas/yazi.nvim.git"
     }
   }

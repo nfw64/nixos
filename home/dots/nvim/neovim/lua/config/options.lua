@@ -4,6 +4,17 @@ vim.g.maplocalleader = " "
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
+-- Disable line numbers ON terminal
+vim.api.nvim_create_autocmd({ "TermOpen", "BufWinEnter" }, {
+	group = vim.api.nvim_create_augroup("TerminalSettings", { clear = true }),
+	callback = function()
+		-- Only strip numbers if the buffer actually holds a terminal
+		if vim.bo.buftype == "terminal" then
+			vim.wo.number = false
+			vim.wo.relativenumber = false
+		end
+	end,
+})
 
 -- indentation
 vim.opt.expandtab = true

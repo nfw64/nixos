@@ -22,7 +22,7 @@
     # utils2
     bluez
     blueman
-    p7zip
+    p7zip-rar
     kitty
     keyd
     git

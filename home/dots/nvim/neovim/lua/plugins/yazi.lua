@@ -4,7 +4,7 @@ local colors = ok and base16.colors or {}
 vim.g.loaded_netrwPlugin = 1
 require("yazi").setup({
 	open_for_directories = true,
-	change_neovim_cwd_on_close = true,
+	change_neovim_cwd_on_close = false,
 	yazi_floating_window_border = "single",
 	highlight_groups = {
 		hovered_buffer = { fg = colors.base00 },
@@ -20,7 +20,7 @@ require("yazi").setup({
 		cycle_open_buffers = "<tab>",
 		copy_relative_path_to_selected_files = "<c-y>",
 		send_to_quickfix_list = "<c-x>",
-		change_working_directory = false,
+		change_working_directory = "'",
 		open_and_pick_window = false,
 	},
 	integrations = {

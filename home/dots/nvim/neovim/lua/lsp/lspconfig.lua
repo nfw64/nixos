@@ -156,6 +156,22 @@ vim.lsp.config("bash-language-server", {
 	root_markers = { ".git" },
 })
 
+vim.lsp.config("nil_ls", {
+	cmd = { "nil" },
+	filetypes = { "nix" },
+	root_markers = { "flake.nix", ".git" },
+	settings = {
+		["nil"] = {
+			nix = {
+				autoArchive = false,
+				flake = {
+					autoEvalInputs = true,
+				},
+			},
+		},
+	},
+})
+
 vim.lsp.enable({
 	"lua_ls",
 	"qml-language-server",

@@ -5,7 +5,7 @@
 
     bongocat = {
       url = "github:saatvik333/wayland-bongocat";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -46,32 +46,37 @@
     nixpkgs,
     home-manager,
     ...
-  }: let
-    sharedOverlays = [
-      (final: prev: {
-        pkgsi686Linux =
-          prev.pkgsi686Linux
-          // {
-            openldap = prev.pkgsi686Linux.openldap.overrideAttrs (oldAttrs: {
-              doCheck = false;
-            });
-          };
-      })
-    ];
-  in {
+  }: {
     nixosConfigurations.nixos-myriad = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit self inputs;};
       modules = [
         {nixpkgs.hostPlatform = "x86_64-linux";}
         ./hosts/default/configuration.nix
         {
-          nixpkgs.overlays = sharedOverlays;
+          nixpkgs.overlays = [
+            (final: prev: {
+              pkgsi686Linux =
+                prev.pkgsi686Linux
+                // {
+                  openldap = prev.pkgsi686Linux.openldap.overrideAttrs (oldAttrs: {
+                    doCheck = false;
+                  });
+                };
+            })
+          ];
           nixpkgs.config.allowUnfree = true;
         }
 
         home-manager.nixosModules.home-manager
         inputs.minegrub-world-sel-theme.nixosModules.default
         inputs.nix-index-database.nixosModules.default
+        # inputs.bongocat.nixosModules.default
+        # {
+        #   programs.wayland-bongocat = {
+        #     enable = true;
+        #     autostart = true;
+        #   };
+        # }
       ];
     };
   };
