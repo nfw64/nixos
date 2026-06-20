@@ -10,6 +10,12 @@
     tag = "main";
     hash = "sha256-l5ntFbVPwRKyLFF1q5irGNa8K2mT80j33E5JNV5aAEg=";
   };
+  open-with-cmd = pkgs.fetchFromGitHub {
+    owner = "Ape";
+    repo = "open-with-cmd.yazi";
+    rev = "eba191d9915cdca48333740290bb604400392ef6";
+    hash = "sha256-5Etw2bKTfhWHBXkIR6VZsbEbCN079QfIGLnQEYiR7Lw=";
+  };
   searchjump = pkgs.fetchFromGitHub {
     owner = "DreamMaoMao";
     repo = "yazi-config";
@@ -47,6 +53,8 @@ in {
       ouch = pkgs.yaziPlugins.ouch;
       jump-to-char = pkgs.yaziPlugins.jump-to-char;
       kdeconnect-send = pkgs.yaziPlugins.kdeconnect-send;
+      open-with-cmd = "${open-with-cmd}";
+
       gvfs = {
         package = pkgs.yaziPlugins.gvfs;
         setup = true;
@@ -62,7 +70,6 @@ in {
         package = pkgs.yaziPlugins.restore;
         setup = true;
       };
-
       git = {
         package = pkgs.yaziPlugins.git;
         setup = true;
@@ -226,6 +233,10 @@ in {
             run = "folder";
           }
           {
+            mime = "{text/*,application/x-subrip}";
+            run = "code";
+          }
+          {
             url = "/run/user/1000/gvfs/**/*";
             run = "noop";
           }
@@ -245,7 +256,20 @@ in {
       mgr = {
         prepend_keymap = [
           {
-            on = ["<C-f>"];
+            on = "F";
+            run = "search --via=fd";
+          }
+          {
+            on = "S";
+            run = "search --via=rg";
+          }
+          {
+            on = ["g" "x"];
+            run = "plugin open-with-cmd";
+            desc = "Open with command";
+          }
+          {
+            on = ["s"];
             run = "plugin searchjump";
             desc = "searchjump mode";
           }
@@ -255,32 +279,32 @@ in {
             desc = "Send selected files via KDE Connect";
           }
           {
-            on = ["M" "m"];
+            on = ["M" "g" "m"];
             run = "plugin gvfs -- select-then-mount --jump";
-            desc = "Select device to mount and jump to its mount point";
+            desc = "Mount and jump";
           }
           {
-            on = ["M" "u"];
+            on = ["M" "g" "u"];
             run = "plugin gvfs -- select-then-unmount --eject";
             desc = "Select device then eject";
           }
           {
-            on = ["M" "U"];
+            on = ["M" "g" "U"];
             run = "plugin gvfs -- select-then-unmount --eject --force";
-            desc = "Select device then force to eject/unmount";
+            desc = "Select device force eject";
           }
           {
-            on = ["M" "a"];
+            on = ["M" "g" "e" "a"];
             run = "plugin gvfs -- add-mount";
             desc = "Add a GVFS mount URI";
           }
           {
-            on = ["M" "e"];
+            on = ["M" "g" "e" "e"];
             run = "plugin gvfs -- edit-mount";
             desc = "Edit a GVFS mount URI";
           }
           {
-            on = ["M" "r"];
+            on = ["M" "g" "e" "r"];
             run = "plugin gvfs -- remove-mount";
             desc = "Remove a GVFS mount URI";
           }
@@ -295,12 +319,12 @@ in {
             desc = "Jump back to the position before jumped to device";
           }
           {
-            on = ["M" "t"];
+            on = ["M" "g" "t"];
             run = "plugin gvfs -- automount-when-cd";
             desc = "Enable automount when cd to device under cwd";
           }
           {
-            on = ["M" "T"];
+            on = ["M" "g" "T"];
             run = "plugin gvfs -- automount-when-cd --disabled";
             desc = "Disable automount when cd to device under cwd";
           }

@@ -123,7 +123,6 @@
 @define-color wm_button_active_color_c shade(@window_bg_color, 0.9);
 @define-color content_view_bg @view_bg_color;
 @define-color text_view_bg shade(@view_bg_color,0.94);
-@import url('gtk-colors.css');
 
 * {
   padding: 0;

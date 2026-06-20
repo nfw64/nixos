@@ -21,7 +21,10 @@ home/dots/qt5ct/colors/matugen.conf
 home/dots/qt5ct/qss/matugen-style.qss
 home/dots/qt6ct/colors/matugen.conf
 home/dots/qt6ct/qss/matugen-style.qss
+home/dots/nvim/neovim/lua/generated.lua
+home/dots/starship.toml
 
+home/dots/quickshell/qs/.qmlls.ini
 home/configs/gtk-3.0/settings.ini
 home/configs/gtk-4.0/settings.ini
 home/dots/tmux/tmux-kun/.tmux/plugins/*
