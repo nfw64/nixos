@@ -27,6 +27,7 @@ in {
     ./programs/kari.nix
     ./programs/yazi.nix
     ./programs/firefox.nix
+    ./programs/bongocat.nix
   ];
 
   xdg.configFile =

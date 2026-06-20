@@ -1,9 +1,12 @@
 {
   description = "nixos-flakes";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    bongocat = {
+      url = "github:saatvik333/wayland-bongocat";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
