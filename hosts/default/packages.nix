@@ -5,6 +5,7 @@
     nh
     wtype
     ffmpeg
+    wine
 
     # rice
     gtk3
