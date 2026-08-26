@@ -24,10 +24,10 @@ in {
     ./dots/tmux/default.nix
     ./dots/rofi/default.nix
     ./programs/zsh/zsh.nix
-    ./programs/kari.nix
+    # ./programs/kari.nix
     ./programs/yazi.nix
     ./programs/firefox.nix
-    ./programs/bongocat.nix
+    #./programs/bongocat.nix
   ];
 
   xdg.configFile =

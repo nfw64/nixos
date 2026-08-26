@@ -1,5 +1,8 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
+    asusctl
+    rog-control-center
+
     # Auth agent
     gnome-keyring
 

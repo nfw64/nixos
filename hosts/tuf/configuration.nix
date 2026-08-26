@@ -121,8 +121,8 @@
 		offload.enable = true;
 		amdgpuBusId = "PCI:6:0:0";
 		nvidiaBusId = "PCI:1:0:0";
-	};
-    };
+	}
+    }
     graphics = {
       enable = true;
       enable32Bit = true; # Crucial for 32-bit Wine and Steam games
