@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+cat /proc/driver/nvidia/gpus/0000:01:00.0/power
+
+echo ""
+echo ""
+
+cat /sys/class/drm/card*/device/power_state
+
+echo ""
+echo ""
+
+echo "Currently running apps"
+lsof +c0 /dev/nvidia*

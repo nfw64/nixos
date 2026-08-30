@@ -6,9 +6,10 @@ import Quickshell.Bluetooth
 import Quickshell.Io
 
 // Inline Bluetooth Panel - hosted inside bar window
-PopupWindow {
+PanelWindow {
   id: popupWindow
   color: "transparent"
+  focusable: isPanelOpen
   signal requestClose()
   property bool isPanelOpen: false
   visible: isPanelOpen || popupPanel.opacity > 0

@@ -2,14 +2,16 @@ import QtQuick 6.10
 import QtQuick.Layouts 6.10
 import QtQuick.Controls 6.10 as QQC
 import QtQuick.Effects
+import Quickshell.Wayland
 import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
 import "services"
 
-PopupWindow {
+PanelWindow {
   id: popupWindow
   property var theme: DefaultTheme {}
+  focusable: isPanelOpen || passwordDialog.isOpen
   readonly property var network: NetworkService
   property bool isPanelOpen: false
   signal requestClose()
@@ -96,8 +98,6 @@ PopupWindow {
       }
     }
     ]
-
-    focus: isPanelOpen // Requests keyboard focus when the panel opens
 
     // Settings launcher
     Process {

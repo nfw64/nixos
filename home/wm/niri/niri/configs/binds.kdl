@@ -1,12 +1,16 @@
 binds {
+    //asusctl
+    Mod+Ctrl+P { spawn-sh "cur_p"; }
+    Mod+Ctrl+O { spawn-sh "aura_control cycle"; }
+    XF86ScreenSaver { spawn "sh" "-c" "niri msg action power-off-monitors"; }
+    Mod+P { spawn-sh "kitty -e nirimon"; }
+
     // APPLICATIONS
 
     Mod+T { spawn "kitty"; }
     Mod+N { spawn "firefox-beta"; }
     Mod+B { spawn "thunar"; }
     Ctrl+Alt+Delete { spawn "kitty" "-e" "htop"; }
-    Mod+Ctrl+O { spawn-sh "kitty -- kari"; }
-    Mod+Ctrl+P { spawn-sh "niri msg pick-color | wl-copy"; }
 
     // DMENUS
     Mod+V { spawn "bookmarks-rofi.sh"; }

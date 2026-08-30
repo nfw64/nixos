@@ -1,0 +1,882 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GHelper.Linux.UI.Views.ExtraWindow"
+        Title="Extra Settings"
+        Width="520"
+        Height="700"
+        MinWidth="420"
+        MinHeight="500"
+        WindowStartupLocation="CenterScreen"
+        Background="#1C1C1C"
+        Icon="avares://ghelper/UI/Assets/standard.ico">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="10" Spacing="5">
+
+            <!-- LANGUAGE -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="labelLanguageHeader" Classes="header" Text="Language" />
+                    </Border>
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelLanguageLabel" Text="Language"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboLanguage"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboLanguage_Changed" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- APPEARANCE -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="labelAppearanceHeader" Classes="header" Text="Appearance" />
+                    </Border>
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelIconSetLabel" Text="Icon Set"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <!-- Items populated at runtime from IconSets.AvailableSlugs -->
+                        <ComboBox Grid.Column="1" x:Name="comboIconSet"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboIconSet_Changed" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- KEYBOARD BACKLIGHT -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerKbdBacklight" Classes="header" Text="Keyboard Backlight" />
+                    </Border>
+
+                    <!-- Brightness slider (0-3) -->
+                    <Grid ColumnDefinitions="120,*,40" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelKbdBrightnessLabel" Text="Brightness"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <Slider Grid.Column="1" x:Name="sliderKbdBrightness"
+                                Minimum="0" Maximum="3" Value="3"
+                                TickFrequency="1" IsSnapToTickEnabled="True"
+                                ValueChanged="SliderKbdBrightness_ValueChanged" />
+                        <TextBlock Grid.Column="2" x:Name="labelKbdBrightness"
+                                   Classes="value" Text="3"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <!-- Animation Speed -->
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelAnimSpeed" Text="Animation Speed"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboKbdSpeed"
+                                  Width="120" Height="28"
+                                  SelectionChanged="ComboKbdSpeed_Changed" />
+                    </Grid>
+
+                    <!-- Power Zone Checkboxes -->
+                    <TextBlock x:Name="labelPowerZones" Text="Power Zones" Classes="label-dim" Margin="0,8,0,4" FontWeight="SemiBold" />
+
+                    <!-- Header row -->
+                    <Grid ColumnDefinitions="80,60,60,60,60,60" Margin="0,2">
+                        <TextBlock Grid.Column="0" Text="" />
+                        <TextBlock Grid.Column="1" x:Name="labelColAwake" Text="Awake" Classes="label-dim" FontSize="10" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="2" x:Name="labelColBoot" Text="Boot" Classes="label-dim" FontSize="10" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="3" x:Name="labelColSleep" Text="Sleep" Classes="label-dim" FontSize="10" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="4" x:Name="labelColShutdown" Text="Shutdown" Classes="label-dim" FontSize="10" HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="5" x:Name="labelColBattery" Text="Battery" Classes="label-dim" FontSize="10" HorizontalAlignment="Center" />
+                    </Grid>
+
+                    <!-- Keyboard row -->
+                    <Grid ColumnDefinitions="80,60,60,60,60,60" Margin="0,1" x:Name="rowPowerKeyboard">
+                        <TextBlock Grid.Column="0" x:Name="labelRowKeyboard" Text="Keyboard" Classes="label-dim" FontSize="11" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" x:Name="checkAwake" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="2" x:Name="checkBoot" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="3" x:Name="checkSleep" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="4" x:Name="checkShutdown" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="5" x:Name="checkBattery" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                    </Grid>
+
+                    <!-- Logo row -->
+                    <Grid ColumnDefinitions="80,60,60,60,60,60" Margin="0,1" x:Name="rowPowerLogo">
+                        <TextBlock Grid.Column="0" x:Name="labelRowLogo" Text="Logo" Classes="label-dim" FontSize="11" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" x:Name="checkAwakeLogo" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="2" x:Name="checkBootLogo" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="3" x:Name="checkSleepLogo" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="4" x:Name="checkShutdownLogo" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="5" x:Name="checkBatteryLogo" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                    </Grid>
+
+                    <!-- Lightbar row -->
+                    <Grid ColumnDefinitions="80,60,60,60,60,60" Margin="0,1" x:Name="rowPowerBar">
+                        <TextBlock Grid.Column="0" x:Name="labelRowLightbar" Text="Lightbar" Classes="label-dim" FontSize="11" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" x:Name="checkAwakeBar" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="2" x:Name="checkBootBar" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="3" x:Name="checkSleepBar" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="4" x:Name="checkShutdownBar" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="5" x:Name="checkBatteryBar" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                    </Grid>
+
+                    <!-- Lid row -->
+                    <Grid ColumnDefinitions="80,60,60,60,60,60" Margin="0,1" x:Name="rowPowerLid">
+                        <TextBlock Grid.Column="0" x:Name="labelRowLid" Text="Lid" Classes="label-dim" FontSize="11" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" x:Name="checkAwakeLid" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="2" x:Name="checkBootLid" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="3" x:Name="checkSleepLid" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="4" x:Name="checkShutdownLid" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                        <CheckBox Grid.Column="5" x:Name="checkBatteryLid" HorizontalAlignment="Center" IsCheckedChanged="CheckPower_Changed" />
+                    </Grid>
+
+                    <!-- Rear Light (Z13 only) - independent rear-glow zone with own mode + color -->
+                    <StackPanel x:Name="panelRearLight" IsVisible="False" Margin="0,12,0,0">
+                        <TextBlock x:Name="labelRearLight" Text="Rear Light"
+                                   Classes="label-dim" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <Grid ColumnDefinitions="80,*,40" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelRearMode" Text="Mode"
+                                       Classes="label-dim" FontSize="11" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="comboRearLight"
+                                      HorizontalAlignment="Stretch"
+                                      SelectionChanged="ComboRearLight_Changed" />
+                            <Border Grid.Column="2" x:Name="swatchRearColor"
+                                    Width="32" Height="24" Margin="4,0,0,0"
+                                    Background="White" BorderBrush="#666" BorderThickness="1"
+                                    Cursor="Hand" PointerPressed="SwatchRearColor_PointerPressed" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Slash LED Bar (A-cover lighting on Zephyrus/Strix models) -->
+                    <StackPanel x:Name="panelSlash" IsVisible="False" Margin="0,12,0,0">
+                        <TextBlock x:Name="labelSlashHeader" Text="Slash Lighting"
+                                   Classes="label-dim" FontWeight="SemiBold" Margin="0,0,0,4" />
+
+                        <!-- Enable / Disable -->
+                        <CheckBox x:Name="checkSlashEnabled" Content="Enable"
+                                  Margin="0,4"
+                                  IsCheckedChanged="CheckSlashEnabled_Changed" />
+
+                        <!-- Brightness (0-255) -->
+                        <Grid ColumnDefinitions="120,*,40" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelSlashBrightness" Text="Brightness"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <Slider Grid.Column="1" x:Name="sliderSlashBrightness"
+                                    Minimum="0" Maximum="255" Value="255"
+                                    ValueChanged="SliderSlashBrightness_Changed" />
+                            <TextBlock Grid.Column="2" x:Name="labelSlashBrightnessVal"
+                                       Classes="value" Text="255"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <!-- Animation Mode -->
+                        <Grid ColumnDefinitions="120,*" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelSlashMode" Text="Animation"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="comboSlashMode"
+                                      HorizontalAlignment="Stretch"
+                                      SelectionChanged="ComboSlashMode_Changed" />
+                        </Grid>
+
+                        <!-- Animation Speed (0-5) -->
+                        <Grid ColumnDefinitions="120,*,40" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelSlashSpeed" Text="Speed"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <Slider Grid.Column="1" x:Name="sliderSlashSpeed"
+                                    Minimum="0" Maximum="5" Value="0"
+                                    TickFrequency="1" IsSnapToTickEnabled="True"
+                                    ValueChanged="SliderSlashSpeed_Changed" />
+                            <TextBlock Grid.Column="2" x:Name="labelSlashSpeedVal"
+                                       Classes="value" Text="0"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+
+                        <!-- Power state checkboxes -->
+                        <TextBlock x:Name="labelSlashPower" Text="Power States"
+                                   Classes="label-dim" Margin="0,8,0,4" FontWeight="SemiBold" />
+                        <CheckBox x:Name="checkSlashBoot" Content="Show on boot"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                        <CheckBox x:Name="checkSlashSleep" Content="Show on sleep"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                        <CheckBox x:Name="checkSlashShutdown" Content="Show on shutdown"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                        <CheckBox x:Name="checkSlashBattery" Content="Show on battery"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                        <CheckBox x:Name="checkSlashLowBattery" Content="Low battery warning"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                        <CheckBox x:Name="checkSlashLidClosed" Content="Show with lid closed"
+                                  Margin="0,2" IsCheckedChanged="CheckSlashPower_Changed" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- DISPLAY SETTINGS -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerDisplay" Classes="header" Text="Display" />
+                    </Border>
+
+                    <!-- Backlight controller selector (visible when multiple backlight devices) -->
+                    <Grid x:Name="rowBacklightSelector" ColumnDefinitions="120,*" Margin="0,4" IsVisible="False">
+                        <TextBlock Grid.Column="0" x:Name="labelControllerLabel" Text="Controller"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboBacklight"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboBacklight_SelectionChanged" />
+                    </Grid>
+
+                    <!-- Brightness slider (visible when backlight device exists) -->
+                    <Grid x:Name="rowBrightnessSlider" ColumnDefinitions="120,*,50" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelDisplayBrightnessLabel" Text="Brightness"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <Slider Grid.Column="1" x:Name="sliderBrightness"
+                                Minimum="4" Maximum="100" Value="100"
+                                ValueChanged="SliderBrightness_ValueChanged" />
+                        <TextBlock Grid.Column="2" x:Name="labelBrightness"
+                                   Classes="value" Text="100%"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <!-- Backlight enable button (visible when no backlight + loadable module) -->
+                    <Button x:Name="buttonEnableBacklight"
+                            Content="Enable display backlight"
+                            IsVisible="False" Margin="0,4"
+                            Click="ButtonEnableBacklight_Click" />
+
+                    <!-- Backlight hint (visible when no backlight + no loadable module) -->
+                    <TextBlock x:Name="labelBacklightHint"
+                               IsVisible="False" Classes="label-dim"
+                               Margin="0,4" TextWrapping="Wrap" FontSize="11" />
+
+                    <!-- Panel Overdrive -->
+                    <CheckBox x:Name="checkOverdrive" Content="Panel Overdrive"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckOverdrive_Changed" />
+
+                    <Grid x:Name="rowOptimalBrightness" ColumnDefinitions="120,*" Margin="0,4" IsVisible="False">
+                        <TextBlock Grid.Column="0" x:Name="labelOptimalBrightness" Text="Optimal Brightness"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboOptimalBrightness"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboOptimalBrightness_Changed" />
+                    </Grid>
+
+                    <!-- Gamma (hidden on Wayland, no backend support) -->
+                    <Grid x:Name="rowGamma" ColumnDefinitions="120,*,50" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelGammaLabel" Text="Gamma"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <Slider Grid.Column="1" x:Name="sliderGamma"
+                                Minimum="50" Maximum="200" Value="100"
+                                TickFrequency="10"
+                                ValueChanged="SliderGamma_ValueChanged" />
+                        <TextBlock Grid.Column="2" x:Name="labelGamma"
+                                   Classes="value" Text="1.00"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+
+            <!-- GPU BACKEND how ghelper disables the dGPU.
+                 Two orthogonal options:
+                   * PCI mode:      modprobe block + udev hot-remove rule
+                   * Raw WMI mode:  ACPI debugfs DSTS/DEVS
+                 Both ship with explanatory hints so the user can pick the
+                 right one for their laptop. Panel visibility is gated by
+                 IAsusWmi.CanToggleGpuBackend(). -->
+            <Border Classes="panel" x:Name="panelGpuBackend" IsVisible="False">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerGpuBackend" Classes="header" Text="GPU Backend" />
+                    </Border>
+
+                    <TextBlock x:Name="labelGpuBackendIntro" Classes="label-dim"
+                               Text="Choose how ghelper switches the dGPU on and off. ASUS WMI (firmware) is the default; the alternatives below help when the firmware path is missing or unreliable on your hardware."
+                               FontSize="11" Margin="0,0,0,8" TextWrapping="Wrap" />
+
+                    <CheckBox x:Name="checkPciGpuBackend"
+                              Content="Use PCI dGPU disable"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckPciGpuBackend_Changed" />
+                    <TextBlock x:Name="labelPciGpuBackendHint" Classes="label-dim"
+                               Text="Disables the dGPU via a modprobe blacklist plus a udev hot-remove rule. Required on non-ASUS laptops where there is no ASUS firmware to talk to, optional on ASUS where you prefer the kernel-only path. Every mode change requires a reboot because the rules only apply on the next boot."
+                               FontSize="10" Margin="20,0,0,8" TextWrapping="Wrap" />
+
+                    <CheckBox x:Name="checkRawWmi"
+                              Content="Raw WMI mode (experimental - GPU Eco via ACPI debugfs)"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckRawWmi_Changed" />
+                    <TextBlock x:Name="labelRawWmiHint" Classes="label-dim"
+                               Text="Talks to the ASUS firmware GPUEco method through /sys/kernel/debug/asus-nb-wmi directly, bypassing the kernel's sysfs presence check. Use this only on older Vivobook / Zenbook firmware where dgpu_disable is missing but the ACPI method still works. Every call needs a pkexec prompt and ghelper restarts when the option is toggled. Ignored entirely when PCI mode above is enabled."
+                               FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- OTHER SETTINGS -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerOther" Classes="header" Text="Other" />
+                    </Border>
+
+                    <CheckBox x:Name="checkBootSound" Content="Boot Sound"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckBootSound_Changed" />
+
+                    <CheckBox x:Name="checkMcuPowersave" Content="MCU Power Saving (USB autosuspend)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckMcuPowersave_Changed" />
+
+                    <CheckBox x:Name="checkStatusLed" Content="LED status indicators"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckStatusLed_Changed" />
+
+                    <CheckBox x:Name="checkTopmost" Content="Window Always on Top"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckTopmost_Changed" />
+
+                    <CheckBox x:Name="checkBWIcon" Content="B&amp;W Tray Icon"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckBWIcon_Changed" />
+
+                    <CheckBox x:Name="checkClamshell" Content="Clamshell Mode (disable sleep on lid close)"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckClamshell_Changed" />
+
+                    <Grid x:Name="panelDeepSleep" ColumnDefinitions="*,160" Margin="0,4" IsVisible="False">
+                        <TextBlock Grid.Column="0" x:Name="labelDeepSleep" Text="Suspend mode"
+                                   VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboDeepSleep"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboDeepSleep_SelectionChanged" />
+                    </Grid>
+
+                    <CheckBox x:Name="checkFahrenheit" Content="Show temperatures in Fahrenheit"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckFahrenheit_Changed" />
+
+                    <CheckBox x:Name="checkSilentStart" Content="Start minimized to tray"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckSilentStart_Changed" />
+
+                    <CheckBox x:Name="checkSkipSysfilesPopup" Content="Don't check system files on startup"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckSkipSysfilesPopup_Changed" />
+
+                    <CheckBox x:Name="checkUdevPerMachine" Content="Tailor udev rules to this machine"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckUdevPerMachine_Changed" />
+                    <TextBlock x:Name="labelUdevPerMachineHint"
+                               Classes="hint" Margin="24,0,0,4"
+                               TextWrapping="Wrap" />
+
+                    <Grid ColumnDefinitions="*,160" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelRenderMode" Text="Rendering backend"
+                                   VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboRenderMode"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboRenderMode_SelectionChanged" />
+                    </Grid>
+                    <TextBlock x:Name="labelRenderModeHint"
+                               Classes="hint" Margin="0,0,0,4"
+                               TextWrapping="Wrap" />
+
+                    <CheckBox x:Name="checkSkipUpdatePrompt" Content="Don't check for updates on startup"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckSkipUpdatePrompt_Changed" />
+
+                    <CheckBox x:Name="checkDisableAudio" Content="Disable virtual microphone"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckDisableAudio_Changed" />
+
+                    <CheckBox x:Name="checkDisableOsd" Content="Disable notifications"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckDisableOsd_Changed" />
+
+                    <CheckBox x:Name="checkKeepBacklight" Content="Keep keyboard backlight always on"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckKeepBacklight_Changed" />
+
+                    <Separator Margin="0,8,0,4" />
+
+                    <!-- Device toggles -->
+                    <CheckBox x:Name="checkCamera" Content="Camera"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckCamera_Changed" />
+
+                    <CheckBox x:Name="checkTouchpad" Content="Touchpad"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckTouchpad_Changed" />
+
+                    <CheckBox x:Name="checkTouchscreen" Content="Touchscreen"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckTouchscreen_Changed" />
+
+                    <Button x:Name="buttonNumberPad" Classes="ghelper" IsVisible="False"
+                            Margin="0,4" Height="28" Click="ButtonNumberPad_Click">
+                        <TextBlock Text="NumberPad..." FontSize="11" />
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- LENOVO (Vantage-parity hardware toggles; visible on Lenovo only) -->
+            <Border Classes="panel" x:Name="panelLenovo" IsVisible="False">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerLenovo" Classes="header" Text="Lenovo" />
+                    </Border>
+
+                    <CheckBox x:Name="checkLenovoConservation"
+                              Content="Battery conservation mode (cap charge at ~60%)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoConservation_Changed" />
+
+                    <CheckBox x:Name="checkLenovoRapidCharge"
+                              Content="Rapid charge"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoRapidCharge_Changed" />
+                    <TextBlock Classes="label-dim" x:Name="labelLenovoRapidChargeHint"
+                               Text="Mutually exclusive with conservation mode - enabling one turns the other off (enforced by the firmware)."
+                               FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" IsVisible="False" />
+
+                    <CheckBox x:Name="checkLenovoUsbCharging"
+                              Content="Always-on USB charging (charge devices while asleep/off)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoUsbCharging_Changed" />
+
+                    <CheckBox x:Name="checkLenovoFnLock"
+                              Content="Fn lock (F1-F12 act as function keys)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoFnLock_Changed" />
+
+                    <CheckBox x:Name="checkLenovoFlipToStart"
+                              Content="Flip to Start (power on when the lid opens)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoFlipToStart_Changed" />
+
+                    <CheckBox x:Name="checkLenovoExtremeTurbo"
+                              Content="Turbo uses Extreme mode (max-power)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoExtremeTurbo_Changed" />
+                    <TextBlock Classes="label-dim" x:Name="labelLenovoExtremeHint"
+                               Text="Maps the Turbo button to the firmware's Extreme thermal mode (SmartFan 6+, AC power recommended)."
+                               FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" IsVisible="False" />
+
+                    <CheckBox x:Name="checkLenovoMicFix"
+                              Content="Fix internal microphone distortion (limit mic boost)"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckLenovoMicFix_Changed" />
+                    <TextBlock Classes="label-dim" x:Name="labelLenovoMicFixHint"
+                               Text="Realtek ALC287 Legion generations ship with excessive internal mic boost that clips and distorts recordings. Clamps the ALSA 'Internal Mic Boost' control to 0 dB on startup and resume."
+                               FontSize="10" Margin="20,0,0,4" TextWrapping="Wrap" IsVisible="False" />
+
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,4" x:Name="rowLenovoDustClean" IsVisible="False">
+                        <TextBlock Grid.Column="0" x:Name="labelLenovoDustClean"
+                                   Text="Dust cleaning (run all fans at max for 30 s)"
+                                   VerticalAlignment="Center" />
+                        <Button Grid.Column="1" x:Name="buttonLenovoDustClean" Classes="ghelper"
+                                Height="28" MinWidth="80" Click="ButtonLenovoDustClean_Click">
+                            <TextBlock x:Name="labelLenovoDustCleanBtn" Text="Start" FontSize="11" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerTrayIcons" Classes="header" Text="System Tray Icons" />
+                    </Border>
+
+                    <!-- CPU temp icon row -->
+                    <Grid ColumnDefinitions="*,32,32,Auto" Margin="0,4">
+                        <CheckBox Grid.Column="0" x:Name="checkCpuTrayIcon"
+                                  Content="Show CPU temperature"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckCpuTrayIcon_Changed" />
+                        <Button Grid.Column="1" x:Name="btnCpuTrayBg"
+                                Width="28" Height="22"
+                                Margin="2,0" Padding="0"
+                                BorderThickness="1"
+                                BorderBrush="#555555"
+                                ToolTip.Tip="Background color"
+                                Click="BtnCpuTrayBg_Click" />
+                        <Button Grid.Column="2" x:Name="btnCpuTrayText"
+                                Width="28" Height="22"
+                                Margin="2,0" Padding="0"
+                                BorderThickness="1"
+                                BorderBrush="#555555"
+                                ToolTip.Tip="Text color"
+                                Click="BtnCpuTrayText_Click" />
+                        <CheckBox Grid.Column="3" x:Name="checkCpuTrayTransparent"
+                                  Content="Transparent"
+                                  Margin="8,0,0,0"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckCpuTrayTransparent_Changed" />
+                    </Grid>
+
+                    <!-- GPU temp icon row (visibility gated at runtime by dGPU presence) -->
+                    <Grid x:Name="rowGpuTray" ColumnDefinitions="*,32,32,Auto" Margin="0,4">
+                        <CheckBox Grid.Column="0" x:Name="checkGpuTrayIcon"
+                                  Content="Show GPU temperature"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckGpuTrayIcon_Changed" />
+                        <Button Grid.Column="1" x:Name="btnGpuTrayBg"
+                                Width="28" Height="22"
+                                Margin="2,0" Padding="0"
+                                BorderThickness="1"
+                                BorderBrush="#555555"
+                                ToolTip.Tip="Background color"
+                                Click="BtnGpuTrayBg_Click" />
+                        <Button Grid.Column="2" x:Name="btnGpuTrayText"
+                                Width="28" Height="22"
+                                Margin="2,0" Padding="0"
+                                BorderThickness="1"
+                                BorderBrush="#555555"
+                                ToolTip.Tip="Text color"
+                                Click="BtnGpuTrayText_Click" />
+                        <CheckBox Grid.Column="3" x:Name="checkGpuTrayTransparent"
+                                  Content="Transparent"
+                                  Margin="8,0,0,0"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckGpuTrayTransparent_Changed" />
+                    </Grid>
+
+                    <!-- dGPU status dot row (visibility gated at runtime by dGPU presence) -->
+                    <Grid x:Name="rowDgpuTray" ColumnDefinitions="*" Margin="0,4">
+                        <CheckBox Grid.Column="0" x:Name="checkDgpuTrayIcon"
+                                  Content="Show dGPU status"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckDgpuTrayIcon_Changed" />
+                    </Grid>
+                    <TextBlock x:Name="labelDgpuTrayHint" Classes="label-dim"
+                               Text="Green = active, gray = suspended, hollow = off"
+                               TextWrapping="Wrap" Margin="24,0,0,0" />
+
+                    <!-- dGPU monitoring toggle (allows RTD3 suspend when off) -->
+                    <Grid x:Name="rowDgpuMonitor" ColumnDefinitions="*" Margin="0,4">
+                        <CheckBox Grid.Column="0" x:Name="checkDgpuMonitor"
+                                  Content="dGPU temperature monitoring"
+                                  VerticalAlignment="Center"
+                                  IsCheckedChanged="CheckDgpuMonitor_Changed" />
+                    </Grid>
+                    <TextBlock x:Name="labelDgpuMonitorHint" Classes="label-dim"
+                               Text="Disable to let dGPU enter runtime suspend (RTD3)"
+                               TextWrapping="Wrap" Margin="24,0,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- KEY BINDINGS -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerKeyBindings" Classes="header" Text="Key Bindings" />
+                    </Border>
+
+                    <!-- ROG / M5 Key -->
+                    <Grid ColumnDefinitions="180,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelKeyM4" Text="ROG / M5 Key"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboKeyM4"
+                                  Width="220" Height="28"
+                                  SelectionChanged="ComboKeyBinding_Changed" />
+                    </Grid>
+
+                    <!-- Fn+F4 (Aura) -->
+                    <Grid ColumnDefinitions="180,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelKeyFnF4" Text="Fn+F4 (Aura)"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboKeyFnF4"
+                                  Width="220" Height="28"
+                                  SelectionChanged="ComboKeyBinding_Changed" />
+                    </Grid>
+
+                    <!-- Fn+F5 / M4 (Performance) -->
+                    <Grid ColumnDefinitions="180,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelKeyFnF5" Text="Fn+F5 / M4"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboKeyFnF5"
+                                  Width="220" Height="28"
+                                  SelectionChanged="ComboKeyBinding_Changed" />
+                    </Grid>
+
+                    <!-- Function Key Remap (software fn-lock) -->
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock x:Name="labelFnLockTeaser" Classes="label-dim"
+                                       Text="Function Key Remap" />
+                            <TextBlock x:Name="labelFnLockTeaserSub" Classes="label-dim"
+                                       Text="Remap F1-F12 to media keys"
+                                       FontSize="10" Margin="0,2,0,0" />
+                        </StackPanel>
+                        <Button Grid.Column="1" x:Name="buttonFnLockDetails" Classes="ghelper"
+                                Height="28" VerticalAlignment="Center"
+                                Click="ButtonFnLockDetails_Click">
+                            <TextBlock x:Name="labelFnLockDetails" Text="Details..." FontSize="11" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- M-KEY FIRMWARE BINDINGS (Strix macro keys M1/M2/M3/M5).
+                 Writes an EC opcode so the physical key emits the chosen
+                 hardware function at the firmware level. Hidden unless the
+                 keyboard controller reports a remap block (MKeyControl). -->
+            <Border x:Name="panelMKeys" Classes="panel" IsVisible="False">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerMKeys" Classes="header" Text="M-Key Bindings" />
+                    </Border>
+
+                    <Grid ColumnDefinitions="180,*" Margin="0,4" x:Name="rowMKeyM1">
+                        <TextBlock Grid.Column="0" Text="M1" Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboMKeyM1" Width="220" Height="28"
+                                  SelectionChanged="ComboMKey_Changed" />
+                    </Grid>
+                    <Grid ColumnDefinitions="180,*" Margin="0,4" x:Name="rowMKeyM2">
+                        <TextBlock Grid.Column="0" Text="M2" Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboMKeyM2" Width="220" Height="28"
+                                  SelectionChanged="ComboMKey_Changed" />
+                    </Grid>
+                    <Grid ColumnDefinitions="180,*" Margin="0,4" x:Name="rowMKeyM3">
+                        <TextBlock Grid.Column="0" Text="M3" Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboMKeyM3" Width="220" Height="28"
+                                  SelectionChanged="ComboMKey_Changed" />
+                    </Grid>
+                    <Grid ColumnDefinitions="180,*" Margin="0,4" x:Name="rowMKeyM5">
+                        <TextBlock Grid.Column="0" Text="M5" Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboMKeyM5" Width="220" Height="28"
+                                  SelectionChanged="ComboMKey_Changed" />
+                    </Grid>
+
+                    <Button x:Name="buttonMKeyReset" Classes="ghelper" Height="28"
+                            HorizontalAlignment="Left" Margin="0,8,0,0"
+                            Click="ButtonMKeyReset_Click">
+                        <TextBlock x:Name="labelMKeyReset" Text="Reset" FontSize="11" />
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- ROG ALLY: APU UMA buffer (visible on Ally only when the
+                 asus-armoury kernel attribute is present) -->
+            <Border x:Name="panelApuMem" Classes="panel" IsVisible="False">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="labelApuMemHeader" Classes="header" Text="APU Memory" />
+                    </Border>
+                    <Grid ColumnDefinitions="160,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelApuMemValue" Text="UMA Buffer Size"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboApuMem"
+                                  HorizontalAlignment="Stretch"
+                                  SelectionChanged="ComboApuMem_Changed" />
+                    </Grid>
+                    <TextBlock x:Name="labelApuMemReboot" Classes="label-dim" FontSize="10"
+                               Text="Requires reboot to apply"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- XG MOBILE DOCK LIGHTS
+                 Visible only when an XG Mobile dock is present on USB-HID
+                 (VID 0x0B05 + dock PID, see USB/XGM.cs). The toggle and slider
+                 control the dock's front-panel LED ring via HID feature report
+                 0x5E. State persists in xmg_light / xmg_brightness. -->
+            <Border x:Name="panelXGM" Classes="panel" IsVisible="False">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="labelXgmHeader" Classes="header" Text="XG Mobile Dock" />
+                    </Border>
+                    <CheckBox x:Name="checkXGMLights" Content="Dock lights"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckXGMLights_Changed" />
+                    <Grid x:Name="panelXgmBrightness" ColumnDefinitions="120,*,40" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelXgmBrightnessLabel"
+                                   Text="Brightness" Classes="label-dim"
+                                   VerticalAlignment="Center" />
+                        <Slider Grid.Column="1" x:Name="sliderXgmBrightness"
+                                Minimum="0" Maximum="3" Value="3"
+                                TickFrequency="1" IsSnapToTickEnabled="True"
+                                ValueChanged="SliderXgmBrightness_ValueChanged" />
+                        <TextBlock Grid.Column="2" x:Name="labelXgmBrightness"
+                                   Classes="value" Text="3"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                    <!-- Boot parameter hint. Selectable so it can be copied. -->
+                    <SelectableTextBlock x:Name="labelXgmPciePmHint"
+                                         Classes="label-dim" FontSize="10"
+                                         TextWrapping="Wrap" TextTrimming="None"
+                                         Text="" Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+
+            <!-- POWER MANAGEMENT -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerPowerMgmt" Classes="header" Text="Power Management" />
+                    </Border>
+
+                    <!-- Per-mode platform profile pickers.
+                         Items populated at runtime from /sys/firmware/acpi/platform_profile_choices.
+                         Each combo controls the platform_profile written when that ghelper
+                         performance mode is active. -->
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelProfileSilent" Text="Silent profile"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboProfileSilent"
+                                  Width="200" SelectionChanged="ComboProfileSilent_Changed" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelProfileBalanced" Text="Balanced profile"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboProfileBalanced"
+                                  Width="200" SelectionChanged="ComboProfileBalanced_Changed" />
+                    </Grid>
+                    <Grid ColumnDefinitions="120,*" Margin="0,4">
+                        <TextBlock Grid.Column="0" x:Name="labelProfileTurbo" Text="Turbo profile"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <ComboBox Grid.Column="1" x:Name="comboProfileTurbo"
+                                  Width="200" SelectionChanged="ComboProfileTurbo_Changed" />
+                    </Grid>
+
+                    <!-- Per-mode CPU EPP pickers. Items populated at runtime from
+                         cpufreq energy_performance_available_preferences. Hidden
+                         when the kernel does not expose EPP. -->
+                    <StackPanel x:Name="panelEpp" IsVisible="False">
+                        <Grid ColumnDefinitions="120,*" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelEppSilent" Text="Silent EPP"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="comboEppSilent"
+                                      Width="200" SelectionChanged="ComboEppSilent_Changed" />
+                        </Grid>
+                        <Grid ColumnDefinitions="120,*" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelEppBalanced" Text="Balanced EPP"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="comboEppBalanced"
+                                      Width="200" SelectionChanged="ComboEppBalanced_Changed" />
+                        </Grid>
+                        <Grid ColumnDefinitions="120,*" Margin="0,4">
+                            <TextBlock Grid.Column="0" x:Name="labelEppTurbo" Text="Turbo EPP"
+                                       Classes="label-dim" VerticalAlignment="Center" />
+                            <ComboBox Grid.Column="1" x:Name="comboEppTurbo"
+                                      Width="200" SelectionChanged="ComboEppTurbo_Changed" />
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- nvidia-powerd draws power sampling the dGPU even when it
+                         is idle. Visible only when the unit is installed. -->
+                    <CheckBox x:Name="checkNvidiaPowerdBattery" Content="Stop nvidia-powerd on battery"
+                              Margin="0,4" IsVisible="False"
+                              IsCheckedChanged="CheckNvidiaPowerdBattery_Changed" />
+
+                    <!-- Battery Health -->
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock x:Name="labelBatteryHealth" Classes="label-dim"
+                                       Text="Battery health: --%" />
+                            <TextBlock x:Name="labelPowerDraw" Classes="label-dim"
+                                       Text="Power draw: - mW" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <Button Grid.Column="1" x:Name="buttonBatteryInfo" Classes="ghelper"
+                                Height="28" VerticalAlignment="Center"
+                                Click="ButtonBatteryInfo_Click">
+                            <TextBlock x:Name="labelBatteryDetails" Text="Details..." FontSize="11" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- SYSTEM INFO -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerSystemInfo" Classes="header" Text="System Info" />
+                    </Border>
+
+                    <TextBlock x:Name="labelModel" Classes="label-dim"
+                               Text="Model: --" />
+                    <TextBlock x:Name="labelBios" Classes="label-dim"
+                               Text="BIOS: --" Margin="0,4,0,0" />
+                    <TextBlock x:Name="labelKernel" Classes="label-dim"
+                               Text="Kernel: --" Margin="0,4,0,0" />
+                    <TextBlock x:Name="labelAsusWmi" Classes="label-dim"
+                               Text="asus-wmi: --" Margin="0,4,0,0" />
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                        <TextBlock Grid.Column="0" x:Name="labelFeatures" Classes="label-dim"
+                                   Text="" TextWrapping="Wrap" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" x:Name="buttonSystemInfo" Classes="ghelper"
+                                Height="28" VerticalAlignment="Center"
+                                Click="ButtonSystemInfo_Click">
+                            <TextBlock x:Name="labelSystemInfoMore" Text="More..." FontSize="11" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- PERIPHERALS -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerPeripherals" Classes="header" Text="Peripherals" />
+                    </Border>
+
+                    <CheckBox x:Name="checkDisableLogitech"
+                              Content="Disable Logitech mouse/keyboard support"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckDisableLogitech_Changed" />
+                    <TextBlock x:Name="labelDisableLogitechHint" Classes="label-dim" FontSize="11"
+                               Text="Stops HID++ scans and hides Logitech device panels. Requires app restart."
+                               TextWrapping="Wrap" Margin="22,0,0,4" />
+
+                    <CheckBox x:Name="checkDisableAsusPeripherals"
+                              Content="Disable ASUS mouse/keyboard support"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckDisableAsusPeripherals_Changed" />
+                    <TextBlock x:Name="labelDisableAsusPeripheralsHint" Classes="label-dim" FontSize="11"
+                               Text="Stops ASUS USB peripheral scans and hides their device panels. Requires app restart."
+                               TextWrapping="Wrap" Margin="22,0,0,4" />
+                </StackPanel>
+            </Border>
+
+            <!-- ADVANCED -->
+            <Border Classes="panel">
+                <StackPanel>
+                    <Border Classes="panel-header" Margin="0,0,0,8">
+                        <TextBlock x:Name="headerAdvanced" Classes="header" Text="Advanced" />
+                    </Border>
+
+                    <CheckBox x:Name="checkAutoApplyPower" Content="Auto-apply power limits on mode change"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckAutoApplyPower_Changed" />
+
+                    <CheckBox x:Name="checkScreenAuto" Content="Auto-switch refresh rate (AC/Battery)"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckScreenAuto_Changed" />
+
+                    <CheckBox x:Name="checkEcoPersistent"
+                              Content="Re-apply Eco on every boot"
+                              Margin="0,4"
+                              IsCheckedChanged="CheckEcoPersistent_Changed" />
+
+                    <!-- CPU Cores -->
+                    <Grid ColumnDefinitions="120,*,50" Margin="0,8,0,4" x:Name="panelCpuCores">
+                        <TextBlock Grid.Column="0" x:Name="labelCpuCoresLabel" Text="CPU Cores"
+                                   Classes="label-dim" VerticalAlignment="Center" />
+                        <Slider Grid.Column="1" x:Name="sliderCpuCores"
+                                Minimum="1" Maximum="32" Value="32"
+                                TickFrequency="1" IsSnapToTickEnabled="True"
+                                ValueChanged="SliderCpuCores_ValueChanged" />
+                        <TextBlock Grid.Column="2" x:Name="labelCpuCores" Classes="value"
+                                   Text="32" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                    <TextBlock x:Name="labelCpuCoresInfo" Classes="label-dim"
+                               Text="" FontSize="10" Margin="0,0,0,4" />
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</Window>

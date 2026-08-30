@@ -26,6 +26,8 @@ ShellRoot {
     theme: ts
   }
 
+  BatteryNotifier {}
+
   Bar {
     theme: ts
   }

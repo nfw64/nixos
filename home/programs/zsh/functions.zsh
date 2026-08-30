@@ -1,3 +1,16 @@
+nogpu() {
+  __NV_PRIME_RENDER_OFFLOAD=0 __GLX_VENDOR_LIBRARY_NAME=mesa "$0"
+}
+
+ast() {
+  case "$1" in 
+    g) asusctl profile get ;;
+    q) asusctl profile set quiet ;;
+    b) asusctl profile set balanced ;;
+    p) asusctl profile set performance ;;
+    *) asusctl "$@" ;;
+esac
+}
 _list_oldfiles() {
     # Get the oldfiles list from Neovim
     local oldfiles=($(nvim -u NONE --headless +'lua io.write(table.concat(vim.v.oldfiles, "\n") .. "\n")' +qa))

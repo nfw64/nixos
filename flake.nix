@@ -3,10 +3,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    bongocat = {
-      url = "github:saatvik333/wayland-bongocat";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -70,13 +66,6 @@
         home-manager.nixosModules.home-manager
         inputs.minegrub-world-sel-theme.nixosModules.default
         inputs.nix-index-database.nixosModules.default
-        # inputs.bongocat.nixosModules.default
-        # {
-        #   programs.wayland-bongocat = {
-        #     enable = true;
-        #     autostart = true;
-        #   };
-        # }
       ];
     };
   };

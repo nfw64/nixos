@@ -2,8 +2,7 @@
   pkgs,
   config,
   ...
-}:
-{
+}: {
   programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
   programs.firefox = {
     enable = true;
@@ -57,7 +56,7 @@
 
     policies = {
       InstallAddonsPermission = {
-        Allow = [ "https://tridactyl.cmcaine.co.uk" ];
+        Allow = ["https://tridactyl.cmcaine.co.uk"];
       };
 
       ExtensionSettings = {

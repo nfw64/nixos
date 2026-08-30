@@ -119,10 +119,7 @@
         bindkey -M vicmd '\ev' list_oldfiles
         bindkey -M viins '\ev' list_oldfiles
         bindkey -s       '\es' 'sesh-sessions\n'
-        zle     -N             fzf-file-widget
-        bindkey -M emacs '\en' fzf-file-widget
-        bindkey -M vicmd '\en' fzf-file-widget
-        bindkey -M viins '\en' fzf-file-widget
+
 
         ## some hacky fixes
         setopt ignoreeof

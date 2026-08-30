@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+
+# --- Paths & Configuration ---
+CACHE_DIR="$HOME/.cache/matugen/colors"
+WALL_CONF="$HOME/.config/quickshell/wallpaper.conf"
+STATE_FILE="$HOME/.cache/aura_state"
+ID_FILE="/tmp/asus_aura_notif_id"
+ICON="rog-control-center"
+
+# --- State & Argument Handling ---
+MODES=("static" "breathe" "none")
+INPUT_MODE="${1:-}"
+
+# Read the last saved state (default to static if file doesn't exist)
+if [ -f "$STATE_FILE" ]; then
+  CURRENT_MODE=$(cat "$STATE_FILE")
+else
+  CURRENT_MODE="static"
+fi
+
+SEND_NOTIF=true
+
+if [[ "$INPUT_MODE" == "cycle" ]]; then
+  # Find current mode index and increment
+  for i in "${!MODES[@]}"; do
+    if [[ "${MODES[$i]}" == "$CURRENT_MODE" ]]; then
+      idx=$i
+      break
+    fi
+  done
+  idx=$(((idx + 1) % 3))
+  MODE="${MODES[$idx]}"
+
+  # Save new state
+  echo "$MODE" >"$STATE_FILE"
+
+elif [[ "$INPUT_MODE" == "startup" ]]; then
+  MODE="$CURRENT_MODE"
+  SEND_NOTIF=false
+
+elif [[ -z "$INPUT_MODE" ]]; then
+  # No arguments provided, just read and continue
+  MODE="$CURRENT_MODE"
+
+else
+  echo "Usage: $0 [cycle|startup]" >&2
+  exit 1
+fi
+
+# --- Helper: Dynamic secondary color calculation ---
+get_complementary_accent() {
+  local hex="$1"
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+
+  local r_new=$((r / 2))
+  local g_new=$((g / 2))
+  local b_new=$((b / 2))
+
+  printf "%02x%02x%02x" $r_new $g_new $b_new
+}
+
+# --- Extract Colors (Only if not turning off) ---
+if [[ "$MODE" != "none" ]]; then
+  if [ ! -f "$WALL_CONF" ]; then
+    echo "Error: No active wallpaper record found in wallpaper.conf" >&2
+    exit 1
+  fi
+  CURRENT_WALL=$(cat "$WALL_CONF")
+
+  MD5=$(md5sum "$CURRENT_WALL" | awk '{print $1}')
+  CACHE_FILE="$CACHE_DIR/$MD5"
+
+  if [ ! -f "$CACHE_FILE" ]; then
+    echo "Error: Primary color cache missing for current wallpaper." >&2
+    exit 1
+  fi
+
+  HEX1=$(cat "$CACHE_FILE")
+  HEX1="${HEX1#\#}"
+  HEX2=$(get_complementary_accent "$HEX1")
+fi
+
+# --- Mode Routing Execution ---
+case "$MODE" in
+breathe | static)
+  # Apply specific aura effect
+  if [[ "$MODE" == "breathe" ]]; then
+    asusctl aura effect breathe --colour "$HEX1" --colour2 "$HEX2" --speed low
+  else
+    asusctl aura effect static --colour "$HEX1"
+  fi
+  ;;
+
+none)
+  # Turn off the LEDs
+  asusctl leds set off
+  ;;
+esac
+
+# --- Notification System ---
+if [[ "$SEND_NOTIF" == true ]]; then
+  NOTIF_ID=""
+  if [ -f "$ID_FILE" ]; then
+    NOTIF_ID="$(cat "$ID_FILE")"
+  fi
+
+  # Capitalize first letter of mode for a cleaner notification
+  DISPLAY_MODE="$(tr '[:lower:]' '[:upper:]' <<<${MODE:0:1})${MODE:1}"
+
+  if [ -n "$NOTIF_ID" ]; then
+    NEW_ID=$(notify-send -p -r "$NOTIF_ID" -i "$ICON" -a "asusctl" "Aura Effect" "$DISPLAY_MODE")
+  else
+    NEW_ID=$(notify-send -p -a "asusctl" -i "$ICON" "Aura Effect" "$DISPLAY_MODE")
+  fi
+
+  # Save the printed ID for the next run
+  echo "$NEW_ID" >"$ID_FILE"
+fi

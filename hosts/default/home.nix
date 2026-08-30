@@ -27,6 +27,7 @@
   };
 
   home.pointerCursor = {
+    enable = true;
     gtk.enable = true;
     name = "Firefly"; # Make sure this matches your folder name capitalization
     size = 64;
@@ -36,6 +37,13 @@
       mkdir -p $out/share/icons
       cp -r ${../../assets/local/cursor/Firefly} $out/share/icons/Firefly
     '';
+  };
+
+  xdg.terminal-exec = {
+    enable = true;
+    settings = {
+      default = ["kitty.desktop"]; # Replace with alacritty.desktop, foot.desktop, etc.
+    };
   };
 
   dconf.settings = {

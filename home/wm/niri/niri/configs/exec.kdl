@@ -1,8 +1,10 @@
 // exec
-spawn-at-startup "setWal"
 spawn-at-startup "quickshell"
+spawn-at-startup "setWal"
 spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
+
 
 spawn-at-startup "gnome-keyring-daemon --start --components=secrets"
 spawn-at-startup "swayidle"
 //spawn-at-startup "~/.config/niri/scripts/float-watch.py"
+spawn-sh-at-startup "sleep 3 && exec cardwire-gui"

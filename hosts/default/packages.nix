@@ -4,6 +4,7 @@
     cliphist
     nh
     wtype
+    lsof
     ffmpeg
     wine
 
@@ -54,5 +55,6 @@
     nodejs
     thunar
     mpv
+    transmission_4-gtk
   ];
 }

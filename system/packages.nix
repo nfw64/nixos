@@ -1,7 +1,8 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     asusctl
-    rog-control-center
+    cardwire
+    nirimon
 
     # Auth agent
     gnome-keyring
@@ -15,7 +16,7 @@
     gvfs
     wget
     curl
-    ananicy
+    ananicy-cpp
     libva
     libva-utils
     playerctl

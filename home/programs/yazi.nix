@@ -5,10 +5,10 @@
   ...
 }: let
   whoosh = pkgs.fetchFromGitHub {
-    owner = "WhoSowSee";
+    owner = "boazy";
     repo = "whoosh.yazi";
-    tag = "main";
-    hash = "sha256-l5ntFbVPwRKyLFF1q5irGNa8K2mT80j33E5JNV5aAEg=";
+    rev = "main"; # Use rev instead of tag for branches
+    hash = "sha256-tW72zeSSSlvIWDbTRWyhMHxP5JSdKVkptXzoYTYuCtg=";
   };
   open-with-cmd = pkgs.fetchFromGitHub {
     owner = "Ape";
@@ -18,12 +18,9 @@
   };
   searchjump = pkgs.fetchFromGitHub {
     owner = "DreamMaoMao";
-    repo = "yazi-config";
-    rev = "5270e50f1253c83eec8a4c537a41de25c92d55fa";
-    hash = "sha256-OLdax4jRbjcqXjghzKTkmamGxor3lakWmdBbQxBZc1I=";
-    sparseCheckout = [
-      "plugins/easyjump.yazi"
-    ];
+    repo = "searchjump.yazi";
+    rev = "main"; # Or a specific commit hash for lock stability
+    hash = "sha256-Rt1NMP1qksYdfFIywXAG2NJHZFFp9qwqxaxw+tXQtx0="; # Run nixos-rebuild to get the correct hash
   };
 in {
   home.packages = with pkgs; [
@@ -86,7 +83,8 @@ in {
         };
       };
       searchjump = {
-        package = "${searchjump}/plugins/searchjump.yazi";
+        # Point directly to the root source derivation package output
+        package = searchjump;
         setup = true;
         settings = {
           unmatch_fg = "#b2a496";

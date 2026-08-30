@@ -22,29 +22,29 @@ EOF
 EOF
 
 emit() {
-    tag="$1"
-    file="$2"
-    [ -f "$file" ] || return 0
-    grep -vE '^\s*(#|$)' "$file" | while IFS= read -r line; do
-        case "$line" in
-        *"::"*)
-            lhs="${line%%::*}"
-            rhs="${line#*::}"
-            lhs="$(printf '%s' "$lhs" | sed 's/[[:space:]]*$//')"
-            rhs="$(printf '%s' "$rhs" | sed 's/^[[:space:]]*//')"
-            printf '[%s] %s :: %s\n' "$tag" "$lhs" "$rhs"
-            ;;
-        *)
-            printf '[%s] %s :: %s\n' "$tag" "$line" "$line"
-            ;;
-        esac
-    done
+  tag="$1"
+  file="$2"
+  [ -f "$file" ] || return 0
+  grep -vE '^\s*(#|$)' "$file" | while IFS= read -r line; do
+    case "$line" in
+    *"::"*)
+      lhs="${line%%::*}"
+      rhs="${line#*::}"
+      lhs="$(printf '%s' "$lhs" | sed 's/[[:space:]]*$//')"
+      rhs="$(printf '%s' "$rhs" | sed 's/^[[:space:]]*//')"
+      printf '[%s] %s :: %s\n' "$tag" "$lhs" "$rhs"
+      ;;
+    *)
+      printf '[%s] %s :: %s\n' "$tag" "$line" "$line"
+      ;;
+    esac
+  done
 }
 
 # 1. Generate the combined list into a variable first
 LIST="$({
-    emit ps "$PERS_FILE"
-    emit wk "$WORK_FILE"
+  emit ps "$PERS_FILE"
+  emit wk "$WORK_FILE"
 } | sort)"
 
 # 2. Calculate the maximum line width dynamically
@@ -63,8 +63,8 @@ raw="${choice##* :: }"
 
 # Strip inline comments and trim
 raw="$(printf '%s' "$raw" |
-    sed -e 's/[[:space:]]\+#.*$//' -e 's/[[:space:]]\/\/.*$//' \
-        -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+  sed -e 's/[[:space:]]\+#.*$//' -e 's/[[:space:]]\/\/.*$//' \
+    -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
 
 # Ensure scheme
 case "$raw" in
@@ -74,11 +74,12 @@ esac
 
 # Pick browser by tag (Fixed to match 'ps' and 'wk' used in emit)
 open_with() {
-    cmd="$1"
-    if [ -n "$cmd" ]; then
-        nohup "$cmd" --new-tab "$url" >/dev/null 2>&1 &
-        exit 0
-    fi
+  cmd="$1"
+  if [ -n "$cmd" ]; then
+    nohup "$cmd" --new-tab "$url" >/dev/null 2>&1 &
+    exit 0
+  fi
+  niri msg action focus-workspace 3
 }
 
 case "$tag" in

@@ -12,7 +12,7 @@
     ../../system/environment.nix
     ../../system/packages.nix
     ../../system/setnix.nix
-    ../../system/programs/nbfc.nix
+    ../../system/programs/ghelper.nix
     ../../system/programs/qylock.nix
   ];
 
@@ -23,17 +23,19 @@
     }
   ];
 
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = ["graphical-session.target"];
-    wants = ["graphical-session.target"];
-    after = ["graphical-session.target"];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
+  systemd.user = {
+    services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
     };
   };
   zramSwap = {
@@ -79,14 +81,14 @@
       };
     };
     initrd = {
-      kernelModules = ["i915"];
       systemd.enable = true;
+      kernelModules = ["amdgpu"];
     };
     kernelParams = [
-      "i915.enable_psr=0"
-      "intel_pstate=active"
       "quiet"
       "splash"
+      "acpi_backlight=native"
+      "nvidia-drm.modeset=1"
     ];
 
     kernel.sysctl = {
@@ -95,10 +97,16 @@
     };
     kernelPackages =
       inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v4;
+    extraModprobeConfig = ''
+      options nvidia NVreg_EnableBacklightHandler=1
+      options rtw89pci disable_aspm_l1ss=y
+      options nvidia NVreg_DynamicPowerManagement=0x02
+      options rtw89pci disable_aspm_l1=y
+      options rtw89pci disable_aspm_l1ss=y
+    '';
   };
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "powersave";
   };
 
   home-manager = {
@@ -114,28 +122,22 @@
     bluetooth.enable = true;
 
     nvidia = {
- 	modesetting.enable = true;
-	powerManagement.enable = true;
-	open = false;
-	prime = {
-		offload.enable = true;
-		amdgpuBusId = "PCI:6:0:0";
-		nvidiaBusId = "PCI:1:0:0";
-	};
+      modesetting.enable = true;
+      powerManagement.enable = true;
+      powerManagement.finegrained = true;
+      open = true;
+      nvidiaSettings = false;
+      dynamicBoost.enable = true;
+      prime = {
+        offload.enable = true;
+        offload.enableOffloadCmd = true;
+        amdgpuBusId = "PCI:6:0:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
     graphics = {
       enable = true;
-      enable32Bit = true; # Crucial for 32-bit Wine and Steam games
-
-      extraPackages = with pkgs; [
-        intel-media-driver # Main VA-API driver for hardware video decoding
-        vpl-gpu-rt # Intel oneVPL runtime for Quick Sync video (QSV)
-        intel-compute-runtime # OpenCL/Level Zero computing (Blender, DaVinci Resolve)
-      ];
-
-      extraPackages32 = with pkgs.pkgsi686Linux; [
-        intel-media-driver # 32-bit hardware decoding for old apps/Steam
-      ];
+      enable32Bit = true;
     };
   };
 
@@ -188,7 +190,7 @@
     ];
   };
 
-    services = {
+  services = {
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
@@ -220,21 +222,28 @@
       package = pkgs.ananicy-cpp;
       rulesProvider = pkgs.ananicy-rules-cachyos;
     };
+
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+      ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+      ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+      ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
+      ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
+    '';
+
+    asusd.enable = true;
     dbus.implementation = "broker";
-
-    asusd = {
-	enable = true;
-	enableUserService = true;
-    };
-
+    printing.enable = true;
+    fstrim.enable = true;
     upower.enable = true;
     udisks2.enable = true;
-    thermald.enable = true;
     power-profiles-daemon.enable = true;
     gnome.gnome-keyring.enable = true;
     gvfs.enable = true;
     xserver.videoDrivers = ["nvidia"];
     tumbler.enable = true;
+    cardwired.enable = true;
   };
   security = {
     polkit.enable = true;

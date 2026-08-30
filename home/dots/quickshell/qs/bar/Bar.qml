@@ -714,7 +714,6 @@ Scope {
               }
               BluetoothPanel {
                 id: bluetoothMenu
-                anchor.window: mainBar
                 theme: root.theme
 
                 isPanelOpen: root.activePanel === "bluetooth"
@@ -727,13 +726,19 @@ Scope {
                 onRequestClose: {
                   root.activePanelIndex = 0
                 }
-                anchor.rect.x: mainBar.width - width - 10
-                anchor.rect.y: mainBar.height + 5
+
+                anchors {
+                  top: true      // Assuming you have a top bar
+                  right: true    // Assuming the network widget is on the right
+                }
+
+                margins {
+                  right: 15      // Push it slightly away from the screen edge
+                }
               }
 
               NetworkPanel {
                 id: networkMenu
-                anchor.window: mainBar
                 theme: root.theme
 
                 isPanelOpen: root.activePanel === "network"
@@ -745,9 +750,14 @@ Scope {
                     root.activePanelIndex = 0 // Reset to hidden state
                   }
                 }
+                anchors {
+                  top: true      // Assuming you have a top bar
+                  right: true    // Assuming the network widget is on the right
+                }
 
-                anchor.rect.x: mainBar.width - width - 10
-                anchor.rect.y: mainBar.height + 5
+                margins {
+                  right: 15      // Push it slightly away from the screen edge
+                }
               }
 
               // Battery

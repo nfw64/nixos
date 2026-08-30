@@ -1,5 +1,4 @@
 // WINDOW RULES
-
 window-rule {
     match is-active=true
     draw-border-with-background false

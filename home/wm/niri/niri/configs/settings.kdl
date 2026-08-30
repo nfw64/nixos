@@ -1,3 +1,10 @@
+// DEBUG
+debug {
+    honor-xdg-activation-with-invalid-serial
+    render-drm-device "/dev/dri/card1"
+    ignore-drm-device "/dev/dri/card0"
+}
+
 // Blur
 
 blur {

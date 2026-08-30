@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+ID_FILE="/tmp/asus_profile_notif_id"
+
+asusctl profile next
+
+ICON="rog-control-center"
+
+NOTIF_ID=""
+if [ -f "$ID_FILE" ]; then
+  NOTIF_ID="$(cat "$ID_FILE")"
+fi
+
+if [ -n "$NOTIF_ID" ]; then
+  NEW_ID=$(notify-send -p -r "$NOTIF_ID" -i "$ICON" -a "asusctl" "Asus Profile" "$(cat /sys/firmware/acpi/platform_profile)")
+else
+  NEW_ID=$(notify-send -p -a "asusctl" -i "$ICON" "Asus Profile" "$(cat /sys/firmware/acpi/platform_profile)")
+fi
+
+# Save the printed ID for the next run
+echo "$NEW_ID" >"$ID_FILE"
