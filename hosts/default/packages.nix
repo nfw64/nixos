@@ -51,10 +51,12 @@
     wl-clipboard
     grim
     slurp
+    whatsapp-electron
+    prismlauncher
     ripgrep
     nodejs
     thunar
     mpv
-    transmission_4-gtk
+    qbittorrent
   ];
 }

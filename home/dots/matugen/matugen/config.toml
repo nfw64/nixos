@@ -1,10 +1,10 @@
 [config]
 type = "SchemeFidelity"
 
-#[templates.hypr]
-#input_path = '~/.config/matugen/templates/matugen-hypr.conf'
-#output_path = '~/.config/hypr/matugen/matugen-hypr.conf'
-#post_hook = 'hyprctl reload'
+[templates.hypr]
+input_path = '~/.config/matugen/templates/colors.dark.lua'
+output_path = '~/.config/hypr/config/colors/init.lua'
+post_hook = 'hyprctl reload'
 
 [templates.starship]
 input_path = '~/.config/matugen/templates/starship.toml'
@@ -14,9 +14,9 @@ output_path = '~/.config/starship.toml'
 input_path = '~/.config/matugen/templates/nvim-colors.lua'
 output_path = '~/.config/nvim/lua/generated.lua'
 
-[templates.niri]
-input_path = '~/.config/matugen/templates/niri.kdl'
-output_path = '~/.config/niri/colors.kdl'
+# [templates.niri]
+# input_path = '~/.config/matugen/templates/niri.kdl'
+# output_path = '~/.config/niri/colors.kdl'
 
 [templates.tmux]
 input_path = '~/.config/matugen/templates/tmux-colors.conf'

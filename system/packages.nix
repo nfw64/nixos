@@ -1,8 +1,6 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
     asusctl
-    cardwire
-    nirimon
 
     # Auth agent
     gnome-keyring

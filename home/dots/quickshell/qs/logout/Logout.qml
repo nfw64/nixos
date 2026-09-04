@@ -28,7 +28,7 @@ Scope {
     }
 
     Button {
-      command: "niri msg action quit"
+      command: "hyprctl dispatch exit"
       keybind: Qt.Key_Q
       icon: "logout"
     }

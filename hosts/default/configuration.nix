@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   self,
+  lib,
   ...
 }: {
   imports = [
@@ -12,8 +13,6 @@
     ../../system/environment.nix
     ../../system/packages.nix
     ../../system/setnix.nix
-    ../../system/programs/ghelper.nix
-    ../../system/programs/qylock.nix
   ];
 
   swapDevices = [
@@ -22,19 +21,30 @@
       size = 14 * 1024;
     }
   ];
-
-  systemd.user = {
-    services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
+  systemd = {
+    services.flatpak-repo = {
+      wantedBy = ["multi-user.target"];
+      path = [pkgs.flatpak];
+      script = ''
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      '';
+    };
+    user = {
+      settings.Manager = {
+        DefaultEnvironment = "AQ_DRM_DEVICES=/dev/dri/card1";
+      };
+      services.polkit-gnome-authentication-agent-1 = {
+        description = "polkit-gnome-authentication-agent-1";
+        wantedBy = ["graphical-session.target"];
+        wants = ["graphical-session.target"];
+        after = ["graphical-session.target"];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
       };
     };
   };
@@ -89,6 +99,10 @@
       "splash"
       "acpi_backlight=native"
       "nvidia-drm.modeset=1"
+
+      # FORCE DYNAMIC POWER MANAGEMENT AT INITIALIZATION
+      "nvidia.NVreg_DynamicPowerManagement=0x02"
+      "nvidia.NVreg_DynamicPowerManagementVideoMemoryThreshold=0"
     ];
 
     kernel.sysctl = {
@@ -101,6 +115,8 @@
       options nvidia NVreg_EnableBacklightHandler=1
       options rtw89pci disable_aspm_l1ss=y
       options nvidia NVreg_DynamicPowerManagement=0x02
+      options nvidia NVreg_PreserveVideoMemoryAllocations=1
+      options nvidia NVreg_DynamicPowerManagementVideoMemoryThreshold=0
       options rtw89pci disable_aspm_l1=y
       options rtw89pci disable_aspm_l1ss=y
     '';
@@ -120,14 +136,14 @@
   hardware = {
     enableRedistributableFirmware = true;
     bluetooth.enable = true;
+    acpilight.enable = true;
 
     nvidia = {
       modesetting.enable = true;
       powerManagement.enable = true;
       powerManagement.finegrained = true;
       open = true;
-      nvidiaSettings = false;
-      dynamicBoost.enable = true;
+      dynamicBoost.enable = false;
       prime = {
         offload.enable = true;
         offload.enableOffloadCmd = true;
@@ -141,14 +157,19 @@
     };
   };
 
-  networking.hostName = "nixos-myriad";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "nixos-myriad";
+    networkmanager.enable = true;
+  };
 
   programs = {
     gamemode.enable = true;
     zsh.enable = true;
     xfconf.enable = true;
-    niri.enable = true;
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
 
     nix-ld = {
       enable = true;
@@ -177,6 +198,7 @@
     description = "myriad";
     extraGroups = [
       "networkmanager"
+      "video"
       "wheel"
       "disk"
       "input"
@@ -184,17 +206,7 @@
     shell = pkgs.zsh;
   };
 
-  nixpkgs.config = {
-    permittedInsecurePackages = [
-      "electron-39.8.10"
-    ];
-  };
-
   services = {
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
     envfs.enable = true;
     keyd = {
       enable = true;
@@ -224,16 +236,12 @@
     };
 
     udev.extraRules = ''
-      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
-      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
-      ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
-      ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
-      ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
-      ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
+      ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", ATTR{power/control}="auto"
+      ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", ATTR{power/control}="auto"
+      ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{power/control}="auto"
     '';
 
     asusd.enable = true;
-    dbus.implementation = "broker";
     printing.enable = true;
     fstrim.enable = true;
     upower.enable = true;
@@ -244,6 +252,7 @@
     xserver.videoDrivers = ["nvidia"];
     tumbler.enable = true;
     cardwired.enable = true;
+    flatpak.enable = true;
   };
   security = {
     polkit.enable = true;

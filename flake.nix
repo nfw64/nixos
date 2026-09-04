@@ -2,6 +2,7 @@
   description = "nixos-flakes";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    qylock.url = "github:Darkkal44/qylock";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -66,6 +67,16 @@
         home-manager.nixosModules.home-manager
         inputs.minegrub-world-sel-theme.nixosModules.default
         inputs.nix-index-database.nixosModules.default
+        inputs.qylock.nixosModules.default
+
+        ({pkgs, ...}: {
+          services.displayManager.sddm.enable = true;
+          services.displayManager.sddm.wayland.enable = true;
+          programs.qylock = {
+            enable = true;
+            theme = "pixel-dusk-city";
+          };
+        })
       ];
     };
   };

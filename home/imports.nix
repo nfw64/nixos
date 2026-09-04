@@ -16,7 +16,8 @@
   };
 in {
   imports = [
-    ./wm/niri/niri.nix
+    # ./wm/niri/niri.nix
+    ./wm/hyprland/hyprland.nix
     ./dots/matugen/default.nix
     ./dots/nvim/default.nix
     ./dots/quickshell/default.nix
@@ -27,7 +28,6 @@ in {
     # ./programs/kari.nix
     ./programs/yazi.nix
     ./programs/firefox.nix
-    #./programs/bongocat.nix
   ];
 
   xdg.configFile =

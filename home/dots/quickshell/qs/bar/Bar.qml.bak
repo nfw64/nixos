@@ -4,7 +4,6 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell.Widgets
 import Quickshell.Services.SystemTray
-import Quickshell.WindowManager
 import Quickshell.Io
 import Quickshell.Services.Mpris
 import Quickshell.Services.Pipewire
@@ -95,78 +94,79 @@ Scope {
     }
   }
 
-  // Process {
-  //   id: wsStream
-  //   command: ["niri", "msg", "--json", "event-stream"]
-  //   running: true
-  //   stdout: SplitParser {
-  //     onRead: data => {
-  //       try {
-  //         var e = JSON.parse(data);
-  //         if (e.WorkspacesChanged)
-  //         root.parseWs(e.WorkspacesChanged.workspaces);
-  //         else if (e.WorkspaceActivated)
-  //         wsQuery.running = true;
-  //       } catch (_) {}
-  //     }
-  //   }
-  //   onRunningChanged: if (!running)
-  //   wsRestart.start()
-  // }
-  // Timer {
-  //   id: wsRestart
-  //   interval: 1500
-  //   onTriggered: {
-  //     wsStream.running = true;
-  //   }
-  // }
+  property var wsData: []
+  Process {
+    id: wsStream
+    command: ["niri", "msg", "--json", "event-stream"]
+    running: true
+    stdout: SplitParser {
+      onRead: data => {
+        try {
+          var e = JSON.parse(data);
+          if (e.WorkspacesChanged)
+          root.parseWs(e.WorkspacesChanged.workspaces);
+          else if (e.WorkspaceActivated)
+          wsQuery.running = true;
+        } catch (_) {}
+      }
+    }
+    onRunningChanged: if (!running)
+    wsRestart.start()
+  }
+  Timer {
+    id: wsRestart
+    interval: 1500
+    onTriggered: {
+      wsStream.running = true;
+    }
+  }
 
   // Niri workspaces services (niriha)
 
-  // Process {
-  //   id: wsQuery
-  //   command: ["niri", "msg", "--json", "workspaces"]
-  //   stdout: SplitParser {
-  //     onRead: data => {
-  //       try {
-  //         var p = JSON.parse(data);
-  //         var list = (p.Ok && p.Ok.Workspaces) ? p.Ok.Workspaces : Array.isArray(p) ? p : (p.Ok && Array.isArray(p.Ok)) ? p.Ok : null;
-  //         if (list)
-  //         root.parseWs(list);
-  //       } catch (_) {}
-  //     }
-  //   }
-  //   Component.onCompleted: running = true
-  // }
-  //
-  // function parseWs(list) {
-  //   if (!Array.isArray(list))
-  //   return;
-  //
-  //   var a = [];
-  //   for (var i = 0; i < list.length; i++) {
-  //     var w = list[i];
-  //     var isFocused = !!w.is_focused;
-  //     var isOccupied = w.active_window_id != null;
-  //
-  //     if (isFocused || isOccupied) {
-  //       a.push({
-  //           idx: w.idx,
-  //           id: w.id,
-  //           focused: isFocused,
-  //           occupied: isOccupied,
-  //           urgent: !!w.is_urgent
-  //       });
-  //     }
-  //   }
-  //
-  //   a.sort((x, y) => x.idx - y.idx);
-  //
-  //   var newData = JSON.stringify(a);
-  //   if (JSON.stringify(root.wsData) !== newData) {
-  //     root.wsData = a;
-  //   }
-  // }
+  Process {
+    id: wsQuery
+    command: ["niri", "msg", "--json", "workspaces"]
+    stdout: SplitParser {
+      onRead: data => {
+        try {
+          var p = JSON.parse(data);
+          var list = (p.Ok && p.Ok.Workspaces) ? p.Ok.Workspaces : Array.isArray(p) ? p : (p.Ok && Array.isArray(p.Ok)) ? p.Ok : null;
+          if (list)
+          root.parseWs(list);
+        } catch (_) {}
+      }
+    }
+    Component.onCompleted: running = true
+  }
+
+  function parseWs(list) {
+    if (!Array.isArray(list))
+    return;
+
+    var a = [];
+    for (var i = 0; i < list.length; i++) {
+      var w = list[i];
+      var isFocused = !!w.is_focused;
+      var isOccupied = w.active_window_id != null;
+
+      if (isFocused || isOccupied) {
+        a.push({
+            idx: w.idx,
+            id: w.id,
+            focused: isFocused,
+            occupied: isOccupied,
+            urgent: !!w.is_urgent
+        });
+      }
+    }
+
+    a.sort((x, y) => x.idx - y.idx);
+
+    var newData = JSON.stringify(a);
+    if (JSON.stringify(root.wsData) !== newData) {
+      root.wsData = a;
+    }
+  }
 
   Variants {
     model: Quickshell.screens
@@ -176,36 +176,6 @@ Scope {
       required property var modelData
       screen: modelData
       visible: root.barVisible
-
-      property var wsData: {
-        var arr = [];
-        var projection = WindowManager.screenProjection(mainBar.screen);
-        var sets = projection ? projection.windowsets : [];
-
-        for (var i = 0; i < sets.length; i++) {
-          var w = sets[i];
-
-          // Quickshell stores the actual WM workspace name here (e.g. "1", "3", "Web")
-          var wsName = w.name !== undefined ? w.name : (i + 1).toString();
-
-          // Try to parse it as a number so we can sort them correctly
-          var wsNum = parseInt(wsName, 10);
-
-          arr.push({
-              idx: isNaN(wsNum) ? 999 : wsNum, // Use 999 for non-number workspaces to push them to the end
-              display: wsName,
-              focused: w.active,
-              occupied: w.toplevels && w.toplevels.length > 0,
-              urgent: w.urgent || false,
-              nativeObject: w
-          });
-        }
-
-        // Sort the workspaces so "1" comes before "3", regardless of which was created first
-        arr.sort((a, b) => a.idx - b.idx);
-
-        return arr;
-      }
 
       anchors {
         top: true
@@ -252,10 +222,8 @@ Scope {
               z: 1
 
               property int focusedIdx: {
-                if (!mainBar.wsData) return 0;
-
-                for (var i = 0; i < mainBar.wsData.length; i++) {
-                  if (mainBar.wsData[i].focused)
+                for (var i = 0; i < root.wsData.length; i++) {
+                  if (root.wsData[i].focused)
                   return i;
                 }
                 return 0;
@@ -279,7 +247,7 @@ Scope {
               orientation: ListView.Horizontal
               interactive: false
               spacing: 5
-              model: mainBar.wsData
+              model: root.wsData
               z: 2
 
               delegate: Item {
@@ -301,7 +269,7 @@ Scope {
 
                   Text {
                     anchors.centerIn: parent
-                    text: modelData.display
+                    text: modelData.idx
                     font.pixelSize: 11
                     font.family: "Hack Nerd Font"
                     font.bold: modelData.focused
@@ -319,9 +287,8 @@ Scope {
                   anchors.fill: parent
                   cursorShape: Qt.PointingHandCursor
                   onClicked: {
-                    if (modelData.nativeObject && modelData.nativeObject.activate) {
-                      modelData.nativeObject.activate();
-                    }
+                    workspaceSwitcher.command = ["niri", "msg", "action", "focus-workspace", modelData.idx.toString()];
+                    workspaceSwitcher.running = true;
                   }
                 }
               }
