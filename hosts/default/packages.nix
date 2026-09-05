@@ -57,6 +57,7 @@
     nodejs
     thunar
     mpv
-    qbittorrent
+    transmission_4
+    ayugram-desktop
   ];
 }

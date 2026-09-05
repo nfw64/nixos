@@ -138,13 +138,13 @@ hl.bind("SUPER + R", run("qs ipc call launcher toggle")) -- Restart waybar TODO
 hl.bind("SUPER + Y", run("qs ipc call wallpaper toggle")) -- Restart waybar TODO
 hl.bind("SUPER + ESCAPE", run("qs ipc call logout toggle")) -- Restart waybar TODO
 hl.bind("ALT + ESCAPE", run("qs ipc call popups close")) -- Restart waybar TODO
-hl.bind("SUPER + CTRL + N", run("qs ipc call notifications dismiss_all")) -- Restart waybar TODO
+hl.bind("SUPER + CTRL + Z", run("qs ipc call notifications dismiss_all")) -- Restart waybar TODO
 
 -- Misc bindings
 hl.bind("SUPER + SHIFT + SPACE", run("qs kill & qs -d"))
 hl.bind("SUPER + CTRL + P", run("cur_p"))
 hl.bind("SUPER + CTRL + O", run("aura_control cycle"))
-hl.bind("XF86ScreenSaver", run("niri msg action power-off-monitors")) -- todo
+hl.bind("XF86ScreenSaver", run_script("caffeine"))
 hl.bind("SUPER + P", run("kitty -e nirimon")) -- niirmon replacement TODO
 
 hl.bind("SUPER + period", run("playerctl next")) -- Play next song
@@ -183,10 +183,10 @@ for key, dir in pairs(directions) do
 end
 
 -- Resize active window
-hl.bind("SUPER + CTRL + SHIFT + h", hl.dsp.window.resize({ x = -70, y = 0, relative = true }))
-hl.bind("SUPER + CTRL + SHIFT + l", hl.dsp.window.resize({ x = 70, y = 0, relative = true }))
-hl.bind("SUPER + CTRL + SHIFT + k", hl.dsp.window.resize({ x = 0, y = -70, relative = true }))
-hl.bind("SUPER + CTRL + SHIFT + j", hl.dsp.window.resize({ x = 0, y = 70, relative = true }))
+hl.bind("SUPER + CTRL + h", hl.dsp.window.resize({ x = -70, y = 0, relative = true }))
+hl.bind("SUPER + CTRL + l", hl.dsp.window.resize({ x = 70, y = 0, relative = true }))
+hl.bind("SUPER + CTRL + k", hl.dsp.window.resize({ x = 0, y = -70, relative = true }))
+hl.bind("SUPER + CTRL + j", hl.dsp.window.resize({ x = 0, y = 70, relative = true }))
 
 -- Switch workspaces: SUPER + [1-workspaces]
 -- Move active window to workspace: SUPER + SHIFT [1-workspaces]
@@ -227,9 +227,7 @@ hl.bind("XF86AudioLowerVolume", run("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
 hl.bind("XF86MonBrightnessUp", run("brightnessctl -d amdgpu_bl1 set 5%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", run("brightnessctl -d amdgpu_bl1 set 5%-"), { locked = true, repeating = true })
 
-hl.bind("XF86Launch1", run_script("powerprofile next"))
-hl.bind("XF86Calculator", run("qalculate-gtk"))
-hl.bind("XF86Launch4", run("rog-control-center"))
+hl.bind("XF86Calculator", run("rog-control-center"))
 
 -- Move/resize windows with SUPER + LMB/RMB and dragging
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })

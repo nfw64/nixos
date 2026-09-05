@@ -6,6 +6,7 @@
     gnome-keyring
 
     # Utilities
+    lsof
     libnotify
     ntfs3g
     pavucontrol

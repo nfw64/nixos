@@ -3,7 +3,6 @@
   pkgs,
   inputs,
   self,
-  lib,
   ...
 }: {
   imports = [
@@ -13,6 +12,7 @@
     ../../system/environment.nix
     ../../system/packages.nix
     ../../system/setnix.nix
+    ../../system/programs/qemu.nix
   ];
 
   swapDevices = [
@@ -33,14 +33,14 @@
       settings.Manager = {
         DefaultEnvironment = "AQ_DRM_DEVICES=/dev/dri/card1";
       };
-      services.polkit-gnome-authentication-agent-1 = {
-        description = "polkit-gnome-authentication-agent-1";
+      services.hyprpolkitagent = {
+        description = "Hyprpolkitagent - Polkit authentication agent";
         wantedBy = ["graphical-session.target"];
         wants = ["graphical-session.target"];
         after = ["graphical-session.target"];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          ExecStart = "${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
           Restart = "on-failure";
           RestartSec = 1;
           TimeoutStopSec = 10;
@@ -100,9 +100,14 @@
       "acpi_backlight=native"
       "nvidia-drm.modeset=1"
 
-      # FORCE DYNAMIC POWER MANAGEMENT AT INITIALIZATION
+      # Aggressive PCIe ASPM Power Savings (Fixes baseline bus drain)
+      "pcie_aspm=force"
+      "pcie_aspm.policy=powersupersave"
+
+      # Force Dynamic Power Management for RTX 3050
       "nvidia.NVreg_DynamicPowerManagement=0x02"
       "nvidia.NVreg_DynamicPowerManagementVideoMemoryThreshold=0"
+      "nvidia.NVreg_EnableS0ixPowerManagement=1"
     ];
 
     kernel.sysctl = {
@@ -112,18 +117,15 @@
     kernelPackages =
       inputs.nix-cachyos-kernel.legacyPackages.x86_64-linux.linuxPackages-cachyos-latest-lto-x86_64-v4;
     extraModprobeConfig = ''
+      options nvidia Nvreg_EnableGpuFirmware=0
       options nvidia NVreg_EnableBacklightHandler=1
-      options rtw89pci disable_aspm_l1ss=y
-      options nvidia NVreg_DynamicPowerManagement=0x02
-      options nvidia NVreg_PreserveVideoMemoryAllocations=1
-      options nvidia NVreg_DynamicPowerManagementVideoMemoryThreshold=0
-      options rtw89pci disable_aspm_l1=y
-      options rtw89pci disable_aspm_l1ss=y
+      options nvidia NVreg_PreserveVideoMemoryAllocations=0
+      options rtw89pci disable_aspm_l1=n
+      options rtw89pci disable_aspm_l1ss=n
     '';
   };
-  powerManagement = {
-    enable = true;
-  };
+
+  powerManagement.enable = true;
 
   home-manager = {
     useGlobalPkgs = true;
@@ -208,6 +210,16 @@
 
   services = {
     envfs.enable = true;
+    transmission = {
+      enable = true;
+      openFirewall = true;
+      openRPCPort = true;
+      settings = {
+        download-dir = "/home/myriad/Downloads";
+        rpc-bind-address = "0.0.0.0";
+        rpc-whitelist = "127.0.0.1";
+      };
+    };
     keyd = {
       enable = true;
       keyboards = {
@@ -236,9 +248,17 @@
     };
 
     udev.extraRules = ''
+      # Force PM auto for Nvidia Audio Controller (0x040300)
+      ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{power/control}="auto"
       ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", ATTR{power/control}="auto"
       ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", ATTR{power/control}="auto"
       ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{power/control}="auto"
+
+      # Unbind dGPU and Audio controller on Battery power
+      SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.bash}/bin/bash -c 'echo 0000:01:00.1 > /sys/bus/pci/drivers/snd_hda_intel/unbind; echo 0000:01:00.0 > /sys/bus/pci/drivers/nvidia/unbind'"
+
+      # Rebind dGPU and Audio controller on AC power
+      SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.bash}/bin/bash -c 'echo 0000:01:00.0 > /sys/bus/pci/drivers_probe; echo 0000:01:00.1 > /sys/bus/pci/drivers_probe'"
     '';
 
     asusd.enable = true;
@@ -251,7 +271,16 @@
     gvfs.enable = true;
     xserver.videoDrivers = ["nvidia"];
     tumbler.enable = true;
-    cardwired.enable = true;
+    cardwired = {
+      enable = true;
+      settings = {
+        battery_auto_switch = false;
+        battery_auto_switch_mode = "smart";
+        auto_apply_gpu_state = true;
+        experimental_nvidia_block = true;
+      };
+    };
+
     flatpak.enable = true;
   };
   security = {

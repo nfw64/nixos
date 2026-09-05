@@ -29,20 +29,20 @@
   home.pointerCursor = {
     enable = true;
     gtk.enable = true;
-    name = "Firefly"; # Make sure this matches your folder name capitalization
+    name = "Firefly";
     size = 64;
 
-    # No build dependencies needed anymore, just a dead-simple folder mirror
     package = pkgs.runCommand "pointerCursor" {} ''
       mkdir -p $out/share/icons
       cp -r ${../../assets/local/cursor/Firefly} $out/share/icons/Firefly
     '';
   };
 
+  # fixes thunar unable to find terminal
   xdg.terminal-exec = {
     enable = true;
     settings = {
-      default = ["kitty.desktop"]; # Replace with alacritty.desktop, foot.desktop, etc.
+      default = ["kitty.desktop"];
     };
   };
 

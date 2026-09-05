@@ -124,6 +124,7 @@ hl.config({
 		inactive_timeout = 10,
 		enable_hyprcursor = false,
 		no_hardware_cursors = true,
+		no_warps = true,
 	},
 
 	misc = {

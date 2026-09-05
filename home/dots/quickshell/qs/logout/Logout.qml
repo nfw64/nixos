@@ -46,7 +46,7 @@ Scope {
     }
 
     Button {
-      command: "systemctl poweroff"
+      command: "poweroff"
       keybind: Qt.Key_P
       icon: "power"
     }

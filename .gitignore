@@ -29,3 +29,4 @@ home/configs/gtk-3.0/settings.ini
 home/configs/gtk-4.0/settings.ini
 home/dots/tmux/tmux-kun/.tmux/plugins/*
 home/dots/quickshell/qs/.qmlls.ini
+assets/virt/virtio-win-0.1.302.iso

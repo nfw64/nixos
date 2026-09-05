@@ -46,10 +46,11 @@ in {
   home.packages = with pkgs; [
     flameshot
     grim
+    pulseaudio
     slurp
     hypridle
     hyprpolkitagent
     gammastep
-    brillo
+    geoclue2
   ];
 }
